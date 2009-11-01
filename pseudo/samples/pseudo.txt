@@ -1,0 +1,89 @@
+record Link {
+  any value;
+  Link next;
+}
+
+def cons(any value, Link next):Link {
+  return new Link(value, next)
+}
+
+def toString(Link link):string {
+  if (link.next == null) {
+    return link.value
+  }
+  return link.value + toString(link.next)
+}
+
+def size_recursive(Link link):int {
+  if (link.next == null) {
+    return 0
+  }
+  return 1 + size(link.next)
+}
+
+def size(Link link):int {
+  int size = 0
+  for(Link l=link; l != null; l=l.next) {
+    size = size + 1
+  }
+  return size
+}
+
+def each(Link link, (any,any:any) fun, any val):any {
+  any result = val
+  for(Link l = link; l != null; l = l.next) {
+    result = fun(link.value, result)
+  }
+  return result
+}
+
+def each2(link, fun, val) {
+  any result = val
+  for(Link l = link; l != null; l = l.next) {
+    result = fun(link.value, result)
+  }
+  return result
+}
+
+{
+  l = cons(2, cons(3, null))
+  print size(l)
+  each(l, lambda(int x, int y) => x + y, 0)
+  each2(l, lambda(x, y) => x + y, 0)
+}
+
+
+
+record Stack {
+  any[] array
+  int top
+  
+  init(int capacity) {
+    array = new any[capacity]
+    top = 0
+  }
+}
+
+def push(Stack stack, any value):void {
+  stack.array[stack.top] = value
+  stack.top = stack.top + 1
+}
+
+def pop(Stack stack):any {
+  stack.top = stack.top - 1
+  value = stack.array[stack.top]
+  stack.array[stack.top] = null
+  return value
+}
+
+def stack_each(stack, fun, val) {
+  result = val
+  for(i=0; i<stack.top; i = i + 1) {
+    result = fun(stack.array[i], result)
+  }
+  return result
+}
+
+{
+  stack = new Stack(5)
+}

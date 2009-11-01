@@ -1,0 +1,7 @@
+def f(int x):int {
+  return x;
+}
+
+{
+  f(3);
+}

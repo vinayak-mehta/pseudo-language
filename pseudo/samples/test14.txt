@@ -1,0 +1,6 @@
+{
+  string s = "foo"
+  print s < "bar"
+  s2 = "foo"
+  print s2 < "bar"
+}
