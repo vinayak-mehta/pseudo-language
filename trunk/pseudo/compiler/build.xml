@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<project name="pseudo" default="all" basedir=".">
+	
+  <property name="tatoo-build.dir" location="build-lib"/>
+  <property name="tatoo.jar" location="${tatoo-build.dir}/tatoo.jar"/>
+  <property name="tatoo-runtime.dir" location="lib"/>
+  <property name="tatoo-runtime.jar" location="${tatoo-runtime.dir}/tatoo-runtime.jar"/>
+	
+  <property name="src" value="src"/>
+  <property name="classes" value="classes"/>
+  <property name="gen-src" value="gen-src"/>
+  <property name="ebnf.file" value="${ant.project.name}.ebnf"/>
+  
+  <property name="lexer.package" value="com.googlecode.pseudo.compiler.lexer"/>
+  <property name="parser.package" value="com.googlecode.pseudo.compiler.parser"/>
+  <property name="tools.package" value="com.googlecode.pseudo.compiler.tools"/>
+  <property name="ast.package" value="com.googlecode.pseudo.compiler.ast"/>
+  
+  <target name="tasks">
+    <taskdef name="ebnf" classname="fr.umlv.tatoo.cc.ebnf.main.EBNFTask" classpath="${tatoo.jar}"/>
+  </target>
+  	
+  <target name="ebnf" depends="tasks">
+  	<delete dir="${gen-src}"/>
+	<ebnf destination="${gen-src}" ebnfFile="${ebnf.file}"  generateast="true" parserType="lalr" logfile="log.html" loglevel="ALL">
+		<package lexer="${lexer.package}"/>
+		<package parser="${parser.package}"/>
+		<package tools="${tools.package}"/>
+		<package ast="${ast.package}"/>
+		<generation prefix="${ant.project.name}"/>
+	</ebnf>
+  </target>
+	
+  <target name="all" depends="ebnf">
+  </target>
+	
+	<target name="compile">
+	  <mkdir dir="${classes}"/>
+
+	  <javac srcdir="${src}:${gen-src}" destdir="${classes}">
+		  <classpath path="${tatoo-runtime.jar}"/>
+		  <compilerarg value="-Xlint:deprecation"/>
+	  </javac>
+	</target>
+	
+  <target name="run" depends="compile">
+  	<java fork="true"
+  	      classname="fr.umlv.compil.${ant.project.name}.Main">
+  	  <classpath>
+  	    <pathelement location="${classes}"/>
+  	  	<pathelement location="${tatoo-runtime.jar}"/>
+  	  </classpath>
+  	</java>
+  </target>
+	
+	<target name="clean">
+		<delete dir="${classes}"/>
+		<delete dir="${gen-src}"/>
+		<!-- not to break eclipse source folders -->
+		<mkdir dir="${gen-src}"/>
+	</target>
+
+</project>

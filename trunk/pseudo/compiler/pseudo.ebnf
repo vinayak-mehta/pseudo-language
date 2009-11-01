@@ -1,0 +1,282 @@
+directives:
+  autoalias
+
+priorities:
+  lambda=           1 right
+  assign=           2 nonassoc
+  unary =           3 right
+  boolean_and_or =  4 left 
+  eq =              5 left
+  if_else =         6 left
+  plus_minus=       7 left
+  star_slash=       8 left
+  pow =             9 left
+
+tokens:
+  plus= '\+'                 [plus_minus]
+  minus= '-'                 [plus_minus]
+  star= '\*'                 [star_slash]
+  slash='\/'                 [star_slash]
+  mod='%'                    [star_slash]
+  pow='\^\^'                 [pow]
+  band='&&'                  [boolean_and_or]
+  bor='\|\|'                 [boolean_and_or]
+  eq='=='                    [eq]
+  neq='!='                   [eq]
+  lt='<'                     [eq]
+  gt='>'                     [eq]
+  le='<='                    [eq]
+  ge='>='                    [eq]
+  assign= '='                [assign]
+  lpar= '\('
+  rpar= '\)'
+  lcurl='\{'
+  rcurl='\}'
+  lopt='\['
+  ropt='\]'
+  bang='!'                   [unary]
+  dot='\.'                 
+  colon=':'
+  semicolon=';'
+  comma=','
+  _if="if"
+  _else="else"
+  _for="for"
+  _while="while"
+  _do="do"
+  _return="return"
+  _break="break"
+  _continue="continue"
+  _new="new"
+  _throw="throw"
+  
+  record="record"
+  init="init"
+  def="def"
+  lambda="lambda"
+  arrow="=>"
+  print="print"
+  scan="scan"
+  
+  _boolean="boolean"
+  _char="char"
+  _int="int"
+  _double="double"
+  string="string"
+  any="any"
+  _void="void"
+  
+  null_literal='null'
+  boolean_literal="true|false"
+  char_literal="'[^']'"
+  string_literal='\u0022([^\u0022])*\u0022'
+  value_literal= "[0-9]+(\.([0-9])+)?"
+  id= "([a-z]|[A-Z]|_)([a-z]|[A-Z]|[0-9]|_)*"
+  
+  eoln= "(\r)?\n"
+ 
+blanks:
+  space = "( |\t|\r|\n)"
+ 
+comments:
+  comment = "#([^\r\n])*(\r)?\n"  
+
+types:
+  'boolean_literal': boolean
+  'char_literal': char
+  'value_literal': Object
+  'string_literal': String
+  'id': String
+  
+
+starts:
+  start
+
+productions:
+  primitive_type = 'boolean'    { primitive_type_boolean }
+                 | 'char'       { primitive_type_char }
+                 | 'int'        { primitive_type_int }
+                 | 'double'     { primitive_type_double }
+                 | 'string'     { primitive_type_string }
+                 | 'any'        { primitive_type_any }
+                 ;
+
+  type = 'id'                  { type_id }
+       | 'id' dims             { type_id_dims }
+       | primitive_type        { type_primitive }
+       | primitive_type dims   { type_primitive_dims }
+       | funtype               { type_funtype }
+       | funtype dims          { type_funtype_dims }
+       ;
+       
+  funtype = '(' type/'comma'* ':' return_type ')'     { funtype }
+          ;
+          
+  return_type = type       { return_type_type }
+              | 'void'     { return_type_void }
+              ;
+
+  start = script_member*          { start }
+         ;
+        
+  script_member = record_def       { script_member_record_def }
+                | function_def     { script_member_function_def }
+                | block            { script_member_block }
+                ;
+                
+  record_def = 'record' 'id' '{' field*  record_init? '}'   { record_def }
+             ;
+             
+  record_init = 'init' '(' parameters ')' block    { record_init }
+              ;
+             
+  field = type 'id' semis   { field }
+        ;
+        
+  function_def = 'def' 'id' '(' parameters ')' function_rtype? block   { function_def }
+               ;
+               
+  function_rtype = ':' return_type     { function_rtype }
+            ;
+          
+  parameters = parameter/'comma'*   { parameters }
+             ;
+  
+  parameter = 'id'        { parameter_naked }
+            | type 'id'   { parameter_typed }
+            ;
+            
+  arguments = expr/'comma'*    { arguments }
+            ;        
+        
+  block = '{' instr* '}'      { block }
+        ;
+        
+  instr = 'print' expr semis         { instr_print }
+        | 'scan' primary  semis      { instr_scan }
+        | declaration semis          { instr_declaration }
+        | assignation semis          { instr_assignation }
+        | funcall semis              { instr_funcall }
+        | conditional                { instr_conditional }
+        | loop_label? loop           { instr_loop }
+        | 'break' 'id'? semis        { instr_break }
+        | 'continue' 'id'? semis     { instr_continue }  
+        | 'return' expr? semis       { instr_return }
+        | 'throw' expr semis         { instr_throw }
+        | block                      { instr_block }
+        | ';'                        { instr_empty }
+        ;
+        
+  semis = ';'
+        | 'eoln'
+        ;
+              
+  declaration = type 'id'            { declaration_id }
+              | type 'id' '=' expr   { declaration_id_init }
+              ;
+         
+  funcall = 'id' '(' arguments ')'       { funcall_id }
+          | primary '(' arguments ')'    { funcall_primary }
+          ;
+         
+  conditional = 'if' '(' expr ')' block                  { conditional_if }
+              | 'if' '(' expr ')' block 'else' block     { conditional_if_else }
+              ;
+        
+  loop = 'while' '(' expr ')' block                                       { loop_while }
+       | 'do' block 'while' '(' expr ')'                                  { loop_dowhile }
+       | 'for' '(' for_loop_init? ';' expr? ';' for_loop_incr? ')' block  { loop_for}
+       ;
+ 
+  for_loop_init = declaration    { for_loop_init_declaration }
+                | assignation    { for_loop_init_assignation }
+                | funcall        { for_loop_init_funcall }
+                ;
+ 
+  for_loop_incr = assignation     { for_loop_incr_assignation }
+                | funcall         { for_loop_incr_funcall }
+                ;
+ 
+  loop_label = 'id' ':'       { loop_label }
+             ;
+             
+             
+  assignation = lhs '=' expr  { assignation }
+              ;  
+                       
+  lhs = 'id'                   { lhs_id }
+      | field_access           { lhs_field_access }
+      | array_access           { lhs_array_access }
+      ;
+        
+  primary  = primary_no_array_creation    { primary_primary_no_array_creation }
+           | array_creation               { primary_array_creation }
+           ;
+           
+  primary_no_array_creation =
+             field_access                                          { primary_field_access }                                    
+           | array_access                                          { primary_array_access }                  
+           | '(' expr ')'                                          { primary_parens }
+           | 'new' 'id' '(' arguments ')'                          { primary_allocation } 
+           | funcall                                               { primary_funcall }
+           ;
+       
+  array_access = 'id' '[' expr ']'                        { array_access_id }
+               | primary_no_array_creation '[' expr ']'   { array_access_primary }
+               ;
+               
+  field_access = 'id' '.' 'id'       { field_access_id }
+               | primary '.' 'id'    { field_access_primary }
+               ;  
+           
+  array_creation = 'new' primitive_type dim_expr+ dims_opt  { array_creation_primitive }
+                 | 'new' 'id' dim_expr+ dims_opt            { array_creation_record }
+                 ;
+         
+  dim_expr = '[' expr ']'        { dim_expr }
+           ;
+ 
+  dims_opt = dims                { dims_opt_dims }
+           |                     { dims_opt_empty }
+           ;
+        
+  dims = '[' ']'                 { dims_singleton }
+       | dims '[' ']'            { dims_recursive }
+       ;
+      
+
+  expr = 'boolean_literal'                                          { expr_boolean_literal }
+       | 'char_literal'                                             { expr_char_literal }
+       | 'value_literal'                                            { expr_value_literal }
+       | 'string_literal'                                           { expr_string_literal }
+       | 'null_literal'                                             { expr_null_literal }
+      
+       | 'id'                                                       { expr_id }       
+       | primary                                                    { expr_primary }
+       
+       | 'lambda' '(' parameters ')' '=>' expr    [lambda]          { expr_lambda }
+       
+       
+       | '!' expr                                 [unary]           { expr_neg }
+       | '+' expr                                 [unary]           { expr_unary_plus }
+       | '-' expr                                 [unary]           { expr_unary_minus }
+      
+       | expr '==' expr                           [eq]              { expr_eq }
+       | expr '!=' expr                           [eq]              { expr_ne }
+       | expr '<' expr                            [eq]              { expr_lt }
+       | expr '<=' expr                           [eq]              { expr_le }
+       | expr '>' expr                            [eq]              { expr_gt }
+       | expr '>=' expr                           [eq]              { expr_ge } 
+           
+       | expr '&&' expr                           [boolean_and_or]  { expr_band }
+       | expr '||' expr                           [boolean_and_or]  { expr_bor } 
+          
+       | expr '+' expr                            [plus_minus]      { expr_plus }
+       | expr '-' expr                            [plus_minus]      { expr_minus }
+      
+       | expr '*' expr                            [star_slash]      { expr_star }
+       | expr '/' expr                            [star_slash]      { expr_slash }
+       | expr '%' expr                            [star_slash]      { expr_mod }
+       
+       | expr '^^' expr                           [pow]             { expr_pow }
+       ;
