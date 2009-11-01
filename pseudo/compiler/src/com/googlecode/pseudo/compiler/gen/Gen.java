@@ -667,19 +667,19 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   public JCTree visit(LoopFor loopFor, GenEnv genEnv) {
     JCStatement init = null;
     ForLoopInit initOptional = loopFor.getForLoopInitOptional();
-    if (initOptional == null) {
+    if (initOptional != null) {
       init = gen(initOptional, JCStatement.class, genEnv);
     }
     
     JCExpression condition = null;
     Expr exprOptional = loopFor.getExprOptional();
-    if (exprOptional == null) {
+    if (exprOptional != null) {
       condition = gen(exprOptional, JCExpression.class, genEnv);
     }
     
     JCExpressionStatement incr = null;
     ForLoopIncr incrOptional = loopFor.getForLoopIncrOptional();
-    if (incrOptional == null) {
+    if (incrOptional != null) {
       incr = gen(incrOptional, JCExpressionStatement.class, genEnv);
     }
      
