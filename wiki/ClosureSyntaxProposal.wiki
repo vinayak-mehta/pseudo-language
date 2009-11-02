@@ -16,7 +16,7 @@ Two kinds of closures
 Declaration of a function that takes a block closure
 
 {{{
-def foreach(int[] array):void (int,int block) {
+def foreach(int[] array):void (int,int:void block) {
   for(int index = 0; index<array.length; index++) {
     block(index, array[index])
   }
