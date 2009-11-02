@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<project name="pseudo" default="all" basedir=".">
+	
+  <property name="lib.dir" location="lib"/>
+  <property name="jsr292-mock.jar" location="build-lib/jsr292-mock.jar"/>
+	
+  <property name="src" value="src"/>
+  <property name="classes" value="classes"/>
+	
+        <target name="all" depends="jar">
+        </target>
+	
+	<target name="compile">
+	  <mkdir dir="${classes}"/>
+
+	  <path id="boot.path.ref" path="${jsr292-mock.jar}"/>
+	  <javac srcdir="${src}" destdir="${classes}">
+	  	  <compilerarg value="-Xbootclasspath/p:${toString:boot.path.ref}"/>
+                  <compilerarg value="-Xlint:deprecation"/>
+	  </javac>
+	</target>
+	
+	<target name="jar" depends="compile">
+	   <jar destfile="${lib.dir}/pseudo-runtime.jar" basedir="${classes}">
+	   </jar>
+        </target>
+	
+	<target name="clean">
+		<delete dir="${classes}"/>
+	</target>
+</project>

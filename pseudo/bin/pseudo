@@ -1,0 +1,3 @@
+#!/bin/sh
+dir=$(dirname $0)/..
+java -javaagent:${dir}/runtime/lib/jsr292-backport.jar -cp .:${dir}/runtime/lib/pseudo-runtime.jar $@
