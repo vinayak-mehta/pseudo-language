@@ -79,5 +79,6 @@ There are in my opinions two use case:
 
 == Why is there no bits twiddling functions/operators ? ==
 
-Because the aim of the language to teach algorithmics not C.
+Because the aim of the language to teach algorithmics not how to save bits
+by encoding things using a ingenious code.
 If you want to have fun with bits, use C, Python or Java.
