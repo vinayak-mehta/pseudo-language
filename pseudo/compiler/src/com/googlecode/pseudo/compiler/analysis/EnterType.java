@@ -154,15 +154,12 @@ public class EnterType extends Visitor<Type, Table<Type>, RuntimeException> {
   // --- dimension visitor
   
   public int dimension(Node node) {
-    return node.accept(dimensionVisitor, null);
+    //XXX: bug in javac: with unecessary cast is needed
+    return (Integer)node.accept(dimensionVisitor, null);
   }
   
   private final Visitor<Integer, Void, RuntimeException> dimensionVisitor =
     new Visitor<Integer, Void, RuntimeException>() {
-    
-    private int dimension(Node node) {
-      return node.accept(this, null);
-    }
     
     @Override
     public Integer visit(DimsOptDims dims_opt_dims, Void notUsed) {
