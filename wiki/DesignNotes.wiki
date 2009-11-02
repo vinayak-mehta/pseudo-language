@@ -65,7 +65,7 @@ There are in my opinions two use case:
  * You need call by reference in C because you allocation something
    on the stack and want to send it by its address.
    Pseudo is a managed language, the runtime provide a GC
-   so this kind of problem will not arive
+   so this kind of problems don't exist. 
  * You need to write swap.
    Knowing that you will use swap in a sort algorithm, you can
    rewrite it like that
