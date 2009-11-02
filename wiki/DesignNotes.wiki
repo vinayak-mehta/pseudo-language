@@ -10,12 +10,10 @@ their data structures. No more, no less than that.
     Allocation in C is complex and is like a vortex compared to algorithmic.
     A lot of hours of your time budget will be devoted to allocation in C
     instead of algorithms and data structures. 
- 
   * Teaching algorithmic in Java means use class but without constructors,
     without inheritance but with a bunch of static methods.
     This is not great because you don't teach idiomatic Java but ill formed Java.
     Bad habits are hard to fight.
-
   * Teaching algorithmic in Python means you have to restrict yourself to
     no use any list, range, dictionary, comprehension, etc.
     Again, you will teach twisted Python and not Pythonic Python. 
