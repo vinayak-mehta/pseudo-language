@@ -2,7 +2,7 @@
 
 = Design FAQ =
 
-== Why type aren't mandatory ? ==
+== Why types aren't mandatory ? ==
 
 Pseudo use a slightly relaxed type system because I want to be able
 to explain the type system of pseudo in 5 minutes.
@@ -10,7 +10,7 @@ If you want to close the type system of pseudo and keep the same expressiveness
 you have to introduce parametrized types, structural types, etc.
 Concepts that you can't explain in 5 minutes.
 
-== Why type can be specified ? ==
+== Why types can be specified ? ==
 
 Because the type system of pseudo is relaxed, some operations need
 to be done at runtime. This have a cost. By introducing types where
