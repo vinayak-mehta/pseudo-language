@@ -3,7 +3,7 @@
 	<classpathentry kind="src" output="compiler/classes" path="compiler/src"/>
 	<classpathentry kind="src" output="runtime/classes" path="runtime/src"/>
 	<classpathentry kind="src" output="compiler/classes" path="compiler/gen-src"/>
-	<classpathentry kind="lib" path="runtime/lib/jsr292-mock.jar"/>
+	<classpathentry kind="lib" path="runtime/build-lib/jsr292-mock.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="compiler/lib/javac.jar"/>
 	<classpathentry kind="lib" path="compiler/lib/tatoo-runtime.jar"/>
