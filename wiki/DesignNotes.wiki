@@ -4,8 +4,26 @@
 
 == Why is there no bits twiddling functions/operators ? ==
 
-Because the aim of th language to teach algorithm not C.
+Because the aim of the language to teach algorithmics not C.
 If you want to have fun with bits, use C.
+
+== Why is there no semicolon after each instruction ? ==
+
+Because you don't need semicolons to disambiguate a grammar.
+Semis are only useful when you do error recovery, but even
+in this case, you can do error recovery using the end of line. 
+
+== Why you don't use if...fi like in ALGOL ? ==
+
+The four first languages of the TIOBE index (Java, C, PHP, C++)
+uses curly braces.
+
+== Why not using spaces like in Python ? ==
+
+I expect that pseudo will be used to teach, create and test algorithmics
+so when you write an algorithm you move block around and I've always found
+more easy to do that if block are defined by curly braces.
+But I guess it depends if you IDE is able or not to help you. 
 
 == Why is there no call by reference like in C ? ==
 
