@@ -161,7 +161,7 @@ public class PseudoLexerDataTable {
     RuleData _throw = new RuleData(_throwMain, null, 35, false);
     initrecordMainAccepts();
     initrecordMainTransitions();
-    CharRegexTable recordMain = new CharRegexTable(2, recordMainTransitions, recordMainAccepts);
+    CharRegexTable recordMain = new CharRegexTable(3, recordMainTransitions, recordMainAccepts);
     RuleData record = new RuleData(recordMain, null, 36, false);
     initinitMainAccepts();
     initinitMainTransitions();
@@ -185,7 +185,7 @@ public class PseudoLexerDataTable {
     RuleData print = new RuleData(printMain, null, 41, false);
     initscanMainAccepts();
     initscanMainTransitions();
-    CharRegexTable scanMain = new CharRegexTable(2, scanMainTransitions, scanMainAccepts);
+    CharRegexTable scanMain = new CharRegexTable(1, scanMainTransitions, scanMainAccepts);
     RuleData scan = new RuleData(scanMain, null, 42, false);
     init_booleanMainAccepts();
     init_booleanMainTransitions();
@@ -613,7 +613,7 @@ public class PseudoLexerDataTable {
     
   private int[][] _whileMainTransitions;
   private void init_whileMainTransitions() {
-    _whileMainTransitions = new int[][] {{0,-1},{0,-1,119,5,120,-1},{0,-1,105,4,106,-1},{0,-1,101,0,102,-1},{0,-1,108,3,109,-1},{0,-1,104,2,105,-1}};
+    _whileMainTransitions = new int[][] {{0,-1},{0,-1,119,5,120,-1},{0,-1,101,0,102,-1},{0,-1,105,4,106,-1},{0,-1,108,2,109,-1},{0,-1,104,3,105,-1}};
   }
   
   private boolean[] _doMainAccepts;
@@ -643,7 +643,7 @@ public class PseudoLexerDataTable {
     
   private int[][] _breakMainTransitions;
   private void init_breakMainTransitions() {
-    _breakMainTransitions = new int[][] {{0,-1},{0,-1,98,3,99,-1},{0,-1,97,4,98,-1},{0,-1,114,5,115,-1},{0,-1,107,0,108,-1},{0,-1,101,2,102,-1}};
+    _breakMainTransitions = new int[][] {{0,-1},{0,-1,98,2,99,-1},{0,-1,114,5,115,-1},{0,-1,107,0,108,-1},{0,-1,97,3,98,-1},{0,-1,101,4,102,-1}};
   }
   
   private boolean[] _continueMainAccepts;
@@ -683,7 +683,7 @@ public class PseudoLexerDataTable {
     
   private int[][] recordMainTransitions;
   private void initrecordMainTransitions() {
-    recordMainTransitions = new int[][] {{0,-1},{0,-1,111,3,112,-1},{0,-1,114,5,115,-1},{0,-1,114,6,115,-1},{0,-1,99,1,100,-1},{0,-1,101,4,102,-1},{0,-1,100,0,101,-1}};
+    recordMainTransitions = new int[][] {{0,-1},{0,-1,111,4,112,-1},{0,-1,101,5,102,-1},{0,-1,114,2,115,-1},{0,-1,114,6,115,-1},{0,-1,99,1,100,-1},{0,-1,100,0,101,-1}};
   }
   
   private boolean[] initMainAccepts;
@@ -713,7 +713,7 @@ public class PseudoLexerDataTable {
     
   private int[][] lambdaMainTransitions;
   private void initlambdaMainTransitions() {
-    lambdaMainTransitions = new int[][] {{0,-1},{0,-1,98,6,99,-1},{0,-1,97,0,98,-1},{0,-1,109,1,110,-1},{0,-1,97,3,98,-1},{0,-1,108,4,109,-1},{0,-1,100,2,101,-1}};
+    lambdaMainTransitions = new int[][] {{0,-1},{0,-1,98,6,99,-1},{0,-1,109,1,110,-1},{0,-1,97,0,98,-1},{0,-1,97,2,98,-1},{0,-1,108,4,109,-1},{0,-1,100,3,101,-1}};
   }
   
   private boolean[] arrowMainAccepts;
@@ -743,7 +743,7 @@ public class PseudoLexerDataTable {
     
   private int[][] scanMainTransitions;
   private void initscanMainTransitions() {
-    scanMainTransitions = new int[][] {{0,-1},{0,-1,110,0,111,-1},{0,-1,115,4,116,-1},{0,-1,97,1,98,-1},{0,-1,99,3,100,-1}};
+    scanMainTransitions = new int[][] {{0,-1},{0,-1,115,3,116,-1},{0,-1,110,0,111,-1},{0,-1,99,4,100,-1},{0,-1,97,2,98,-1}};
   }
   
   private boolean[] _booleanMainAccepts;
@@ -753,7 +753,7 @@ public class PseudoLexerDataTable {
     
   private int[][] _booleanMainTransitions;
   private void init_booleanMainTransitions() {
-    _booleanMainTransitions = new int[][] {{0,-1},{0,-1,98,3,99,-1},{0,-1,110,0,111,-1},{0,-1,111,4,112,-1},{0,-1,111,7,112,-1},{0,-1,97,2,98,-1},{0,-1,101,5,102,-1},{0,-1,108,6,109,-1}};
+    _booleanMainTransitions = new int[][] {{0,-1},{0,-1,98,3,99,-1},{0,-1,110,0,111,-1},{0,-1,111,4,112,-1},{0,-1,111,7,112,-1},{0,-1,101,6,102,-1},{0,-1,97,2,98,-1},{0,-1,108,5,109,-1}};
   }
   
   private boolean[] _charMainAccepts;
@@ -783,7 +783,7 @@ public class PseudoLexerDataTable {
     
   private int[][] _doubleMainTransitions;
   private void init_doubleMainTransitions() {
-    _doubleMainTransitions = new int[][] {{0,-1},{0,-1,98,5,99,-1},{0,-1,117,1,118,-1},{0,-1,111,2,112,-1},{0,-1,101,0,102,-1},{0,-1,108,4,109,-1},{0,-1,100,3,101,-1}};
+    _doubleMainTransitions = new int[][] {{0,-1},{0,-1,98,5,99,-1},{0,-1,117,1,118,-1},{0,-1,101,0,102,-1},{0,-1,111,2,112,-1},{0,-1,108,3,109,-1},{0,-1,100,4,101,-1}};
   }
   
   private boolean[] stringMainAccepts;
@@ -813,7 +813,7 @@ public class PseudoLexerDataTable {
     
   private int[][] _voidMainTransitions;
   private void init_voidMainTransitions() {
-    _voidMainTransitions = new int[][] {{0,-1},{0,-1,111,2,112,-1},{0,-1,105,4,106,-1},{0,-1,118,1,119,-1},{0,-1,100,0,101,-1}};
+    _voidMainTransitions = new int[][] {{0,-1},{0,-1,105,4,106,-1},{0,-1,111,1,112,-1},{0,-1,118,2,119,-1},{0,-1,100,0,101,-1}};
   }
   
   private boolean[] null_literalMainAccepts;
@@ -833,7 +833,7 @@ public class PseudoLexerDataTable {
     
   private int[][] boolean_literalMainTransitions;
   private void initboolean_literalMainTransitions() {
-    boolean_literalMainTransitions = new int[][] {{0,-1},{0,-1,102,5,103,-1,116,6,117,-1},{0,-1,115,4,116,-1},{0,-1,117,4,118,-1},{0,-1,101,0,102,-1},{0,-1,97,7,98,-1},{0,-1,114,3,115,-1},{0,-1,108,2,109,-1}};
+    boolean_literalMainTransitions = new int[][] {{0,-1},{0,-1,102,6,103,-1,116,5,117,-1},{0,-1,117,4,118,-1},{0,-1,115,4,116,-1},{0,-1,101,0,102,-1},{0,-1,114,2,115,-1},{0,-1,97,7,98,-1},{0,-1,108,3,109,-1}};
   }
   
   private boolean[] char_literalMainAccepts;
