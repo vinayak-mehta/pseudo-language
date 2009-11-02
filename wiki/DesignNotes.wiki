@@ -2,6 +2,22 @@
 
 = Design FAQ =
 
+== Why a new language ?, I am really happy with Java, C, Python, <name you own>. ==
+
+The aim of pseudo is to ease to teach, write and test algorithms and
+their data structures. No more, no less than that.
+* Teaching algorithmic in C means teaching pointers and allocations.
+  Allocation in C is complex and is like a vortex compared to algorithmic.
+  A lot of hours of your time budget will be devoted to allocation in C
+  instead of algorithms and data structures.  
+* Teaching algorithmic in Java means use class but without constructors,
+  without inheritance but with a bunch of static methods.
+  This is not great because you don't teach idiomatic Java but ill formed Java.
+  Bad habits are hard to fight.
+* Teaching algorithmic in Python means you have to restrict yourself to
+  no use any list, range, dictionary, comprehension, etc.
+  Again, you will teach twisted Python and not Pythonic Python. 
+
 == Why types aren't mandatory ? ==
 
 Pseudo use a slightly relaxed type system because I want to be able
@@ -33,6 +49,11 @@ I expect that pseudo will be used to teach, create and test algorithmics
 so when you write an algorithm you move blocks around and I've always found
 more easy to do that if block are defined by curly braces.
 But I guess it depends if you IDE is able or not to help you. 
+
+== Why is there no class/inheritance/mixin/interface ? ==
+
+Because pseudo is not a language that allow to do OOP.
+Use Java or Scala instead.
 
 == Why is there no call by reference like in C ? ==
 
