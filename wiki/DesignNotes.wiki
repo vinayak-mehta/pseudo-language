@@ -2,7 +2,7 @@
 
 = Design FAQ =
 
-== Why a new language ?, I am really happy with Java, C, Python, <name you own>. ==
+== Why a new language ?, I am really happy with C, Java, Python, <name you own>. ==
 
 The aim of pseudo is to ease to teach, write and test algorithms and
 their data structures. No more, no less than that.
