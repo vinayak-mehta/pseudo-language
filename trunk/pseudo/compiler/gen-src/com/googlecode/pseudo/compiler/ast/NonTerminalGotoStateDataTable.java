@@ -10,442 +10,312 @@ public class NonTerminalGotoStateDataTable {
   }
   
     
+  private static void init_dims_opt(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(137, PseudoNonTerminalEnum.dims_opt, 139);
+      nonTerminalGotoStateTable.setGotoState(144, PseudoNonTerminalEnum.dims_opt, 145);
+  }
+  
+    
+  private static void init_parameter_star_5(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(6, PseudoNonTerminalEnum.parameter_star_5, 121);
+      nonTerminalGotoStateTable.setGotoState(56, PseudoNonTerminalEnum.parameter_star_5, 121);
+      nonTerminalGotoStateTable.setGotoState(241, PseudoNonTerminalEnum.parameter_star_5, 121);
+  }
+  
+    
+  private static void init_funtype(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(6, PseudoNonTerminalEnum.funtype, 22);
+      nonTerminalGotoStateTable.setGotoState(10, PseudoNonTerminalEnum.funtype, 22);
+      nonTerminalGotoStateTable.setGotoState(25, PseudoNonTerminalEnum.funtype, 22);
+      nonTerminalGotoStateTable.setGotoState(29, PseudoNonTerminalEnum.funtype, 22);
+      nonTerminalGotoStateTable.setGotoState(37, PseudoNonTerminalEnum.funtype, 22);
+      nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.funtype, 22);
+      nonTerminalGotoStateTable.setGotoState(56, PseudoNonTerminalEnum.funtype, 22);
+      nonTerminalGotoStateTable.setGotoState(123, PseudoNonTerminalEnum.funtype, 22);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.funtype, 22);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.funtype, 22);
+      nonTerminalGotoStateTable.setGotoState(239, PseudoNonTerminalEnum.funtype, 22);
+      nonTerminalGotoStateTable.setGotoState(241, PseudoNonTerminalEnum.funtype, 22);
+  }
+  
+    
+  private static void init_declaration(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.declaration, 184);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.declaration, 207);
+  }
+  
+    
+  private static void init_expr_star_6_sub(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.expr_star_6_sub, 102);
+      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.expr_star_6_sub, 102);
+      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.expr_star_6_sub, 102);
+  }
+  
+    
+  private static void init_function_rtype_optional_4(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(36, PseudoNonTerminalEnum.function_rtype_optional_4, 40);
+  }
+  
+    
+  private static void init_parameter(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(6, PseudoNonTerminalEnum.parameter, 127);
+      nonTerminalGotoStateTable.setGotoState(56, PseudoNonTerminalEnum.parameter, 127);
+      nonTerminalGotoStateTable.setGotoState(123, PseudoNonTerminalEnum.parameter, 126);
+      nonTerminalGotoStateTable.setGotoState(241, PseudoNonTerminalEnum.parameter, 127);
+  }
+  
+    
+  private static void init_funcall(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.funcall, 188);
+      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(49, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(51, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(74, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(76, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(78, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(80, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(82, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(84, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(86, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(88, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(90, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(92, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(94, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(96, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(98, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(103, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(133, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(138, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(152, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(165, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(177, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(180, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(196, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(200, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.funcall, 209);
+      nonTerminalGotoStateTable.setGotoState(211, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.funcall, 221);
+      nonTerminalGotoStateTable.setGotoState(223, PseudoNonTerminalEnum.funcall, 100);
+      nonTerminalGotoStateTable.setGotoState(228, PseudoNonTerminalEnum.funcall, 100);
+  }
+  
+    
   private static void init_start(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
        nonTerminalGotoStateTable.setGotoState(0, PseudoNonTerminalEnum.start, 1);
   }
   
     
-  private static void init_parameters(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(36, PseudoNonTerminalEnum.parameters, 40);
-      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.parameters, 53);
-      nonTerminalGotoStateTable.setGotoState(244, PseudoNonTerminalEnum.parameters, 245);
-  }
-  
-    
-  private static void init_for_loop_init_optional_12(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.for_loop_init_optional_12, 219);
-  }
-  
-    
-  private static void init_instr_star_7(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.instr_star_7, 43);
-  }
-  
-    
-  private static void init_declaration(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.declaration, 196);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.declaration, 231);
-  }
-  
-    
-  private static void init_for_loop_incr(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(222, PseudoNonTerminalEnum.for_loop_incr, 224);
-  }
-  
-    
-  private static void init_primary_no_array_creation(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(50, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(55, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(62, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(75, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(77, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(79, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(81, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(83, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(85, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(87, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(89, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(91, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(93, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(95, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(97, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(99, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(101, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(131, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(135, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(151, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(156, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(160, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(178, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(185, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(190, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(203, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(210, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(220, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-      nonTerminalGotoStateTable.setGotoState(222, PseudoNonTerminalEnum.primary_no_array_creation, 67);
-  }
-  
-    
-  private static void init_type_star_0(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(18, PseudoNonTerminalEnum.type_star_0, 29);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.type_star_0, 29);
-  }
-  
-    
-  private static void init_expr_star_6(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.expr_star_6, 105);
-      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.expr_star_6, 105);
-      nonTerminalGotoStateTable.setGotoState(131, PseudoNonTerminalEnum.expr_star_6, 105);
-  }
-  
-    
-  private static void init_semis(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(146, PseudoNonTerminalEnum.semis, 149);
-      nonTerminalGotoStateTable.setGotoState(152, PseudoNonTerminalEnum.semis, 153);
-      nonTerminalGotoStateTable.setGotoState(168, PseudoNonTerminalEnum.semis, 169);
-      nonTerminalGotoStateTable.setGotoState(171, PseudoNonTerminalEnum.semis, 172);
-      nonTerminalGotoStateTable.setGotoState(176, PseudoNonTerminalEnum.semis, 177);
-      nonTerminalGotoStateTable.setGotoState(179, PseudoNonTerminalEnum.semis, 180);
-      nonTerminalGotoStateTable.setGotoState(192, PseudoNonTerminalEnum.semis, 193);
-      nonTerminalGotoStateTable.setGotoState(194, PseudoNonTerminalEnum.semis, 195);
-      nonTerminalGotoStateTable.setGotoState(196, PseudoNonTerminalEnum.semis, 197);
-      nonTerminalGotoStateTable.setGotoState(240, PseudoNonTerminalEnum.semis, 241);
-  }
-  
-    
-  private static void init_block(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(3, PseudoNonTerminalEnum.block, 254);
-      nonTerminalGotoStateTable.setGotoState(41, PseudoNonTerminalEnum.block, 234);
-      nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.block, 200);
-      nonTerminalGotoStateTable.setGotoState(162, PseudoNonTerminalEnum.block, 163);
-      nonTerminalGotoStateTable.setGotoState(164, PseudoNonTerminalEnum.block, 165);
-      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.block, 206);
-      nonTerminalGotoStateTable.setGotoState(207, PseudoNonTerminalEnum.block, 208);
-      nonTerminalGotoStateTable.setGotoState(226, PseudoNonTerminalEnum.block, 227);
-      nonTerminalGotoStateTable.setGotoState(250, PseudoNonTerminalEnum.block, 251);
-  }
-  
-    
-  private static void init_funtype(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(7, PseudoNonTerminalEnum.funtype, 27);
-      nonTerminalGotoStateTable.setGotoState(18, PseudoNonTerminalEnum.funtype, 27);
-      nonTerminalGotoStateTable.setGotoState(23, PseudoNonTerminalEnum.funtype, 27);
-      nonTerminalGotoStateTable.setGotoState(30, PseudoNonTerminalEnum.funtype, 27);
-      nonTerminalGotoStateTable.setGotoState(36, PseudoNonTerminalEnum.funtype, 27);
-      nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.funtype, 27);
-      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.funtype, 27);
-      nonTerminalGotoStateTable.setGotoState(126, PseudoNonTerminalEnum.funtype, 27);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.funtype, 27);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.funtype, 27);
-      nonTerminalGotoStateTable.setGotoState(244, PseudoNonTerminalEnum.funtype, 27);
-      nonTerminalGotoStateTable.setGotoState(247, PseudoNonTerminalEnum.funtype, 27);
-  }
-  
-    
-  private static void init_parameter_star_5_sub(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(36, PseudoNonTerminalEnum.parameter_star_5_sub, 125);
-      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.parameter_star_5_sub, 125);
-      nonTerminalGotoStateTable.setGotoState(244, PseudoNonTerminalEnum.parameter_star_5_sub, 125);
-  }
-  
-    
-  private static void init_array_access(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.array_access, 182);
-      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(50, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(55, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(62, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(75, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(77, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(79, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(81, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(83, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(85, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(87, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(89, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(91, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(93, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(95, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(97, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(99, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(101, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(131, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(135, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(151, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(156, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(160, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(178, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(185, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(190, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(203, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(210, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.array_access, 182);
-      nonTerminalGotoStateTable.setGotoState(220, PseudoNonTerminalEnum.array_access, 65);
-      nonTerminalGotoStateTable.setGotoState(222, PseudoNonTerminalEnum.array_access, 182);
-  }
-  
-    
-  private static void init_field(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(7, PseudoNonTerminalEnum.field, 238);
-  }
-  
-    
-  private static void init_dim_expr(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(46, PseudoNonTerminalEnum.dim_expr, 139);
-      nonTerminalGotoStateTable.setGotoState(134, PseudoNonTerminalEnum.dim_expr, 137);
-      nonTerminalGotoStateTable.setGotoState(140, PseudoNonTerminalEnum.dim_expr, 141);
-      nonTerminalGotoStateTable.setGotoState(142, PseudoNonTerminalEnum.dim_expr, 144);
-  }
-  
-    
-  private static void init_assignation(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.assignation, 192);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.assignation, 218);
-      nonTerminalGotoStateTable.setGotoState(222, PseudoNonTerminalEnum.assignation, 228);
-  }
-  
-    
-  private static void init_parameter(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(36, PseudoNonTerminalEnum.parameter, 124);
-      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.parameter, 124);
-      nonTerminalGotoStateTable.setGotoState(126, PseudoNonTerminalEnum.parameter, 127);
-      nonTerminalGotoStateTable.setGotoState(244, PseudoNonTerminalEnum.parameter, 124);
-  }
-  
-    
-  private static void init_return_type(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(30, PseudoNonTerminalEnum.return_type, 33);
-      nonTerminalGotoStateTable.setGotoState(247, PseudoNonTerminalEnum.return_type, 248);
-  }
-  
-    
-  private static void init_dims(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(12, PseudoNonTerminalEnum.dims, 15);
-      nonTerminalGotoStateTable.setGotoState(25, PseudoNonTerminalEnum.dims, 26);
-      nonTerminalGotoStateTable.setGotoState(27, PseudoNonTerminalEnum.dims, 28);
-      nonTerminalGotoStateTable.setGotoState(37, PseudoNonTerminalEnum.dims, 15);
-      nonTerminalGotoStateTable.setGotoState(134, PseudoNonTerminalEnum.dims, 138);
-      nonTerminalGotoStateTable.setGotoState(142, PseudoNonTerminalEnum.dims, 138);
-      nonTerminalGotoStateTable.setGotoState(154, PseudoNonTerminalEnum.dims, 15);
-      nonTerminalGotoStateTable.setGotoState(158, PseudoNonTerminalEnum.dims, 15);
-      nonTerminalGotoStateTable.setGotoState(215, PseudoNonTerminalEnum.dims, 15);
+  private static void init_loop_label_optional_8(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.loop_label_optional_8, 192);
   }
   
     
   private static void init_function_def(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(3, PseudoNonTerminalEnum.function_def, 253);
-  }
-  
-    
-  private static void init_loop_label_optional_8(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.loop_label_optional_8, 201);
-  }
-  
-    
-  private static void init_field_access(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.field_access, 183);
-      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(50, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(55, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(62, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(75, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(77, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(79, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(81, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(83, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(85, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(87, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(89, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(91, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(93, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(95, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(97, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(99, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(101, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(131, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(135, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(151, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(156, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(160, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(178, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(185, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(190, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(203, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(210, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.field_access, 183);
-      nonTerminalGotoStateTable.setGotoState(220, PseudoNonTerminalEnum.field_access, 64);
-      nonTerminalGotoStateTable.setGotoState(222, PseudoNonTerminalEnum.field_access, 183);
+       nonTerminalGotoStateTable.setGotoState(3, PseudoNonTerminalEnum.function_def, 252);
   }
   
     
   private static void init_array_creation(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(50, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(55, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(62, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(75, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(77, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(79, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(81, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(83, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(85, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(87, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(89, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(91, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(93, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(95, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(97, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(99, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(101, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(131, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(135, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(151, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(156, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(160, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(178, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(185, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(190, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(203, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(210, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(220, PseudoNonTerminalEnum.array_creation, 66);
-      nonTerminalGotoStateTable.setGotoState(222, PseudoNonTerminalEnum.array_creation, 66);
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(49, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(51, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(74, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(76, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(78, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(80, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(82, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(84, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(86, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(88, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(90, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(92, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(94, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(96, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(98, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(103, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(133, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(138, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(152, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(165, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(177, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(180, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(196, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(200, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(211, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(223, PseudoNonTerminalEnum.array_creation, 101);
+      nonTerminalGotoStateTable.setGotoState(228, PseudoNonTerminalEnum.array_creation, 101);
   }
   
     
-  private static void init_lhs(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.lhs, 184);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.lhs, 184);
-      nonTerminalGotoStateTable.setGotoState(222, PseudoNonTerminalEnum.lhs, 184);
-  }
-  
-    
-  private static void init_field_star_2(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(6, PseudoNonTerminalEnum.field_star_2, 7);
-  }
-  
-    
-  private static void init_arguments(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.arguments, 103);
-      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.arguments, 116);
-      nonTerminalGotoStateTable.setGotoState(131, PseudoNonTerminalEnum.arguments, 132);
+  private static void init_id_optional_10(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(159, PseudoNonTerminalEnum.id_optional_10, 161);
   }
   
     
   private static void init_record_init(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(7, PseudoNonTerminalEnum.record_init, 235);
+       nonTerminalGotoStateTable.setGotoState(239, PseudoNonTerminalEnum.record_init, 245);
   }
   
     
-  private static void init_record_init_optional_3(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(7, PseudoNonTerminalEnum.record_init_optional_3, 236);
+  private static void init_type_star_0_sub(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(10, PseudoNonTerminalEnum.type_star_0_sub, 24);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.type_star_0_sub, 24);
   }
   
     
   private static void init_for_loop_init(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.for_loop_init, 216);
+       nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.for_loop_init, 208);
   }
   
     
-  private static void init_type(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(7, PseudoNonTerminalEnum.type, 239);
-      nonTerminalGotoStateTable.setGotoState(18, PseudoNonTerminalEnum.type, 21);
-      nonTerminalGotoStateTable.setGotoState(23, PseudoNonTerminalEnum.type, 24);
-      nonTerminalGotoStateTable.setGotoState(30, PseudoNonTerminalEnum.type, 32);
-      nonTerminalGotoStateTable.setGotoState(36, PseudoNonTerminalEnum.type, 38);
-      nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.type, 188);
-      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.type, 38);
-      nonTerminalGotoStateTable.setGotoState(126, PseudoNonTerminalEnum.type, 38);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.type, 21);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.type, 188);
-      nonTerminalGotoStateTable.setGotoState(244, PseudoNonTerminalEnum.type, 38);
-      nonTerminalGotoStateTable.setGotoState(247, PseudoNonTerminalEnum.type, 32);
+  private static void init_dim_expr_plus_15(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(142, PseudoNonTerminalEnum.dim_expr_plus_15, 144);
   }
   
     
-  private static void init_expr_optional_13(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(220, PseudoNonTerminalEnum.expr_optional_13, 221);
+  private static void init_for_loop_init_optional_12(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.for_loop_init_optional_12, 210);
   }
   
     
-  private static void init_loop(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(201, PseudoNonTerminalEnum.loop, 232);
+  private static void init_array_access(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.array_access, 191);
+      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(49, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(51, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(74, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(76, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(78, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(80, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(82, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(84, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(86, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(88, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(90, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(92, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(94, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(96, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(98, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(103, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(133, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(138, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(152, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(165, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(177, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(180, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(196, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(200, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.array_access, 191);
+      nonTerminalGotoStateTable.setGotoState(211, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.array_access, 191);
+      nonTerminalGotoStateTable.setGotoState(223, PseudoNonTerminalEnum.array_access, 65);
+      nonTerminalGotoStateTable.setGotoState(228, PseudoNonTerminalEnum.array_access, 65);
   }
   
     
-  private static void init_expr(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.expr, 129);
-      nonTerminalGotoStateTable.setGotoState(50, PseudoNonTerminalEnum.expr, 128);
-      nonTerminalGotoStateTable.setGotoState(55, PseudoNonTerminalEnum.expr, 122);
-      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.expr, 121);
-      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.expr, 120);
-      nonTerminalGotoStateTable.setGotoState(62, PseudoNonTerminalEnum.expr, 113);
-      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.expr, 111);
-      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.expr, 109);
-      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.expr, 106);
-      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.expr, 74);
-      nonTerminalGotoStateTable.setGotoState(75, PseudoNonTerminalEnum.expr, 76);
-      nonTerminalGotoStateTable.setGotoState(77, PseudoNonTerminalEnum.expr, 78);
-      nonTerminalGotoStateTable.setGotoState(79, PseudoNonTerminalEnum.expr, 80);
-      nonTerminalGotoStateTable.setGotoState(81, PseudoNonTerminalEnum.expr, 82);
-      nonTerminalGotoStateTable.setGotoState(83, PseudoNonTerminalEnum.expr, 84);
-      nonTerminalGotoStateTable.setGotoState(85, PseudoNonTerminalEnum.expr, 86);
-      nonTerminalGotoStateTable.setGotoState(87, PseudoNonTerminalEnum.expr, 88);
-      nonTerminalGotoStateTable.setGotoState(89, PseudoNonTerminalEnum.expr, 90);
-      nonTerminalGotoStateTable.setGotoState(91, PseudoNonTerminalEnum.expr, 92);
-      nonTerminalGotoStateTable.setGotoState(93, PseudoNonTerminalEnum.expr, 94);
-      nonTerminalGotoStateTable.setGotoState(95, PseudoNonTerminalEnum.expr, 96);
-      nonTerminalGotoStateTable.setGotoState(97, PseudoNonTerminalEnum.expr, 98);
-      nonTerminalGotoStateTable.setGotoState(99, PseudoNonTerminalEnum.expr, 100);
-      nonTerminalGotoStateTable.setGotoState(101, PseudoNonTerminalEnum.expr, 102);
-      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.expr, 106);
-      nonTerminalGotoStateTable.setGotoState(131, PseudoNonTerminalEnum.expr, 106);
-      nonTerminalGotoStateTable.setGotoState(135, PseudoNonTerminalEnum.expr, 129);
-      nonTerminalGotoStateTable.setGotoState(151, PseudoNonTerminalEnum.expr, 152);
-      nonTerminalGotoStateTable.setGotoState(156, PseudoNonTerminalEnum.expr, 113);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.expr, 111);
-      nonTerminalGotoStateTable.setGotoState(160, PseudoNonTerminalEnum.expr, 161);
-      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.expr, 171);
-      nonTerminalGotoStateTable.setGotoState(178, PseudoNonTerminalEnum.expr, 181);
-      nonTerminalGotoStateTable.setGotoState(185, PseudoNonTerminalEnum.expr, 186);
-      nonTerminalGotoStateTable.setGotoState(190, PseudoNonTerminalEnum.expr, 191);
-      nonTerminalGotoStateTable.setGotoState(203, PseudoNonTerminalEnum.expr, 204);
-      nonTerminalGotoStateTable.setGotoState(210, PseudoNonTerminalEnum.expr, 211);
-      nonTerminalGotoStateTable.setGotoState(220, PseudoNonTerminalEnum.expr, 230);
+  private static void init_for_loop_incr(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.for_loop_incr, 216);
+  }
+  
+    
+  private static void init_dim_expr(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(46, PseudoNonTerminalEnum.dim_expr, 136);
+      nonTerminalGotoStateTable.setGotoState(137, PseudoNonTerminalEnum.dim_expr, 140);
+      nonTerminalGotoStateTable.setGotoState(142, PseudoNonTerminalEnum.dim_expr, 143);
+      nonTerminalGotoStateTable.setGotoState(144, PseudoNonTerminalEnum.dim_expr, 146);
+  }
+  
+    
+  private static void init_assignation(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.assignation, 231);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.assignation, 225);
+      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.assignation, 220);
+  }
+  
+    
+  private static void init_arguments(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.arguments, 131);
+      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.arguments, 111);
+      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.arguments, 105);
+  }
+  
+    
+  private static void init_type_star_0(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(10, PseudoNonTerminalEnum.type_star_0, 28);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.type_star_0, 28);
+  }
+  
+    
+  private static void init_record_def(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(3, PseudoNonTerminalEnum.record_def, 255);
+  }
+  
+    
+  private static void init_id_optional_9(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(166, PseudoNonTerminalEnum.id_optional_9, 168);
+  }
+  
+    
+  private static void init_parameter_star_5_sub(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(6, PseudoNonTerminalEnum.parameter_star_5_sub, 122);
+      nonTerminalGotoStateTable.setGotoState(56, PseudoNonTerminalEnum.parameter_star_5_sub, 122);
+      nonTerminalGotoStateTable.setGotoState(241, PseudoNonTerminalEnum.parameter_star_5_sub, 122);
+  }
+  
+    
+  private static void init_for_loop_incr_optional_14(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.for_loop_incr_optional_14, 217);
+  }
+  
+    
+  private static void init_expr_optional_11(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.expr_optional_11, 171);
+  }
+  
+    
+  private static void init_dim_expr_plus_16(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(46, PseudoNonTerminalEnum.dim_expr_plus_16, 137);
+  }
+  
+    
+  private static void init_script_member(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(3, PseudoNonTerminalEnum.script_member, 253);
   }
   
     
@@ -454,264 +324,394 @@ public class NonTerminalGotoStateDataTable {
   }
   
     
-  private static void init_conditional(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.conditional, 198);
+  private static void init_field_star_2(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(238, PseudoNonTerminalEnum.field_star_2, 239);
   }
   
     
-  private static void init_record_def(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(3, PseudoNonTerminalEnum.record_def, 252);
+  private static void init_dims(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(13, PseudoNonTerminalEnum.dims, 16);
+      nonTerminalGotoStateTable.setGotoState(20, PseudoNonTerminalEnum.dims, 21);
+      nonTerminalGotoStateTable.setGotoState(22, PseudoNonTerminalEnum.dims, 23);
+      nonTerminalGotoStateTable.setGotoState(34, PseudoNonTerminalEnum.dims, 16);
+      nonTerminalGotoStateTable.setGotoState(137, PseudoNonTerminalEnum.dims, 141);
+      nonTerminalGotoStateTable.setGotoState(144, PseudoNonTerminalEnum.dims, 141);
+      nonTerminalGotoStateTable.setGotoState(163, PseudoNonTerminalEnum.dims, 16);
+      nonTerminalGotoStateTable.setGotoState(175, PseudoNonTerminalEnum.dims, 16);
+      nonTerminalGotoStateTable.setGotoState(206, PseudoNonTerminalEnum.dims, 16);
   }
   
     
-  private static void init_dim_expr_plus_15(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(140, PseudoNonTerminalEnum.dim_expr_plus_15, 142);
+  private static void init_record_init_optional_3(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(239, PseudoNonTerminalEnum.record_init_optional_3, 250);
   }
   
     
-  private static void init_function_rtype_optional_4(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(246, PseudoNonTerminalEnum.function_rtype_optional_4, 250);
-  }
-  
-    
-  private static void init_id_optional_10(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(166, PseudoNonTerminalEnum.id_optional_10, 168);
-  }
-  
-    
-  private static void init_for_loop_incr_optional_14(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(222, PseudoNonTerminalEnum.for_loop_incr_optional_14, 225);
-  }
-  
-    
-  private static void init_dims_opt(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(134, PseudoNonTerminalEnum.dims_opt, 136);
-      nonTerminalGotoStateTable.setGotoState(142, PseudoNonTerminalEnum.dims_opt, 143);
-  }
-  
-    
-  private static void init_instr(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.instr, 187);
-  }
-  
-    
-  private static void init_dim_expr_plus_16(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(46, PseudoNonTerminalEnum.dim_expr_plus_16, 134);
-  }
-  
-    
-  private static void init_funcall(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.funcall, 194);
-      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(50, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(55, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(62, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(75, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(77, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(79, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(81, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(83, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(85, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(87, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(89, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(91, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(93, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(95, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(97, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(99, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(101, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(131, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(135, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(151, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(156, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(160, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(178, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(185, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(190, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(203, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(210, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.funcall, 217);
-      nonTerminalGotoStateTable.setGotoState(220, PseudoNonTerminalEnum.funcall, 73);
-      nonTerminalGotoStateTable.setGotoState(222, PseudoNonTerminalEnum.funcall, 229);
-  }
-  
-    
-  private static void init_expr_optional_11(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(178, PseudoNonTerminalEnum.expr_optional_11, 179);
-  }
-  
-    
-  private static void init_type_star_0_sub(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(18, PseudoNonTerminalEnum.type_star_0_sub, 22);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.type_star_0_sub, 22);
+  private static void init_parameters(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(6, PseudoNonTerminalEnum.parameters, 35);
+      nonTerminalGotoStateTable.setGotoState(56, PseudoNonTerminalEnum.parameters, 57);
+      nonTerminalGotoStateTable.setGotoState(241, PseudoNonTerminalEnum.parameters, 242);
   }
   
     
   private static void init_function_rtype(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(246, PseudoNonTerminalEnum.function_rtype, 249);
-  }
-  
-    
-  private static void init_parameter_star_5(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(36, PseudoNonTerminalEnum.parameter_star_5, 123);
-      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.parameter_star_5, 123);
-      nonTerminalGotoStateTable.setGotoState(244, PseudoNonTerminalEnum.parameter_star_5, 123);
-  }
-  
-    
-  private static void init_id_optional_9(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.id_optional_9, 176);
-  }
-  
-    
-  private static void init_expr_star_6_sub(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.expr_star_6_sub, 71);
-      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.expr_star_6_sub, 71);
-      nonTerminalGotoStateTable.setGotoState(131, PseudoNonTerminalEnum.expr_star_6_sub, 71);
-  }
-  
-    
-  private static void init_primary(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.primary, 199);
-      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.primary, 146);
-      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(50, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(55, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(62, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(75, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(77, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(79, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(81, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(83, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(85, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(87, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(89, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(91, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(93, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(95, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(97, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(99, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(101, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(131, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(135, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(151, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(156, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(160, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(178, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(185, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(190, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(203, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(210, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.primary, 199);
-      nonTerminalGotoStateTable.setGotoState(220, PseudoNonTerminalEnum.primary, 69);
-      nonTerminalGotoStateTable.setGotoState(222, PseudoNonTerminalEnum.primary, 199);
-  }
-  
-    
-  private static void init_script_member(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(3, PseudoNonTerminalEnum.script_member, 255);
+       nonTerminalGotoStateTable.setGotoState(36, PseudoNonTerminalEnum.function_rtype, 39);
   }
   
     
   private static void init_primitive_type(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(7, PseudoNonTerminalEnum.primitive_type, 25);
-      nonTerminalGotoStateTable.setGotoState(18, PseudoNonTerminalEnum.primitive_type, 25);
-      nonTerminalGotoStateTable.setGotoState(23, PseudoNonTerminalEnum.primitive_type, 25);
-      nonTerminalGotoStateTable.setGotoState(30, PseudoNonTerminalEnum.primitive_type, 25);
-      nonTerminalGotoStateTable.setGotoState(36, PseudoNonTerminalEnum.primitive_type, 25);
-      nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.primitive_type, 25);
-      nonTerminalGotoStateTable.setGotoState(45, PseudoNonTerminalEnum.primitive_type, 140);
-      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.primitive_type, 25);
-      nonTerminalGotoStateTable.setGotoState(126, PseudoNonTerminalEnum.primitive_type, 25);
-      nonTerminalGotoStateTable.setGotoState(157, PseudoNonTerminalEnum.primitive_type, 25);
-      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.primitive_type, 25);
-      nonTerminalGotoStateTable.setGotoState(244, PseudoNonTerminalEnum.primitive_type, 25);
-      nonTerminalGotoStateTable.setGotoState(247, PseudoNonTerminalEnum.primitive_type, 25);
+       nonTerminalGotoStateTable.setGotoState(6, PseudoNonTerminalEnum.primitive_type, 20);
+      nonTerminalGotoStateTable.setGotoState(10, PseudoNonTerminalEnum.primitive_type, 20);
+      nonTerminalGotoStateTable.setGotoState(25, PseudoNonTerminalEnum.primitive_type, 20);
+      nonTerminalGotoStateTable.setGotoState(29, PseudoNonTerminalEnum.primitive_type, 20);
+      nonTerminalGotoStateTable.setGotoState(37, PseudoNonTerminalEnum.primitive_type, 20);
+      nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.primitive_type, 20);
+      nonTerminalGotoStateTable.setGotoState(45, PseudoNonTerminalEnum.primitive_type, 142);
+      nonTerminalGotoStateTable.setGotoState(56, PseudoNonTerminalEnum.primitive_type, 20);
+      nonTerminalGotoStateTable.setGotoState(123, PseudoNonTerminalEnum.primitive_type, 20);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.primitive_type, 20);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.primitive_type, 20);
+      nonTerminalGotoStateTable.setGotoState(239, PseudoNonTerminalEnum.primitive_type, 20);
+      nonTerminalGotoStateTable.setGotoState(241, PseudoNonTerminalEnum.primitive_type, 20);
+  }
+  
+    
+  private static void init_loop(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(192, PseudoNonTerminalEnum.loop, 230);
+  }
+  
+    
+  private static void init_expr(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.expr, 147);
+      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.expr, 71);
+      nonTerminalGotoStateTable.setGotoState(49, PseudoNonTerminalEnum.expr, 130);
+      nonTerminalGotoStateTable.setGotoState(51, PseudoNonTerminalEnum.expr, 129);
+      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.expr, 128);
+      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.expr, 120);
+      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.expr, 118);
+      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.expr, 71);
+      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.expr, 109);
+      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.expr, 71);
+      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.expr, 73);
+      nonTerminalGotoStateTable.setGotoState(74, PseudoNonTerminalEnum.expr, 75);
+      nonTerminalGotoStateTable.setGotoState(76, PseudoNonTerminalEnum.expr, 77);
+      nonTerminalGotoStateTable.setGotoState(78, PseudoNonTerminalEnum.expr, 79);
+      nonTerminalGotoStateTable.setGotoState(80, PseudoNonTerminalEnum.expr, 81);
+      nonTerminalGotoStateTable.setGotoState(82, PseudoNonTerminalEnum.expr, 83);
+      nonTerminalGotoStateTable.setGotoState(84, PseudoNonTerminalEnum.expr, 85);
+      nonTerminalGotoStateTable.setGotoState(86, PseudoNonTerminalEnum.expr, 87);
+      nonTerminalGotoStateTable.setGotoState(88, PseudoNonTerminalEnum.expr, 89);
+      nonTerminalGotoStateTable.setGotoState(90, PseudoNonTerminalEnum.expr, 91);
+      nonTerminalGotoStateTable.setGotoState(92, PseudoNonTerminalEnum.expr, 93);
+      nonTerminalGotoStateTable.setGotoState(94, PseudoNonTerminalEnum.expr, 95);
+      nonTerminalGotoStateTable.setGotoState(96, PseudoNonTerminalEnum.expr, 97);
+      nonTerminalGotoStateTable.setGotoState(98, PseudoNonTerminalEnum.expr, 99);
+      nonTerminalGotoStateTable.setGotoState(103, PseudoNonTerminalEnum.expr, 104);
+      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.expr, 116);
+      nonTerminalGotoStateTable.setGotoState(133, PseudoNonTerminalEnum.expr, 134);
+      nonTerminalGotoStateTable.setGotoState(138, PseudoNonTerminalEnum.expr, 134);
+      nonTerminalGotoStateTable.setGotoState(165, PseudoNonTerminalEnum.expr, 116);
+      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.expr, 173);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.expr, 118);
+      nonTerminalGotoStateTable.setGotoState(177, PseudoNonTerminalEnum.expr, 178);
+      nonTerminalGotoStateTable.setGotoState(180, PseudoNonTerminalEnum.expr, 181);
+      nonTerminalGotoStateTable.setGotoState(196, PseudoNonTerminalEnum.expr, 197);
+      nonTerminalGotoStateTable.setGotoState(200, PseudoNonTerminalEnum.expr, 201);
+      nonTerminalGotoStateTable.setGotoState(211, PseudoNonTerminalEnum.expr, 212);
+      nonTerminalGotoStateTable.setGotoState(223, PseudoNonTerminalEnum.expr, 224);
+      nonTerminalGotoStateTable.setGotoState(228, PseudoNonTerminalEnum.expr, 229);
+  }
+  
+    
+  private static void init_return_type(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(29, PseudoNonTerminalEnum.return_type, 32);
+      nonTerminalGotoStateTable.setGotoState(37, PseudoNonTerminalEnum.return_type, 38);
+  }
+  
+    
+  private static void init_field(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(239, PseudoNonTerminalEnum.field, 249);
+  }
+  
+    
+  private static void init_instr(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.instr, 183);
+  }
+  
+    
+  private static void init_expr_star_6(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.expr_star_6, 66);
+      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.expr_star_6, 66);
+      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.expr_star_6, 66);
+  }
+  
+    
+  private static void init_primary_no_array_creation(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(49, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(51, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(74, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(76, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(78, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(80, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(82, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(84, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(86, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(88, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(90, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(92, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(94, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(96, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(98, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(103, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(133, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(138, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(152, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(165, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(177, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(180, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(196, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(200, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(211, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(223, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+      nonTerminalGotoStateTable.setGotoState(228, PseudoNonTerminalEnum.primary_no_array_creation, 67);
+  }
+  
+    
+  private static void init_primary(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.primary, 186);
+      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(49, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(51, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(74, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(76, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(78, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(80, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(82, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(84, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(86, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(88, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(90, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(92, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(94, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(96, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(98, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(103, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(133, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(138, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(152, PseudoNonTerminalEnum.primary, 154);
+      nonTerminalGotoStateTable.setGotoState(165, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(177, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(180, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(196, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(200, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.primary, 186);
+      nonTerminalGotoStateTable.setGotoState(211, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.primary, 186);
+      nonTerminalGotoStateTable.setGotoState(223, PseudoNonTerminalEnum.primary, 69);
+      nonTerminalGotoStateTable.setGotoState(228, PseudoNonTerminalEnum.primary, 69);
+  }
+  
+    
+  private static void init_block(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(3, PseudoNonTerminalEnum.block, 254);
+      nonTerminalGotoStateTable.setGotoState(40, PseudoNonTerminalEnum.block, 235);
+      nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.block, 187);
+      nonTerminalGotoStateTable.setGotoState(148, PseudoNonTerminalEnum.block, 149);
+      nonTerminalGotoStateTable.setGotoState(150, PseudoNonTerminalEnum.block, 151);
+      nonTerminalGotoStateTable.setGotoState(193, PseudoNonTerminalEnum.block, 194);
+      nonTerminalGotoStateTable.setGotoState(202, PseudoNonTerminalEnum.block, 203);
+      nonTerminalGotoStateTable.setGotoState(218, PseudoNonTerminalEnum.block, 219);
+      nonTerminalGotoStateTable.setGotoState(243, PseudoNonTerminalEnum.block, 244);
+  }
+  
+    
+  private static void init_semis(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(154, PseudoNonTerminalEnum.semis, 157);
+      nonTerminalGotoStateTable.setGotoState(161, PseudoNonTerminalEnum.semis, 162);
+      nonTerminalGotoStateTable.setGotoState(168, PseudoNonTerminalEnum.semis, 169);
+      nonTerminalGotoStateTable.setGotoState(171, PseudoNonTerminalEnum.semis, 172);
+      nonTerminalGotoStateTable.setGotoState(178, PseudoNonTerminalEnum.semis, 179);
+      nonTerminalGotoStateTable.setGotoState(181, PseudoNonTerminalEnum.semis, 182);
+      nonTerminalGotoStateTable.setGotoState(184, PseudoNonTerminalEnum.semis, 185);
+      nonTerminalGotoStateTable.setGotoState(188, PseudoNonTerminalEnum.semis, 189);
+      nonTerminalGotoStateTable.setGotoState(231, PseudoNonTerminalEnum.semis, 232);
+      nonTerminalGotoStateTable.setGotoState(247, PseudoNonTerminalEnum.semis, 248);
+  }
+  
+    
+  private static void init_field_access(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.field_access, 190);
+      nonTerminalGotoStateTable.setGotoState(44, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(47, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(49, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(51, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(52, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(59, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(60, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(63, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(68, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(70, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(72, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(74, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(76, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(78, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(80, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(82, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(84, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(86, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(88, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(90, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(92, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(94, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(96, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(98, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(103, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(115, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(133, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(138, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(152, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(165, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(170, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(177, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(180, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(196, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(200, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.field_access, 190);
+      nonTerminalGotoStateTable.setGotoState(211, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.field_access, 190);
+      nonTerminalGotoStateTable.setGotoState(223, PseudoNonTerminalEnum.field_access, 64);
+      nonTerminalGotoStateTable.setGotoState(228, PseudoNonTerminalEnum.field_access, 64);
+  }
+  
+    
+  private static void init_expr_optional_13(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(211, PseudoNonTerminalEnum.expr_optional_13, 213);
   }
   
     
   private static void init_loop_label(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
-       nonTerminalGotoStateTable.setGotoState(43, PseudoNonTerminalEnum.loop_label, 233);
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.loop_label, 233);
+  }
+  
+    
+  private static void init_type(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(6, PseudoNonTerminalEnum.type, 124);
+      nonTerminalGotoStateTable.setGotoState(10, PseudoNonTerminalEnum.type, 27);
+      nonTerminalGotoStateTable.setGotoState(25, PseudoNonTerminalEnum.type, 26);
+      nonTerminalGotoStateTable.setGotoState(29, PseudoNonTerminalEnum.type, 31);
+      nonTerminalGotoStateTable.setGotoState(37, PseudoNonTerminalEnum.type, 31);
+      nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.type, 226);
+      nonTerminalGotoStateTable.setGotoState(56, PseudoNonTerminalEnum.type, 124);
+      nonTerminalGotoStateTable.setGotoState(123, PseudoNonTerminalEnum.type, 124);
+      nonTerminalGotoStateTable.setGotoState(174, PseudoNonTerminalEnum.type, 27);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.type, 226);
+      nonTerminalGotoStateTable.setGotoState(239, PseudoNonTerminalEnum.type, 246);
+      nonTerminalGotoStateTable.setGotoState(241, PseudoNonTerminalEnum.type, 124);
+  }
+  
+    
+  private static void init_lhs(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.lhs, 222);
+      nonTerminalGotoStateTable.setGotoState(205, PseudoNonTerminalEnum.lhs, 222);
+      nonTerminalGotoStateTable.setGotoState(214, PseudoNonTerminalEnum.lhs, 222);
+  }
+  
+    
+  private static void init_conditional(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(42, PseudoNonTerminalEnum.conditional, 234);
+  }
+  
+    
+  private static void init_instr_star_7(NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable) {
+       nonTerminalGotoStateTable.setGotoState(41, PseudoNonTerminalEnum.instr_star_7, 42);
   }
   
   
   public static NonTerminalGotoStateTable<PseudoNonTerminalEnum> create() {
      NonTerminalGotoStateTable<PseudoNonTerminalEnum> nonTerminalGotoStateTable=
        new NonTerminalGotoStateTable<PseudoNonTerminalEnum>(256);
-     init_start(nonTerminalGotoStateTable);
-         init_parameters(nonTerminalGotoStateTable);
-         init_for_loop_init_optional_12(nonTerminalGotoStateTable);
-         init_instr_star_7(nonTerminalGotoStateTable);
-         init_declaration(nonTerminalGotoStateTable);
-         init_for_loop_incr(nonTerminalGotoStateTable);
-         init_primary_no_array_creation(nonTerminalGotoStateTable);
-         init_type_star_0(nonTerminalGotoStateTable);
-         init_expr_star_6(nonTerminalGotoStateTable);
-         init_semis(nonTerminalGotoStateTable);
-         init_block(nonTerminalGotoStateTable);
+     init_dims_opt(nonTerminalGotoStateTable);
+         init_parameter_star_5(nonTerminalGotoStateTable);
          init_funtype(nonTerminalGotoStateTable);
-         init_parameter_star_5_sub(nonTerminalGotoStateTable);
+         init_declaration(nonTerminalGotoStateTable);
+         init_expr_star_6_sub(nonTerminalGotoStateTable);
+         init_function_rtype_optional_4(nonTerminalGotoStateTable);
+         init_parameter(nonTerminalGotoStateTable);
+         init_funcall(nonTerminalGotoStateTable);
+         init_start(nonTerminalGotoStateTable);
+         init_loop_label_optional_8(nonTerminalGotoStateTable);
+         init_function_def(nonTerminalGotoStateTable);
+         init_array_creation(nonTerminalGotoStateTable);
+         init_id_optional_10(nonTerminalGotoStateTable);
+         init_record_init(nonTerminalGotoStateTable);
+         init_type_star_0_sub(nonTerminalGotoStateTable);
+         init_for_loop_init(nonTerminalGotoStateTable);
+         init_dim_expr_plus_15(nonTerminalGotoStateTable);
+         init_for_loop_init_optional_12(nonTerminalGotoStateTable);
          init_array_access(nonTerminalGotoStateTable);
-         init_field(nonTerminalGotoStateTable);
+         init_for_loop_incr(nonTerminalGotoStateTable);
          init_dim_expr(nonTerminalGotoStateTable);
          init_assignation(nonTerminalGotoStateTable);
-         init_parameter(nonTerminalGotoStateTable);
-         init_return_type(nonTerminalGotoStateTable);
-         init_dims(nonTerminalGotoStateTable);
-         init_function_def(nonTerminalGotoStateTable);
-         init_loop_label_optional_8(nonTerminalGotoStateTable);
-         init_field_access(nonTerminalGotoStateTable);
-         init_array_creation(nonTerminalGotoStateTable);
-         init_lhs(nonTerminalGotoStateTable);
-         init_field_star_2(nonTerminalGotoStateTable);
          init_arguments(nonTerminalGotoStateTable);
-         init_record_init(nonTerminalGotoStateTable);
+         init_type_star_0(nonTerminalGotoStateTable);
+         init_record_def(nonTerminalGotoStateTable);
+         init_id_optional_9(nonTerminalGotoStateTable);
+         init_parameter_star_5_sub(nonTerminalGotoStateTable);
+         init_for_loop_incr_optional_14(nonTerminalGotoStateTable);
+         init_expr_optional_11(nonTerminalGotoStateTable);
+         init_dim_expr_plus_16(nonTerminalGotoStateTable);
+         init_script_member(nonTerminalGotoStateTable);
+         init_script_member_star_1(nonTerminalGotoStateTable);
+         init_field_star_2(nonTerminalGotoStateTable);
+         init_dims(nonTerminalGotoStateTable);
          init_record_init_optional_3(nonTerminalGotoStateTable);
-         init_for_loop_init(nonTerminalGotoStateTable);
-         init_type(nonTerminalGotoStateTable);
-         init_expr_optional_13(nonTerminalGotoStateTable);
+         init_parameters(nonTerminalGotoStateTable);
+         init_function_rtype(nonTerminalGotoStateTable);
+         init_primitive_type(nonTerminalGotoStateTable);
          init_loop(nonTerminalGotoStateTable);
          init_expr(nonTerminalGotoStateTable);
-         init_script_member_star_1(nonTerminalGotoStateTable);
-         init_conditional(nonTerminalGotoStateTable);
-         init_record_def(nonTerminalGotoStateTable);
-         init_dim_expr_plus_15(nonTerminalGotoStateTable);
-         init_function_rtype_optional_4(nonTerminalGotoStateTable);
-         init_id_optional_10(nonTerminalGotoStateTable);
-         init_for_loop_incr_optional_14(nonTerminalGotoStateTable);
-         init_dims_opt(nonTerminalGotoStateTable);
+         init_return_type(nonTerminalGotoStateTable);
+         init_field(nonTerminalGotoStateTable);
          init_instr(nonTerminalGotoStateTable);
-         init_dim_expr_plus_16(nonTerminalGotoStateTable);
-         init_funcall(nonTerminalGotoStateTable);
-         init_expr_optional_11(nonTerminalGotoStateTable);
-         init_type_star_0_sub(nonTerminalGotoStateTable);
-         init_function_rtype(nonTerminalGotoStateTable);
-         init_parameter_star_5(nonTerminalGotoStateTable);
-         init_id_optional_9(nonTerminalGotoStateTable);
-         init_expr_star_6_sub(nonTerminalGotoStateTable);
+         init_expr_star_6(nonTerminalGotoStateTable);
+         init_primary_no_array_creation(nonTerminalGotoStateTable);
          init_primary(nonTerminalGotoStateTable);
-         init_script_member(nonTerminalGotoStateTable);
-         init_primitive_type(nonTerminalGotoStateTable);
+         init_block(nonTerminalGotoStateTable);
+         init_semis(nonTerminalGotoStateTable);
+         init_field_access(nonTerminalGotoStateTable);
+         init_expr_optional_13(nonTerminalGotoStateTable);
          init_loop_label(nonTerminalGotoStateTable);
+         init_type(nonTerminalGotoStateTable);
+         init_lhs(nonTerminalGotoStateTable);
+         init_conditional(nonTerminalGotoStateTable);
+         init_instr_star_7(nonTerminalGotoStateTable);
          return nonTerminalGotoStateTable;
   } 
 }

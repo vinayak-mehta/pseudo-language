@@ -12,13 +12,6 @@ import com.googlecode.pseudo.compiler.ast.ValueLiteralToken;
  *  This class is generated - please do not edit it 
  */
 public interface PseudoTerminalEvaluator<D> {
-  /** This method is called when the rule <code>value_literal</code> is recognized by the lexer.
-   *  @param data the data sent by the lexer, in general, the
-   *         {@link fr.umlv.tatoo.runtime.buffer.TokenBuffer#view a view of the token buffer} or the buffer itself.
-  
-   *  @return the value associated with the terminal spawn for the rule.
-   */
-  public ValueLiteralToken value_literal(D data);
   /** This method is called when the rule <code>char_literal</code> is recognized by the lexer.
    *  @param data the data sent by the lexer, in general, the
    *         {@link fr.umlv.tatoo.runtime.buffer.TokenBuffer#view a view of the token buffer} or the buffer itself.
@@ -26,13 +19,13 @@ public interface PseudoTerminalEvaluator<D> {
    *  @return the value associated with the terminal spawn for the rule.
    */
   public CharLiteralToken char_literal(D data);
-  /** This method is called when the rule <code>boolean_literal</code> is recognized by the lexer.
+  /** This method is called when the rule <code>value_literal</code> is recognized by the lexer.
    *  @param data the data sent by the lexer, in general, the
    *         {@link fr.umlv.tatoo.runtime.buffer.TokenBuffer#view a view of the token buffer} or the buffer itself.
   
    *  @return the value associated with the terminal spawn for the rule.
    */
-  public BooleanLiteralToken boolean_literal(D data);
+  public ValueLiteralToken value_literal(D data);
   /** This method is called when the rule <code>id</code> is recognized by the lexer.
    *  @param data the data sent by the lexer, in general, the
    *         {@link fr.umlv.tatoo.runtime.buffer.TokenBuffer#view a view of the token buffer} or the buffer itself.
@@ -40,11 +33,13 @@ public interface PseudoTerminalEvaluator<D> {
    *  @return the value associated with the terminal spawn for the rule.
    */
   public IdToken id(D data);
-  /** This method is called when the rule <code>comment</code> is recognized by the lexer.
+  /** This method is called when the rule <code>boolean_literal</code> is recognized by the lexer.
    *  @param data the data sent by the lexer, in general, the
    *         {@link fr.umlv.tatoo.runtime.buffer.TokenBuffer#view a view of the token buffer} or the buffer itself.
+  
+   *  @return the value associated with the terminal spawn for the rule.
    */
-  public void comment(D data);
+  public BooleanLiteralToken boolean_literal(D data);
   /** This method is called when the rule <code>string_literal</code> is recognized by the lexer.
    *  @param data the data sent by the lexer, in general, the
    *         {@link fr.umlv.tatoo.runtime.buffer.TokenBuffer#view a view of the token buffer} or the buffer itself.
@@ -52,4 +47,9 @@ public interface PseudoTerminalEvaluator<D> {
    *  @return the value associated with the terminal spawn for the rule.
    */
   public StringLiteralToken string_literal(D data);
+  /** This method is called when the rule <code>comment</code> is recognized by the lexer.
+   *  @param data the data sent by the lexer, in general, the
+   *         {@link fr.umlv.tatoo.runtime.buffer.TokenBuffer#view a view of the token buffer} or the buffer itself.
+   */
+  public void comment(D data);
 }
