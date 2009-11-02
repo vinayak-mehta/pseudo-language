@@ -2,16 +2,25 @@
 
 = Design FAQ =
 
-== Why is there no bits twiddling functions/operators ? ==
+== Why type aren't mandatory ? ==
 
-Because the aim of the language to teach algorithmics not C.
-If you want to have fun with bits, use C.
+Pseudo use a slightly relaxed type system because I want to be able
+to explain the type system of pseudo in 5 minutes.
+If you want to close the type system of pseudo and keep the same expressiveness
+you have to introduce parametrized types, structural types, etc.
+Concepts that you can't explain in 5 minutes.
+
+== Why type can be specified ? ==
+
+Because the type system of pseudo is relaxed, some operations need
+to be done at runtime. This have a cost. By introducing types where
+you can, you reduce that cost.
 
 == Why is there no semicolon after each instruction ? ==
 
 Because you don't need semicolons to disambiguate a grammar.
 Semis are only useful when you do error recovery, but even
-in this case, you can do error recovery using the end of line. 
+in this case, you can do error recovery using the ends of lines. 
 
 == Why you don't use if...fi like in ALGOL ? ==
 
@@ -43,3 +52,8 @@ There are in my opinions two use case:
      array[j] = tmp
    }
    }}}
+
+== Why is there no bits twiddling functions/operators ? ==
+
+Because the aim of the language to teach algorithmics not C.
+If you want to have fun with bits, use C.
