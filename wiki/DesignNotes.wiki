@@ -1,4 +1,5 @@
 #summary One-sentence summary of this page.
+#labels d
 
 = Design FAQ =
 
@@ -34,6 +35,17 @@ Concepts that you can't explain in 5 minutes.
 Because the type system of pseudo is relaxed, some operations need
 to be done at runtime. This have a cost. By introducing types where
 you can, you reduce that cost.
+
+== Why overloading of function is not allowed ? ==
+
+Because this the root of all evils.
+Overloaded function means you need to have a special method lookup to
+find which method is called. Knowing that types aren't mandatory,
+this lookup can be complex. But that's not the real problem, the real
+problem is that if you don't want to create instantaneous puzzlers
+your method lookup done by the compiler and the one done by the runtime
+should be identical. This is really hard to achieve because you have to
+carry compile time types at runtime. So over my dead body. 
 
 == Why is there no semicolon after each instruction ? ==
 
