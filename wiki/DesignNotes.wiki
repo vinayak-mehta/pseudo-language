@@ -7,6 +7,7 @@
 
 The aim of pseudo is to ease to teach, write and test algorithms and
 their data structures. No more, no less than that.
+C, Java or Python are not suitable to teach algorithmic because:
   * Teaching algorithmic in C means
     teaching pointers and allocations.
     Allocation in C is complex and is like a vortex compared to algorithmic.
