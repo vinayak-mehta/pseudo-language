@@ -51,7 +51,7 @@ carry compile time types at runtime. So over my dead body.
 
 Because you don't need semicolons to disambiguate a grammar.
 Semis are only useful when you do error recovery, but even
-in this case, you can do error recovery using the ends of lines. 
+in this case, you can do error recovery using the end of lines. 
 
 == Why you don't use if...fi like in ALGOL ? ==
 
