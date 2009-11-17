@@ -39,14 +39,9 @@ you can, you reduce that cost.
 
 == Why overloading of function is not allowed ? ==
 
-Because this the root of all evils.
-Overloaded function means you need to have a special method lookup to
-find which method is called. Knowing that types aren't mandatory,
-this lookup can be complex. But that's not the real problem, the real
-problem is that if you don't want to create instantaneous puzzlers
-your method lookup done by the compiler and the one done by the runtime
-should be identical. This is really hard to achieve because you have to
-carry compile time types at runtime. So over my dead body. 
+You don't really need it. Remember that 
+Moreover, I don't know an efficient way to implement multi-dispatch call at runtime.
+The solution is perhaps to use the Attila Szegedi's POJO Linker.
 
 == Why is there no semicolon after each instruction ? ==
 
