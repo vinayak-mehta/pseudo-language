@@ -115,6 +115,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
+import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCModifiers;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -955,19 +956,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     return gen(exprPrimary.getPrimary(), genEnv);
   }
   
-  /*
-  @Override
-  public JCTree visit(ExprEq exprEq, GenEnv genEnv) {
-    JCExpression left = gen(exprEq.getExpr(), JCExpression.class, genEnv);
-    JCExpression right = gen(exprEq.getExpr2(), JCExpression.class, genEnv);
-    return maker(exprEq).Binary(JCTree.EQ, left, right);
-  }
-  @Override
-  public JCTree visit(ExprNe exprNe, GenEnv genEnv) {
-    JCExpression left = gen(exprNe.getExpr(), JCExpression.class, genEnv);
-    JCExpression right = gen(exprNe.getExpr2(), JCExpression.class, genEnv);
-    return maker(exprNe).Binary(JCTree.NE, left, right);
-  }*/
+  
   
   static class Operator {
     final int opcode;
@@ -1109,11 +1098,20 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
           retype(PrimitiveType.BOOLEAN, rightNode, rightType, right));
     }
     
+    // evaluation of a!=b is translated to !(a==b)  [step 1]
+    if (kind == PseudoProductionEnum.expr_ne) {
+      operator = exprOperatorMap.get(PseudoProductionEnum.expr_eq);
+    }
+    
     List<JCExpression> exprs = (size == 1)?List.of(left):List.of(left, right);
     JCFieldAccess method = maker(expr).Select(qualifiedIdentifier(expr, "java.dyn.InvokeDynamic"),
         nameFromString("__operator__:"+operator.name));
-    return maker(expr).Apply(List.of(asType(expr, returnType)), method, exprs);
+    JCExpression result = maker(expr).Apply(List.of(asType(expr, returnType)), method, exprs);
+    
+    // evaluation of a!=b is translated to !(a==b) [step 2]
+    if (kind == PseudoProductionEnum.expr_ne) {
+      result = maker(expr).Unary(JCTree.NEG, result);
+    }
+    return result;
   }
-  
-  //private int letVarCounter = 0;
 }
