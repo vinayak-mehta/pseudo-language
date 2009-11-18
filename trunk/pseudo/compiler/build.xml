@@ -37,7 +37,7 @@
   <target name="all" depends="jar">
   </target>
 	
-	<target name="compile" depends="ebnf">
+	<target name="compile">
 	  <mkdir dir="${classes}"/>
 
 	  <path id="boot.path.ref" path="${jsr292-mock.jar}"/>
@@ -48,14 +48,16 @@
 	  </javac>
 	</target>
 	
-	<target name="jar" depends="compile">
-		<jar destfile="${lib.dir}/pseudo-compiler.jar" basedir="${classes}">
-	      <manifest>
-		    <attribute name="Main-Class" value="com.googlecode.pseudo.compiler.Main" />
-			<attribute name="Class-Path" value="tatoo-runtime.jar javac.jar" />
-		  </manifest>
-	    </jar>
-    </target>
+	<target name="jar" depends="ebnf, jar-nocompile"/>
+	
+	<target name="jar-nocompile" depends="compile">
+	  <jar destfile="${lib.dir}/pseudo-compiler.jar" basedir="${classes}">
+	    <manifest>
+	      <attribute name="Main-Class" value="com.googlecode.pseudo.compiler.Main" />
+	      <attribute name="Class-Path" value="tatoo-runtime.jar javac.jar" />
+	    </manifest>
+	  </jar>
+	</target>
 	
 	<target name="clean">
 		<delete dir="${classes}"/>

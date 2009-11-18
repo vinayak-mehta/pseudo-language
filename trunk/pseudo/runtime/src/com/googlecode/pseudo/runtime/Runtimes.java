@@ -18,8 +18,7 @@ public class Runtimes {
 
     if (name.startsWith("__operator__:")) {
       String operatorName = name.substring(13);
-      if ("==".equals(operatorName) ||
-          "==".equals(operatorName)) {
+      if ("==".equals(operatorName)) {
         return Test.bootstrapDynamicBinaryOperator(caller, operatorName, type);
       } else {
         int parameterLength = type.parameterCount();
@@ -384,8 +383,6 @@ public class Runtimes {
       if (target == null) {
         throw new LinkageError("unknown target for "+caller+" "+operatorName+" "+type);
       }
-
-      
       
       callSite.setTarget(MethodHandles.convertArguments(target, type));
       return callSite;
