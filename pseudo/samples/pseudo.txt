@@ -1,6 +1,6 @@
 record Link {
-  any value;
-  Link next;
+  any value
+  Link next
 }
 
 def cons(any value, Link next):Link {
@@ -29,18 +29,18 @@ def size(Link link):int {
   return size
 }
 
-def each(Link link, (any,any:any) fun, any val):any {
+def each(Link link, fun any,any:any function, any val):any {
   any result = val
   for(Link l = link; l != null; l = l.next) {
-    result = fun(link.value, result)
+    result = function(link.value, result)
   }
   return result
 }
 
-def each2(link, fun, val) {
+def each2(link, function, val) {
   any result = val
   for(Link l = link; l != null; l = l.next) {
-    result = fun(link.value, result)
+    result = function(link.value, result)
   }
   return result
 }
@@ -48,8 +48,8 @@ def each2(link, fun, val) {
 {
   l = cons(2, cons(3, null))
   print size(l)
-  each(l, lambda(int x, int y) => x + y, 0)
-  each2(l, lambda(x, y) => x + y, 0)
+  each(l, lambda(int x, int y) x + y, 0)
+  each2(l, lambda(x, y) x + y, 0)
 }
 
 
@@ -76,10 +76,10 @@ def pop(Stack stack):any {
   return value
 }
 
-def stack_each(stack, fun, val) {
+def stack_each(stack, function, val) {
   result = val
   for(i=0; i<stack.top; i = i + 1) {
-    result = fun(stack.array[i], result)
+    result = function(stack.array[i], result)
   }
   return result
 }

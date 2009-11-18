@@ -54,7 +54,7 @@ tokens:
   init="init"
   def="def"
   lambda="lambda"
-  arrow="=>"
+  fun="fun"
   print="print"
   scan="scan"
   
@@ -101,15 +101,15 @@ productions:
                  | 'any'        { primitive_type_any }
                  ;
 
-  type = 'id'                  { type_id }
-       | 'id' dims             { type_id_dims }
-       | primitive_type        { type_primitive }
-       | primitive_type dims   { type_primitive_dims }
-       | funtype               { type_funtype }
-       | funtype dims          { type_funtype_dims }
+  type = 'id'                   { type_id }
+       | 'id' dims              { type_id_dims }
+       | primitive_type         { type_primitive }
+       | primitive_type dims    { type_primitive_dims }
+       | funtype                { type_funtype }
+       | '(' funtype ')' dims   { type_funtype_dims }
        ;
        
-  funtype = '(' type/'comma'* ':' return_type ')'     { funtype }
+  funtype = 'fun' type/'comma'* ':' return_type     { funtype }
           ;
           
   return_type = type       { return_type_type }
@@ -130,7 +130,7 @@ productions:
   record_init = 'init' '(' parameters ')' block    { record_init }
               ;
              
-  field = type 'id' semis   { field }
+  field = type 'id' 'eoln'   { field }
         ;
         
   function_def = 'def' 'id' '(' parameters ')' function_rtype? block   { function_def }
@@ -152,23 +152,18 @@ productions:
   block = '{' instr* '}'      { block }
         ;
         
-  instr = 'print' expr semis         { instr_print }
-        | 'scan' primary  semis      { instr_scan }
-        | declaration semis          { instr_declaration }
-        | assignation semis          { instr_assignation }
-        | funcall semis              { instr_funcall }
-        | conditional                { instr_conditional }
-        | loop_label? loop           { instr_loop }
-        | 'break' 'id'? semis        { instr_break }
-        | 'continue' 'id'? semis     { instr_continue }  
-        | 'return' expr? semis       { instr_return }
-        | 'throw' expr semis         { instr_throw }
-        | block                      { instr_block }
-        | ';'                        { instr_empty }
-        ;
-        
-  semis = ';'
-        | 'eoln'
+  instr = 'print' expr 'eoln'         { instr_print }
+        | 'scan' primary  'eoln'      { instr_scan }
+        | declaration 'eoln'          { instr_declaration }
+        | assignation 'eoln'          { instr_assignation }
+        | funcall 'eoln'              { instr_funcall }
+        | conditional                 { instr_conditional }
+        | loop_label? loop            { instr_loop }
+        | 'break' 'id'? 'eoln'        { instr_break }
+        | 'continue' 'id'? 'eoln'     { instr_continue }  
+        | 'return' expr? 'eoln'       { instr_return }
+        | 'throw' expr 'eoln'         { instr_throw }
+        | block                       { instr_block }
         ;
               
   declaration = type 'id'            { declaration_id }
@@ -254,7 +249,7 @@ productions:
        | 'id'                                                       { expr_id }       
        | primary                                                    { expr_primary }
        
-       | 'lambda' '(' parameters ')' '=>' expr    [lambda]          { expr_lambda }
+       | 'lambda' '(' parameters ')' expr         [lambda]          { expr_lambda }
        
        
        | '!' expr                                 [unary]           { expr_neg }
