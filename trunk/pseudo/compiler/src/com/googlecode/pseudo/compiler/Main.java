@@ -10,13 +10,8 @@ import code.googlecode.pseudo.compiler.model.Script;
 import com.googlecode.pseudo.compiler.analysis.Enter;
 import com.googlecode.pseudo.compiler.analysis.TypeCheck;
 import com.googlecode.pseudo.compiler.ast.ASTGrammarEvaluator;
-import com.googlecode.pseudo.compiler.ast.BooleanLiteralToken;
-import com.googlecode.pseudo.compiler.ast.CharLiteralToken;
-import com.googlecode.pseudo.compiler.ast.IdToken;
 import com.googlecode.pseudo.compiler.ast.Node;
 import com.googlecode.pseudo.compiler.ast.Start;
-import com.googlecode.pseudo.compiler.ast.StringLiteralToken;
-import com.googlecode.pseudo.compiler.ast.ValueLiteralToken;
 import com.googlecode.pseudo.compiler.gen.Gen;
 import com.googlecode.pseudo.compiler.tools.PseudoAnalyzers;
 import com.googlecode.pseudo.compiler.tools.PseudoTerminalEvaluator;
@@ -43,50 +38,7 @@ public class Main {
     final LocationTracker tracker = new LocationTracker();
     ReaderWrapper buffer = new ReaderWrapper(reader, tracker);
     
-    PseudoTerminalEvaluator<CharSequence> terminalEvaluator = new PseudoTerminalEvaluator<CharSequence>() {
-      private <N extends Node> N locate(N node) {
-        locationMap.setLocation(node, tracker.getLineNumber(), tracker.getColumnNumber());
-        return node;
-      }
-      
-      @Override
-      public void comment(CharSequence data) {
-        // do nothing
-      }
-      
-      @Override
-      public BooleanLiteralToken boolean_literal(CharSequence data) {
-        return locate(new BooleanLiteralToken(Boolean.parseBoolean(data.toString())));
-      }
-
-      @Override
-      public CharLiteralToken char_literal(CharSequence data) {
-        return locate(new CharLiteralToken(data.charAt(0)));
-      }
-
-      @Override
-      public ValueLiteralToken value_literal(CharSequence data) {
-        String text = data.toString();
-        Object value;
-        try {
-          value = Integer.parseInt(text);
-        } catch(NumberFormatException e) {
-          value = Double.parseDouble(text);
-        }
-        return locate(new ValueLiteralToken(value));
-      }
-
-      @Override
-      public StringLiteralToken string_literal(CharSequence data) {
-        String text = data.toString();
-        return locate(new StringLiteralToken(text.substring(1, text.length() - 1)));
-      }
-      
-      @Override
-      public IdToken id(CharSequence data) {
-        return locate(new IdToken(data.toString()));
-      }
-    };
+    PseudoTerminalEvaluator<CharSequence> terminalEvaluator = new PseudoASTTerminalEvaluator(locationMap, tracker);
     
     ASTGrammarEvaluator grammarEvaluator = new ASTGrammarEvaluator() {
       @Override

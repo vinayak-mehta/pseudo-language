@@ -65,7 +65,6 @@ import com.googlecode.pseudo.compiler.ast.InstrBreak;
 import com.googlecode.pseudo.compiler.ast.InstrConditional;
 import com.googlecode.pseudo.compiler.ast.InstrContinue;
 import com.googlecode.pseudo.compiler.ast.InstrDeclaration;
-import com.googlecode.pseudo.compiler.ast.InstrEmpty;
 import com.googlecode.pseudo.compiler.ast.InstrFuncall;
 import com.googlecode.pseudo.compiler.ast.InstrLoop;
 import com.googlecode.pseudo.compiler.ast.InstrPrint;
@@ -575,12 +574,6 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     }
     return maker(instrReturn).Return(expr);
   }
-  
-  @Override
-  public JCTree visit(InstrEmpty instrEmpty, GenEnv genEnv) {
-    return null;  // genAllSubNodes filter out null
-  }
-  
   
   // --- 
   

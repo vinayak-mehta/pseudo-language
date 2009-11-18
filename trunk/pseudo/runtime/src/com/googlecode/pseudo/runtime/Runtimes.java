@@ -69,7 +69,7 @@ public class Runtimes {
     }
 
     public static Object dynamicCallSlowPath(CallSite callSite, /*MethodHandle*/Object omh, Object[] args) throws Throwable {
-      //FIXME MethodHandle in the invokedynamic signature is not carrently supported by the backport
+      //FIXME MethodHandle in the invokedynamic signature is not currently supported by the backport
       MethodHandle mh = (MethodHandle)omh;
 
       MethodType callSiteType = callSite.type();
