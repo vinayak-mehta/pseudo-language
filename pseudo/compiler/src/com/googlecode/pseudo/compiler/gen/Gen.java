@@ -22,6 +22,7 @@ import code.googlecode.pseudo.compiler.model.Vars.ParameterVar;
 
 import com.googlecode.pseudo.compiler.LocationMap;
 import com.googlecode.pseudo.compiler.Type;
+import com.googlecode.pseudo.compiler.Types;
 import com.googlecode.pseudo.compiler.LocationMap.Location;
 import com.googlecode.pseudo.compiler.Types.ArrayType;
 import com.googlecode.pseudo.compiler.Types.FunType;
@@ -470,6 +471,9 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     if (initOptional == null) {
       // generate default init
       // TODO
+      
+      throw new UnsupportedOperationException("default init NYI");
+      
     } else {
       JCTree initFunction = genUserFunction(initOptional, record.getInitFunction(), initOptional.getParameters(), null, genEnv);
       members = members.prepend(initFunction);
@@ -581,15 +585,39 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(InstrPrint instrPrint, GenEnv genEnv) {
     JCExpression expr = gen(instrPrint.getExpr(), JCExpression.class, genEnv);
-    JCFieldAccess println = maker(instrPrint).Select(qualifiedIdentifier(instrPrint, "System.out"), nameFromString("println"));
+    JCFieldAccess println = maker(instrPrint).Select(qualifiedIdentifier(instrPrint, "System.out"),
+        nameFromString("println"));
     return maker(instrPrint).Exec(
         maker(instrPrint).Apply(List.<JCExpression>nil(), println, List.of(expr)));
   }
   
   @Override
   public JCTree visit(InstrScan instrScan, GenEnv genEnv) {
-    //TODO
-    throw new UnsupportedOperationException();
+    Lhs lhsNode = instrScan.getLhs();
+    
+    
+    
+    JCExpression lhs = gen(lhsNode, JCExpression.class, genEnv);
+    Type lhsType = typeCheck.getTypeMap().get(lhsNode);
+    String scannerFunction = "next"+lhsType.getName();
+    
+    JCFieldAccess scanner = maker(instrScan).Select(qualifiedIdentifier(instrScan, RUNTIME_CLASS), nameFromString("scanner"));
+    JCMethodInvocation scannerExpr = maker(instrScan).Apply(List.<JCExpression>nil(), scanner, List.<JCExpression>nil());
+    
+    JCFieldAccess next = maker(lhsNode).Select(scannerExpr, nameFromString(scannerFunction));
+    
+    JCMethodInvocation nextExpr = maker(lhsNode).Apply(List.<JCExpression>nil(), next, List.<JCExpression>nil());
+    
+    // declaration or assignation
+    if (typeCheck.getAutoDeclarationSet().contains(lhsNode)) {
+      LhsId lhsId = (LhsId)lhsNode;
+      return maker(instrScan).VarDef(modifiers(instrScan, 0),
+          nameFromString(lhsId.getId().getValue()),
+          asType(instrScan),
+          nextExpr);
+    } else {
+      return maker(instrScan).Exec(maker(instrScan).Assign(lhs, nextExpr));  
+    }
   }
   
   @Override
@@ -702,7 +730,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(ForLoopIncrFuncall forLoopIncrFuncall, GenEnv genEnv) {
     JCExpression expr = gen(forLoopIncrFuncall.getFuncall(), JCExpression.class, genEnv);
-    // loop incrment is an expression statement
+    // loop increment is an expression statement
     return maker(forLoopIncrFuncall).Exec(expr);
   }
   
@@ -974,7 +1002,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       new EnumMap<PseudoProductionEnum, Operator>(PseudoProductionEnum.class);
     
     // unary
-    map.put(PseudoProductionEnum.expr_neg, new Operator(JCTree.NEG, "!"));
+    map.put(PseudoProductionEnum.expr_neg, new Operator(JCTree.NOT, "!"));
     map.put(PseudoProductionEnum.expr_unary_minus, new Operator(JCTree.MINUS, "-"));
     map.put(PseudoProductionEnum.expr_unary_plus, new Operator(JCTree.PLUS, "+"));
     
@@ -1029,9 +1057,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       case expr_star:
       case expr_slash:
       case expr_mod:
-        return treeMaker.Binary(opcode, left, right);
-    //TODO
-    //case expr_pow:  
+        return treeMaker.Binary(opcode, left, right);  
       default:
     }
     throw new AssertionError("Unknown staticExpression "+kind);
@@ -1110,7 +1136,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     
     // evaluation of a!=b is translated to !(a==b) [step 2]
     if (kind == PseudoProductionEnum.expr_ne) {
-      result = maker(expr).Unary(JCTree.NEG, result);
+      result = maker(expr).Unary(JCTree.NOT, result);
     }
     return result;
   }

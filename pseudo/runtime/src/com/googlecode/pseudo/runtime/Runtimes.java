@@ -8,6 +8,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Runtimes {
+  public static Scanner scanner() {
+    return ScannerCache.SCANNER;
+  }
+  
+  static class ScannerCache {
+    static final Scanner SCANNER = new Scanner();
+  }
+  
+  
   public static CallSite bootstrapMethod(Class<?> caller, String name, MethodType type) {
     if ("__cast__".equals(name)) {
       return Cast.bootstrapDynamicCast(caller, type);

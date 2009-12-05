@@ -1,0 +1,11 @@
+{
+  print "enter an integer and a string"
+
+  int a
+  scan a
+  print a
+  
+  string s
+  scan s
+  print s
+}
