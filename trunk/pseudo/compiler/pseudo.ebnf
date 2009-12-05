@@ -153,7 +153,7 @@ productions:
         ;
         
   instr = 'print' expr 'eoln'         { instr_print }
-        | 'scan' primary  'eoln'      { instr_scan }
+        | 'scan' lhs  'eoln'          { instr_scan }
         | declaration 'eoln'          { instr_declaration }
         | assignation 'eoln'          { instr_assignation }
         | funcall 'eoln'              { instr_funcall }
@@ -272,6 +272,4 @@ productions:
        | expr '*' expr                            [star_slash]      { expr_star }
        | expr '/' expr                            [star_slash]      { expr_slash }
        | expr '%' expr                            [star_slash]      { expr_mod }
-       
-       | expr '^^' expr                           [pow]             { expr_pow }
        ;

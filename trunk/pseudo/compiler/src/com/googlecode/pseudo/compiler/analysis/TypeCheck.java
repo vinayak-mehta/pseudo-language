@@ -65,6 +65,7 @@ import com.googlecode.pseudo.compiler.ast.IdToken;
 import com.googlecode.pseudo.compiler.ast.Instr;
 import com.googlecode.pseudo.compiler.ast.InstrReturn;
 import com.googlecode.pseudo.compiler.ast.InstrScan;
+import com.googlecode.pseudo.compiler.ast.Lhs;
 import com.googlecode.pseudo.compiler.ast.LhsArrayAccess;
 import com.googlecode.pseudo.compiler.ast.LhsFieldAccess;
 import com.googlecode.pseudo.compiler.ast.LhsId;
@@ -251,15 +252,21 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
   
   @Override
   public Type visit(InstrScan instrScan, TypeCheckEnv typeCheckEnv) {
-    Primary primary = instrScan.getPrimary();
-    Type primaryType = typeCheck(primary, typeCheckEnv);
+    Lhs lhs = instrScan.getLhs();
+    Var var = lhs(lhs, typeCheckEnv);
+    if (var == null) {
+      // error recovery
+      return null;
+    }
     
-    // scan only accept primitive type that aren't any
-    if (!primaryType.isPrimitive() || primaryType == PrimitiveType.ANY) {
-      errorReporter.error(ErrorKind.scan_primitive, primary, primaryType);
+    Type lhsType = var.getType();
+    
+    // scan only accept primitive type (with any !)
+    if (!lhsType.isPrimitive()) {
+      errorReporter.error(ErrorKind.scan_primitive, lhs, lhsType);
       // error recovery
     }
-    return null;
+    return lhsType;
   }
   
   @Override
@@ -740,7 +747,6 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     map.put(PseudoProductionEnum.expr_star, "*");
     map.put(PseudoProductionEnum.expr_slash, "/");
     map.put(PseudoProductionEnum.expr_mod, "%");
-    map.put(PseudoProductionEnum.expr_pow, "^^");
     
     OPERATOR_MAP = map;
   }

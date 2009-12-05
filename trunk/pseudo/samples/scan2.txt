@@ -1,0 +1,6 @@
+{
+  print "enter anything"
+
+  scan a
+  print a
+}
