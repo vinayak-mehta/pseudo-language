@@ -306,6 +306,20 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     return expr;
   }
   
+  private List<JCExpression> retypeAll(java.util.List<Expr> exprStar, java.util.List<Type> parameterTypes, List<JCExpression> exprs) {
+    Iterator<Expr> nodeIterator = exprStar.iterator();
+    Iterator<Type> typeIterator = parameterTypes.iterator();
+    Iterator<JCExpression> expressionIterator = exprs.iterator();
+    ListBuffer<JCExpression> buffer=ListBuffer.lb();
+    while(nodeIterator.hasNext()) {
+      Expr node = nodeIterator.next();
+      Type nodeType = typeCheck.getTypeMap().get(node);
+      Type type = typeIterator.next();
+      JCExpression expression = expressionIterator.next();
+      buffer.append(retype(type, node, nodeType, expression));
+    }
+    return buffer.toList();
+  }
   
   
   // --- helpers
@@ -856,7 +870,9 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       typeCheck.getTypeMap().put(funcallId, returnType);
     }
     
-    List<JCExpression> exprs = genAllSubNodes(funcallId.getArguments().getExprStar(), JCExpression.class, funType.getParameterTypes());
+    java.util.List<Expr> exprStar = funcallId.getArguments().getExprStar();
+    List<JCExpression> exprs = genAllSubNodes(exprStar, JCExpression.class, funType.getParameterTypes());
+    exprs = retypeAll(exprStar, funType.getParameterTypes(), exprs);
     
     String name = funcallId.getId().getValue();
     if (invocation.getFunction() == null) {
@@ -870,7 +886,9 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       return maker(funcallId).Apply(List.<JCExpression>nil(), identifier(funcallId, name), exprs);
     }
   }
+
   
+
   @Override
   public JCTree visit(FuncallPrimary funcallPrimary, GenEnv genEnv) {
     Invocation invocation = typeCheck.getInvocationMap().get(funcallPrimary);
@@ -888,7 +906,9 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     JCExpression funExpr = gen(funcallPrimary.getPrimary(), JCExpression.class, genEnv);
     //funExpr = maker(funcallPrimary).TypeCast(qualifiedIdentifier(funcallPrimary, "java.dyn.MethodHandle"), funExpr);
     
-    List<JCExpression> exprs = genAllSubNodes(funcallPrimary.getArguments().getExprStar(), JCExpression.class, funType.getParameterTypes());
+    java.util.List<Expr> exprStar = funcallPrimary.getArguments().getExprStar();
+    List<JCExpression> exprs = genAllSubNodes(exprStar, JCExpression.class, funType.getParameterTypes());
+    exprs = retypeAll(exprStar, funType.getParameterTypes(), exprs);
     exprs = exprs.prepend(funExpr);
     
     JCFieldAccess method = maker(funcallPrimary).Select(qualifiedIdentifier(funcallPrimary, "java.dyn.InvokeDynamic"), nameFromString("__call__"));
