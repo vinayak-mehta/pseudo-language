@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Queue;
 
 import javax.tools.JavaFileManager;
@@ -30,6 +31,7 @@ import com.googlecode.pseudo.compiler.Types.PrimitiveType;
 import com.googlecode.pseudo.compiler.analysis.ErrorReporter;
 import com.googlecode.pseudo.compiler.analysis.Invocation;
 import com.googlecode.pseudo.compiler.analysis.TypeCheck;
+import com.googlecode.pseudo.compiler.ast.Arguments;
 import com.googlecode.pseudo.compiler.ast.ArrayAccessId;
 import com.googlecode.pseudo.compiler.ast.ArrayAccessPrimary;
 import com.googlecode.pseudo.compiler.ast.Assignation;
@@ -46,6 +48,7 @@ import com.googlecode.pseudo.compiler.ast.ExprNullLiteral;
 import com.googlecode.pseudo.compiler.ast.ExprPrimary;
 import com.googlecode.pseudo.compiler.ast.ExprStringLiteral;
 import com.googlecode.pseudo.compiler.ast.ExprValueLiteral;
+import com.googlecode.pseudo.compiler.ast.Field;
 import com.googlecode.pseudo.compiler.ast.FieldAccessId;
 import com.googlecode.pseudo.compiler.ast.FieldAccessPrimary;
 import com.googlecode.pseudo.compiler.ast.ForLoopIncr;
@@ -84,6 +87,8 @@ import com.googlecode.pseudo.compiler.ast.Node;
 import com.googlecode.pseudo.compiler.ast.Parameter;
 import com.googlecode.pseudo.compiler.ast.ParameterTyped;
 import com.googlecode.pseudo.compiler.ast.Parameters;
+import com.googlecode.pseudo.compiler.ast.Primary;
+import com.googlecode.pseudo.compiler.ast.PrimaryAllocation;
 import com.googlecode.pseudo.compiler.ast.PrimaryArrayAccess;
 import com.googlecode.pseudo.compiler.ast.PrimaryFieldAccess;
 import com.googlecode.pseudo.compiler.ast.PrimaryFuncall;
@@ -370,29 +375,39 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     JCCompilationUnit compilationUnit=genCompilationUnit(start);
     compilationUnit.sourcefile=sourceFile;
     
-    // enter, attribute and flow
-    compiler.enterTrees(List.of(compilationUnit));
-    
-    //System.out.println("todo "+todo);
-    Queue<Env<AttrContext>> queue = compiler.flow(compiler.attribute(todo));
+    Queue<Env<AttrContext>> queue;
+    try {
+      // enter, attribute and flow
+      compiler.enterTrees(List.of(compilationUnit));
+      queue = compiler.flow(compiler.attribute(todo));
+
+    } catch(RuntimeException e) {
+      System.err.println("javac tree attribution crash ...");
+      debug(compilationUnit);
+      throw e;
+    }
     
     // report errors
     compiler.reportDeferredDiagnostics();
     
     // debug
     if (errorReporter.isOnError()) {
-      OutputStreamWriter writer = new OutputStreamWriter(System.out);
-      try {
-        new Pretty(writer, false).printUnit(compilationUnit, null);
-        writer.flush();
-      } finally {
-        writer.close();
-      }
+      debug(compilationUnit);
     }
     
     // generate code if no error
     if (!errorReporter.isOnError()) {
       compiler.generate(compiler.desugar(queue));
+    }
+  }
+  
+  private void debug(JCCompilationUnit compilationUnit) throws IOException {
+    OutputStreamWriter writer = new OutputStreamWriter(System.out);
+    try {
+      new Pretty(writer, false).printUnit(compilationUnit, null);
+      writer.flush();
+    } finally {
+      writer.close();
     }
   }
   
@@ -475,45 +490,46 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   public JCTree visit(RecordDef recordDef, GenEnv  genEnv) {
     String recordName = recordDef.getId().getValue();
     
-    JCModifiers mods=maker(recordDef).Modifiers(0);
+    JCModifiers mods=maker(recordDef).Modifiers(Flags.PUBLIC|Flags.STATIC);
     Name name=nameFromString(recordName);
     List<JCTree> members = genAllSubNodes(recordDef.getFieldStar(), JCTree.class);
     
     // generate init
     Record record = script.getRecordTable().lookup(recordName);
     RecordInit initOptional = recordDef.getRecordInitOptional();
+    JCTree initFunction;
     if (initOptional == null) {
-      // generate default init
-      // TODO
-      
-      throw new UnsupportedOperationException("default init NYI");
-      
+      initFunction = genUserFunction(recordDef, true, record.getInitFunction(), null, null, genEnv);
     } else {
-      JCTree initFunction = genUserFunction(initOptional, record.getInitFunction(), initOptional.getParameters(), null, genEnv);
-      members = members.prepend(initFunction);
+      initFunction = genUserFunction(initOptional, true, record.getInitFunction(), initOptional.getParameters(), null, genEnv);
     }
+    members = members.prepend(initFunction);
     
     return maker(recordDef).ClassDef(mods, name, List.<JCTypeParameter>nil(), null, List.<JCExpression>nil(), members);
   }
   
-  private JCTree genUserFunction(Node functionNode, UserFunction function, Parameters parameters, /*maybenull*/Node returnTypeNode, GenEnv genEnv) {
-    JCModifiers mods=modifiers(functionNode, Flags.PUBLIC|Flags.STATIC);
-    Name name=nameFromString(function.getName());
+  private JCTree genUserFunction(Node functionNode, boolean constructor, UserFunction function, /*maybenull*/Parameters parameters, /*maybenull*/Node returnTypeNode, GenEnv genEnv) {
+    JCModifiers mods=modifiers(functionNode, (constructor)?0:Flags.PUBLIC|Flags.STATIC);
     
-    FunType functionType = function.getType();
-    
-    JCExpression returnType = asType(returnTypeNode, functionType.getReturnType());
+    JCExpression returnType;
+    if (constructor) {
+      returnType = null;
+    } else {
+      FunType functionType = function.getType();
+      returnType = asType((returnTypeNode==null)?functionNode:returnTypeNode, functionType.getReturnType());
+    }
     
     ListBuffer<JCVariableDecl> parameterBuffer = ListBuffer.lb();
-    Iterator<Parameter> parameterIterator = parameters.getParameterStar().iterator();
+    Iterator<Parameter> parameterIterator = (parameters!=null)?parameters.getParameterStar().iterator():null;
     for(ParameterVar parameterVar:function.getParameterTable().items()) {
-      Parameter parameter = parameterIterator.next();
+      Node parameter = (parameterIterator!=null)?parameterIterator.next():functionNode;
       parameterBuffer.append(genParameter(parameter, parameterVar));
     }
     
     JCBlock block = gen(function.getBlock(), JCBlock.class, genEnv);
     
-    return maker(functionNode).MethodDef(mods, name,
+    return maker(functionNode).MethodDef(mods,
+        constructor?names.init:nameFromString(function.getName()),
         returnType,
         List.<JCTypeParameter>nil(),
         parameterBuffer.toList(),
@@ -522,20 +538,27 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
         null);
   }
   
+  private JCVariableDecl genParameter(Node parameter, ParameterVar parameterVar) {
+    Name name = nameFromString(parameterVar.getName());
+    Node typeNode = (parameter instanceof ParameterTyped)?((ParameterTyped)parameter).getId():parameter;
+    return maker(parameter).VarDef(modifiers(parameter, Flags.FINAL),
+        name, asType(typeNode, parameterVar.getType()), null);
+  }
+  
   @Override
   public JCTree visit(FunctionDef functionDef, GenEnv genEnv) {
     String functionName = functionDef.getId().getValue();
     UserFunction function = script.getFunctionScope().getTable().lookup(functionName);
     FunctionRtype functionRtypeOptional = functionDef.getFunctionRtypeOptional();
     Node returnTypeNode = (functionRtypeOptional==null)?functionDef:functionRtypeOptional;
-    return genUserFunction(functionDef, function, functionDef.getParameters(), returnTypeNode, genEnv);
+    return genUserFunction(functionDef, false, function, functionDef.getParameters(), returnTypeNode, genEnv);
   }
   
-  private JCVariableDecl genParameter(Parameter parameter, ParameterVar parameterVar) {
-    Name name = nameFromString(parameterVar.getName());
-    Node typeNode = (parameter instanceof ParameterTyped)?((ParameterTyped)parameter).getId():parameter;
-    return maker(parameter).VarDef(modifiers(parameter, Flags.FINAL),
-        name, asType(typeNode, parameterVar.getType()), null);
+  @Override
+  public JCTree visit(Field field, GenEnv genEnv) {
+    JCExpression type = asType(field);
+    return maker(field).VarDef(modifiers(field, Flags.PUBLIC),
+        nameFromString(field.getId().getValue()), type, null);
   }
   
   
@@ -598,7 +621,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   
   @Override
   public JCTree visit(InstrPrint instrPrint, GenEnv genEnv) {
-    JCExpression expr = gen(instrPrint.getExpr(), JCExpression.class, genEnv);
+    JCExpression expr = gen(instrPrint.getExpr(), JCExpression.class, new GenEnv(PrimitiveType.ANY));
     JCFieldAccess println = maker(instrPrint).Select(qualifiedIdentifier(instrPrint, "System.out"),
         nameFromString("println"));
     return maker(instrPrint).Exec(
@@ -609,9 +632,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   public JCTree visit(InstrScan instrScan, GenEnv genEnv) {
     Lhs lhsNode = instrScan.getLhs();
     
-    
-    
-    JCExpression lhs = gen(lhsNode, JCExpression.class, genEnv);
+    JCExpression lhs = gen(lhsNode, JCExpression.class, new GenEnv(PrimitiveType.ANY));
     Type lhsType = typeCheck.getTypeMap().get(lhsNode);
     String scannerFunction = "next"+lhsType.getName();
     
@@ -637,7 +658,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(InstrThrow instrThrow, GenEnv genEnv) {
     Expr exprNode = instrThrow.getExpr();
-    JCExpression expr = gen(exprNode, JCExpression.class, genEnv);
+    JCExpression expr = gen(exprNode, JCExpression.class, new GenEnv(PrimitiveType.ANY));
     
     JCNewClass newClass = maker(exprNode).NewClass(null, List.<JCExpression>nil(),
         qualifiedIdentifier(exprNode, "java.lang.AssertionError"),
@@ -654,14 +675,14 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   }
   @Override
   public JCTree visit(ConditionalIf conditionalIf, GenEnv genEnv) {
-    JCExpression condition = gen(conditionalIf.getExpr(), JCExpression.class, genEnv);
+    JCExpression condition = gen(conditionalIf.getExpr(), JCExpression.class, new GenEnv(PrimitiveType.BOOLEAN));
     JCBlock block = gen(conditionalIf.getBlock(), JCBlock.class, genEnv);
     
     return maker(conditionalIf).If(condition, block, null);
   }
   @Override
   public JCTree visit(ConditionalIfElse conditionalIfElse, GenEnv genEnv) {
-    JCExpression condition = gen(conditionalIfElse.getExpr(), JCExpression.class, genEnv);
+    JCExpression condition = gen(conditionalIfElse.getExpr(), JCExpression.class, new GenEnv(PrimitiveType.BOOLEAN));
     JCBlock thenPart = gen(conditionalIfElse.getBlock(), JCBlock.class, genEnv);
     JCBlock elsePart = gen(conditionalIfElse.getBlock2(), JCBlock.class, genEnv);
     
@@ -686,7 +707,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(LoopDowhile loopDowhile, GenEnv genEnv) {
     JCBlock block = gen(loopDowhile.getBlock(), JCBlock.class, genEnv); 
-    JCExpression condition = gen(loopDowhile.getExpr(), JCExpression.class, genEnv);
+    JCExpression condition = gen(loopDowhile.getExpr(), JCExpression.class, new GenEnv(PrimitiveType.BOOLEAN));
     
     return maker(loopDowhile).DoLoop(block, condition);
   }
@@ -694,7 +715,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(LoopWhile loopWhile, GenEnv genEnv) {
     JCBlock block = gen(loopWhile.getBlock(), JCBlock.class, genEnv); 
-    JCExpression condition = gen(loopWhile.getExpr(), JCExpression.class, genEnv);
+    JCExpression condition = gen(loopWhile.getExpr(), JCExpression.class, new GenEnv(PrimitiveType.BOOLEAN));
     
     return maker(loopWhile).WhileLoop(condition, block);
   }
@@ -704,19 +725,19 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     JCStatement init = null;
     ForLoopInit initOptional = loopFor.getForLoopInitOptional();
     if (initOptional != null) {
-      init = gen(initOptional, JCStatement.class, genEnv);
+      init = gen(initOptional, JCStatement.class, new GenEnv(PrimitiveType.VOID));
     }
     
     JCExpression condition = null;
     Expr exprOptional = loopFor.getExprOptional();
     if (exprOptional != null) {
-      condition = gen(exprOptional, JCExpression.class, genEnv);
+      condition = gen(exprOptional, JCExpression.class, new GenEnv(PrimitiveType.BOOLEAN));
     }
     
     JCExpressionStatement incr = null;
     ForLoopIncr incrOptional = loopFor.getForLoopIncrOptional();
     if (incrOptional != null) {
-      incr = gen(incrOptional, JCExpressionStatement.class, genEnv);
+      incr = gen(incrOptional, JCExpressionStatement.class, new GenEnv(PrimitiveType.VOID));
     }
      
     JCBlock block = gen(loopFor.getBlock(), JCBlock.class, genEnv); 
@@ -761,7 +782,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   
   @Override
   public JCTree visit(DeclarationIdInit declarationIdInit, GenEnv genEnv) {
-    JCExpression expr = gen(declarationIdInit.getExpr(), JCExpression.class, genEnv);
+    JCExpression expr = gen(declarationIdInit.getExpr(), JCExpression.class, new GenEnv(PrimitiveType.ANY));
     String name = declarationIdInit.getId().getValue();
     return maker(declarationIdInit).VarDef(modifiers(declarationIdInit, 0),
         nameFromString(name),
@@ -773,7 +794,8 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   public JCTree visit(Assignation assignation, GenEnv genEnv) {
     Lhs lhsNode = assignation.getLhs();
     JCExpression lhs = gen(lhsNode, JCExpression.class, genEnv);
-    JCExpression rhs = gen(assignation.getExpr(), JCExpression.class, genEnv);
+    Type lhsType = typeCheck.getTypeMap().get(lhs);
+    JCExpression rhs = gen(assignation.getExpr(), JCExpression.class, new GenEnv(lhsType));
     
     // declaration ?
     if (typeCheck.getAutoDeclarationSet().contains(lhsNode)) {
@@ -809,13 +831,13 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(ArrayAccessId arrayAccessId, GenEnv genEnv) {
     JCExpression array = gen(arrayAccessId.getId(), JCExpression.class, genEnv);
-    JCExpression index = gen(arrayAccessId.getExpr(), JCExpression.class, genEnv);
+    JCExpression index = gen(arrayAccessId.getExpr(), JCExpression.class, new GenEnv(PrimitiveType.INT));
     return maker(arrayAccessId).Indexed(array, index);
   }
   @Override
   public JCTree visit(ArrayAccessPrimary arrayAccessPrimary, GenEnv genEnv) {
     JCExpression array = gen(arrayAccessPrimary.getPrimaryNoArrayCreation(), JCExpression.class, genEnv);
-    JCExpression index = gen(arrayAccessPrimary.getExpr(), JCExpression.class, genEnv);
+    JCExpression index = gen(arrayAccessPrimary.getExpr(), JCExpression.class, new GenEnv(PrimitiveType.INT));
     return maker(arrayAccessPrimary).Indexed(array, index);
   }
   
@@ -827,23 +849,42 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   public JCTree visit(PrimaryFieldAccess primaryFieldAccess, GenEnv genEnv) {
     return gen(primaryFieldAccess.getFieldAccess(), genEnv);
   }
+  
+  
+  private JCTree genFieldAccess(Node node, JCExpression select, String fieldName, GenEnv genEnv) {
+    Type type = typeCheck.getTypeMap().get(node);
+    if (type == PrimitiveType.ANY) {
+      
+      // try to adjust the return type to the expected return type
+      Type expectedReturnType = genEnv.getExpectedReturnType();
+      if (expectedReturnType != PrimitiveType.ANY) {
+        type = expectedReturnType;
+        // fix computed type
+        typeCheck.getTypeMap().put(node, type);
+      }
+      
+      List<JCExpression> args = List.of(select);
+      
+      JCFieldAccess method = maker(node).Select(qualifiedIdentifier(node, "java.dyn.InvokeDynamic"), nameFromString("__field_access__:"+fieldName));
+      return maker(node).Apply(List.of(asType(node, type)), method, args); 
+    }
+    return maker(node).Select(select, nameFromString(fieldName));
+  }
+  
   @Override
   public JCTree visit(FieldAccessId fieldAccessId, GenEnv genEnv) {
-    JCExpression selected = identifier(fieldAccessId.getId(), fieldAccessId.getId().getValue());
-    return maker(fieldAccessId).Select(selected, nameFromString(fieldAccessId.getId2().getValue()));
+    IdToken id = fieldAccessId.getId();
+    JCExpression select = identifier(id, id.getValue());
+    return genFieldAccess(fieldAccessId, select, fieldAccessId.getId2().getValue(), genEnv);
   }
+  
   @Override
   public JCTree visit(FieldAccessPrimary fieldAccessPrimary, GenEnv genEnv) {
-    JCExpression selected = gen(fieldAccessPrimary.getPrimary(), JCExpression.class, genEnv);
-    return maker(fieldAccessPrimary).Select(selected, nameFromString(fieldAccessPrimary.getId().getValue()));
+    Primary primary = fieldAccessPrimary.getPrimary();
+    JCExpression select = gen(primary, JCExpression.class, genEnv);
+    return genFieldAccess(fieldAccessPrimary, select, fieldAccessPrimary.getId().getValue(), genEnv);
   }
   
-  // --- primary
-  
-  @Override
-  public JCTree visit(PrimaryPrimaryNoArrayCreation primaryPrimaryNoArrayCreation, GenEnv genEnv) {
-    return gen(primaryPrimaryNoArrayCreation.getPrimaryNoArrayCreation(), genEnv);
-  }
   
   // --- funcall
   
@@ -856,9 +897,9 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     return maker(instrFuncall).Exec(gen(instrFuncall.getFuncall(), JCExpression.class, genEnv));
   }
   
-  @Override
-  public JCTree visit(FuncallId funcallId, GenEnv genEnv) {
-    Invocation invocation = typeCheck.getInvocationMap().get(funcallId);
+  
+  private JCTree genInvocation(Node invocationNode, boolean constructor, JCExpression funExpr, Arguments arguments, GenEnv genEnv) {
+    Invocation invocation = typeCheck.getInvocationMap().get(invocationNode);
     FunType funType = invocation.getFunType();
     
     // try to adjust the return type to the expected return type
@@ -867,52 +908,54 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     if (returnType == PrimitiveType.ANY && expectedReturnType != PrimitiveType.ANY) {
       returnType = expectedReturnType;
       // fix computed type
-      typeCheck.getTypeMap().put(funcallId, returnType);
+      typeCheck.getTypeMap().put(invocationNode, returnType);
     }
     
-    java.util.List<Expr> exprStar = funcallId.getArguments().getExprStar();
-    List<JCExpression> exprs = genAllSubNodes(exprStar, JCExpression.class, funType.getParameterTypes());
-    exprs = retypeAll(exprStar, funType.getParameterTypes(), exprs);
+    java.util.List<Expr> exprStar = arguments.getExprStar();
+    List<JCExpression> args = genAllSubNodes(exprStar, JCExpression.class, funType.getParameterTypes());
+    args = retypeAll(exprStar, funType.getParameterTypes(), args);
     
-    String name = funcallId.getId().getValue();
     if (invocation.getFunction() == null) {
-      JCExpression funExpr = identifier(funcallId.getId(), name);
+      assert (!constructor);
       //funExpr = maker(funcallId).TypeCast(qualifiedIdentifier(funcallId, "java.dyn.MethodHandle"), funExpr);
-      exprs = exprs.prepend(funExpr);
+      args = args.prepend(funExpr);
       
-      JCFieldAccess method = maker(funcallId).Select(qualifiedIdentifier(funcallId, "java.dyn.InvokeDynamic"), nameFromString("__call__"));
-      return maker(funcallId).Apply(List.of(asType(funcallId, returnType)), method, exprs);
+      JCFieldAccess method = maker(invocationNode).Select(qualifiedIdentifier(invocationNode, "java.dyn.InvokeDynamic"), nameFromString("__call__"));
+      return maker(invocationNode).Apply(List.of(asType(invocationNode, returnType)), method, args);
     } else {
-      return maker(funcallId).Apply(List.<JCExpression>nil(), identifier(funcallId, name), exprs);
+      if (constructor)
+        return maker(invocationNode).NewClass(null, List.<JCExpression>nil(), funExpr, args, null);
+      
+      return maker(invocationNode).Apply(List.<JCExpression>nil(), funExpr, args);
     }
   }
-
   
+  @Override
+  public JCTree visit(FuncallId funcallId, GenEnv genEnv) {
+    String name = funcallId.getId().getValue();
+    JCExpression funExpr = identifier(funcallId.getId(), name);
+    return genInvocation(funcallId, false, funExpr, funcallId.getArguments(), genEnv);
+  }
 
   @Override
   public JCTree visit(FuncallPrimary funcallPrimary, GenEnv genEnv) {
-    Invocation invocation = typeCheck.getInvocationMap().get(funcallPrimary);
-    FunType funType = invocation.getFunType();
-    
-    // try to adjust the return type to the expected return type
-    Type returnType = funType.getReturnType();
-    Type expectedReturnType = genEnv.getExpectedReturnType();
-    if (returnType == PrimitiveType.ANY && expectedReturnType != PrimitiveType.ANY) {
-      returnType = expectedReturnType;
-      // fix computed type
-      typeCheck.getTypeMap().put(funcallPrimary, returnType);
-    }
-    
     JCExpression funExpr = gen(funcallPrimary.getPrimary(), JCExpression.class, genEnv);
-    //funExpr = maker(funcallPrimary).TypeCast(qualifiedIdentifier(funcallPrimary, "java.dyn.MethodHandle"), funExpr);
-    
-    java.util.List<Expr> exprStar = funcallPrimary.getArguments().getExprStar();
-    List<JCExpression> exprs = genAllSubNodes(exprStar, JCExpression.class, funType.getParameterTypes());
-    exprs = retypeAll(exprStar, funType.getParameterTypes(), exprs);
-    exprs = exprs.prepend(funExpr);
-    
-    JCFieldAccess method = maker(funcallPrimary).Select(qualifiedIdentifier(funcallPrimary, "java.dyn.InvokeDynamic"), nameFromString("__call__"));
-    return maker(funcallPrimary).Apply(List.of(asType(funcallPrimary, returnType)), method, exprs);
+    return genInvocation(funcallPrimary, false, funExpr, funcallPrimary.getArguments(), genEnv);
+  }
+  
+  
+  // --- primary
+  
+  @Override
+  public JCTree visit(PrimaryPrimaryNoArrayCreation primaryPrimaryNoArrayCreation, GenEnv genEnv) {
+    return gen(primaryPrimaryNoArrayCreation.getPrimaryNoArrayCreation(), genEnv);
+  }
+  
+  @Override
+  public JCTree visit(PrimaryAllocation primaryAllocation, GenEnv genEnv) {
+    IdToken primaryAllocationId = primaryAllocation.getId();
+    JCExpression classId = identifier(primaryAllocationId, primaryAllocationId.getValue());
+    return genInvocation(primaryAllocation, true, classId, primaryAllocation.getArguments(), genEnv);
   }
   
   // --- expression

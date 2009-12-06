@@ -1,0 +1,13 @@
+record Hello {
+  int value
+}
+
+{
+  Hello h = new Hello()
+  print h.value
+  
+  h2 = new Hello()
+  print h2.value
+
+  print h2.hello
+}

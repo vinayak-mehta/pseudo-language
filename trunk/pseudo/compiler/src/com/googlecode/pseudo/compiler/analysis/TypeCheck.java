@@ -63,6 +63,7 @@ import com.googlecode.pseudo.compiler.ast.FuncallId;
 import com.googlecode.pseudo.compiler.ast.FuncallPrimary;
 import com.googlecode.pseudo.compiler.ast.IdToken;
 import com.googlecode.pseudo.compiler.ast.Instr;
+import com.googlecode.pseudo.compiler.ast.InstrPrint;
 import com.googlecode.pseudo.compiler.ast.InstrReturn;
 import com.googlecode.pseudo.compiler.ast.InstrScan;
 import com.googlecode.pseudo.compiler.ast.Lhs;
@@ -76,6 +77,7 @@ import com.googlecode.pseudo.compiler.ast.Node;
 import com.googlecode.pseudo.compiler.ast.Primary;
 import com.googlecode.pseudo.compiler.ast.PrimaryAllocation;
 import com.googlecode.pseudo.compiler.ast.PrimaryNoArrayCreation;
+import com.googlecode.pseudo.compiler.ast.RecordDef;
 import com.googlecode.pseudo.compiler.ast.Visitor;
 import com.googlecode.pseudo.compiler.parser.PseudoProductionEnum;
 
@@ -202,15 +204,15 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
   private void typeCheck(Record record) {
     // typecheck init block
     UserFunction init = record.getInitFunction();
-    if (init == null)
-      return;
     
     // scope: localVar -> parameter -> field -> function -> builtin 
     Scope<Var,Field> fieldScope = new Scope<Var,Field>(record.getFieldTable(), script.getFunctionScope());
     Scope<Var,ParameterVar> parameterVarScope = new Scope<Var,ParameterVar>(init.getParameterTable(), fieldScope);
     Scope<Var,LocalVar> localVarScope = new Scope<Var,LocalVar>(new Table<LocalVar>(), parameterVarScope);
-    
     typeCheck(init.getBlock(), new TypeCheckEnv(localVarScope, PrimitiveType.VOID));
+    
+    // type check fields
+    typeCheckAllSubNodes(record.getRecordDef(), null);
   }
   
   private void typeCheck(UserFunction function) {
@@ -229,6 +231,14 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     localVarScope.register(new ParameterVar(new ArrayType(PrimitiveType.STRING), "ARGS"));
     
     typeCheck(mainBlock, new TypeCheckEnv(localVarScope, PrimitiveType.VOID));
+  }
+  
+  @Override
+  public Type visit(com.googlecode.pseudo.compiler.ast.Field fieldNode, TypeCheckEnv shouldBeNull) {
+    RecordDef recordDef = (RecordDef)fieldNode.getParent();
+    Record record = script.getRecordTable().lookup(recordDef.getId().getValue());
+    Field field = record.getFieldTable().lookup(fieldNode.getId().getValue());
+    return field.getType();
   }
   
   // --- block
@@ -600,23 +610,13 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     }
     
     UserFunction initFunction = record.getInitFunction();
-    if (initFunction == null) {
-      if (argumentTypes.isEmpty()) {
-        errorReporter.error(ErrorKind.typecheck_call_arguments, primaryAllocation.getArguments(), argumentTypes, "()");
-        // error recovery
-      }
-      else {
-        // TODO, create the init function here !!
-      }
+    FunType funType = Types.getFunTypeForCall(initFunction.getType(), argumentTypes);
+    if (funType != null) {
+      invocationMap.put(primaryAllocation, new Invocation(funType, initFunction));
     } else {
-      FunType funType = Types.getFunTypeForCall(initFunction.getType(), argumentTypes);
-      if (funType != null) {
-        invocationMap.put(primaryAllocation, new Invocation(funType, initFunction));
-      } else {
-        errorReporter.error(ErrorKind.typecheck_call_arguments, primaryAllocation.getArguments(),
-            argumentTypes, initFunction.getType());
-        // error recovery
-      }
+      errorReporter.error(ErrorKind.typecheck_call_arguments, primaryAllocation.getArguments(),
+          argumentTypes, initFunction.getType());
+      // error recovery
     }
     return record;
   }

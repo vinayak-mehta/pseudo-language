@@ -1,6 +1,7 @@
 package com.googlecode.pseudo.compiler.analysis;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import code.googlecode.pseudo.compiler.model.Field;
 import code.googlecode.pseudo.compiler.model.Record;
@@ -18,6 +19,7 @@ import com.googlecode.pseudo.compiler.analysis.ErrorReporter.ErrorKind;
 import com.googlecode.pseudo.compiler.ast.Block;
 import com.googlecode.pseudo.compiler.ast.FunctionDef;
 import com.googlecode.pseudo.compiler.ast.FunctionRtype;
+import com.googlecode.pseudo.compiler.ast.Instr;
 import com.googlecode.pseudo.compiler.ast.InstrBlock;
 import com.googlecode.pseudo.compiler.ast.Node;
 import com.googlecode.pseudo.compiler.ast.Parameter;
@@ -91,7 +93,7 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
   @Override
   public Void visit(RecordDef recordDef, Void unused) {
     String name = recordDef.getId().getValue();
-    Record record = new Record(name);
+    Record record = new Record(name, recordDef);
     
     Type oldType = script.getTypeTable().register(record);
     if (oldType != null) {
@@ -135,7 +137,7 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
       return;
     }
     
-    // enter field
+    // enter fields
     Table<Type> typeTable = script.getTypeTable();
     for(com.googlecode.pseudo.compiler.ast.Field fieldNode: recordDef.getFieldStar()) {
       String fieldName = fieldNode.getId().getValue();
@@ -151,11 +153,18 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
     
     // enter init function
     RecordInit init = recordDef.getRecordInitOptional();
+    UserFunction initFunction;
     if (init != null) {
       Table<ParameterVar> parameterVarTable = getParameterVarTable(init.getParameters(), enterType, typeTable);
-      UserFunction initFunction = new UserFunction(name, parameterVarTable, PrimitiveType.VOID, init.getBlock());
-      record.setInitFunction(initFunction);
+      initFunction = new UserFunction("<init>", parameterVarTable, PrimitiveType.VOID, init.getBlock());
+    } else {
+      // create an empty init function
+      Block block = new Block(Collections.<Instr>emptyList());
+      locationMap.setLocation(block, locationMap.getLocation(recordDef));
+      
+      initFunction = new UserFunction(name, new Table<ParameterVar>(), PrimitiveType.VOID, block);
     }
+    record.setInitFunction(initFunction);
   }
   
   private void enterPendingFunctionDef(FunctionDef functionDef) {
