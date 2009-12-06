@@ -4,6 +4,7 @@ import java.dyn.CallSite;
 import java.dyn.MethodHandle;
 import java.dyn.MethodHandles;
 import java.dyn.MethodType;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,6 +49,13 @@ public class Runtimes {
       String fieldName = name.substring(14);
       return FieldAccess.bootstrapDynamicFieldSet(caller, fieldName, type);
     }
+    
+    if (name.equals("__array_get__")) {
+      return ArrayAccess.bootstrapDynamicArrayGet(caller, type);
+    }
+    if (name.equals("__array_set__")) {
+      return ArrayAccess.bootstrapDynamicArraySet(caller, type);
+    }
 
     throw new LinkageError("unknwon protocol "+name+" "+type+" asked by "+caller);
   }
@@ -75,8 +83,6 @@ public class Runtimes {
   // ----
 
   public static class Call { 
-
-
     public static boolean methodHandleTest(/*MethodHandle*/Object mh1, /*MethodHandle*/Object mh2) {
       return mh1 == mh2;
     }
@@ -413,14 +419,22 @@ public class Runtimes {
         throw new NullPointerException("receiver is null");
       
       Class<?> receiverClass = receiver.getClass();
-      Field field;
-      try {
-        field = receiverClass.getField(fieldName);
-      } catch (NoSuchFieldException e) {
-        throw new LinkageError("no field "+fieldName+" defined in record "+receiverClass.getSimpleName());
-      }
       
-      MethodHandle getter = MethodHandles.lookup().unreflectGetter(field);
+      MethodHandle getter;
+      if (receiverClass.isArray()) {
+        if (!fieldName.equals("length"))
+          throw new LinkageError("no field "+fieldName+" defined on array "+receiverClass.getSimpleName());
+        
+        getter = getLength;
+      } else {
+        Field field;
+        try {
+          field = receiverClass.getField(fieldName);
+        } catch (NoSuchFieldException e) {
+          throw new LinkageError("no field "+fieldName+" defined in record "+receiverClass.getSimpleName());
+        }
+        getter = MethodHandles.lookup().unreflectGetter(field);
+      } 
       
       callSite.setTarget(MethodHandles.guardWithTest(
           MethodHandles.insertArguments(test, 0, receiverClass),
@@ -430,20 +444,20 @@ public class Runtimes {
       return MethodHandles.invoke(getter, receiver);
     }
     
-    public static Object dynamicSetSlowPath(CallSite callSite, String fieldName, Object receiver, Object value) throws Throwable {
+    public static void dynamicSetSlowPath(CallSite callSite, String fieldName, Object receiver, Object value) throws Throwable {
       if (receiver == null)
         throw new NullPointerException("receiver is null");
       
       Class<?> receiverClass = receiver.getClass();
+
       Field field;
       try {
         field = receiverClass.getField(fieldName);
       } catch (NoSuchFieldException e) {
         throw new LinkageError("no field "+fieldName+" defined in record "+receiverClass.getSimpleName());
       }
-      
+
       MethodHandle setter = MethodHandles.lookup().unreflectSetter(field);
-      
       callSite.setTarget(MethodHandles.guardWithTest(
           MethodHandles.dropArguments(
               MethodHandles.insertArguments(test, 0, receiverClass),
@@ -451,19 +465,22 @@ public class Runtimes {
           MethodHandles.convertArguments(setter, callSite.type()),
           callSite.getTarget()));
       
-      return MethodHandles.invoke(setter, receiver, value);
+      MethodHandles.invoke(setter, receiver, value);
     }
     
     private static final MethodHandle test;
     private static final MethodHandle dynamicGetSlowPath;
     private static final MethodHandle dynamicSetSlowPath;
+    private static final MethodHandle getLength;
     static {
       test = MethodHandles.lookup().findStatic(FieldAccess.class, "test",
           MethodType.make(boolean.class, Class.class, Object.class));
       dynamicGetSlowPath = MethodHandles.lookup().findStatic(FieldAccess.class, "dynamicGetSlowPath",
           MethodType.make(Object.class, CallSite.class, String.class, Object.class));
       dynamicSetSlowPath = MethodHandles.lookup().findStatic(FieldAccess.class, "dynamicSetSlowPath",
-          MethodType.make(Object.class, CallSite.class, String.class, Object.class, Object.class));
+          MethodType.make(void.class, CallSite.class, String.class, Object.class, Object.class));
+      getLength = MethodHandles.lookup().findStatic(Array.class, "getLength",
+          MethodType.make(int.class, Object.class));
     }
     
     public static CallSite bootstrapDynamicFieldGet(Class<?> caller, String fieldName, MethodType type) {
@@ -483,6 +500,28 @@ public class Runtimes {
       target = MethodHandles.convertArguments(target, type);
       
       callSite.setTarget(target);
+      return callSite;
+    }
+  }
+  
+  public static class ArrayAccess {
+    public static CallSite bootstrapDynamicArrayGet(Class<?> caller, MethodType type) {
+      MethodHandle dynamicGet = MethodHandles.lookup().findStatic(Array.class, "get",
+          MethodType.make(Object.class, Object.class, int.class));
+      dynamicGet = MethodHandles.convertArguments(dynamicGet, type);
+      
+      CallSite callSite = new CallSite(caller, "__array_get__", type);
+      callSite.setTarget(dynamicGet);
+      return callSite;
+    }
+
+    public static CallSite bootstrapDynamicArraySet(Class<?> caller, MethodType type) {
+      MethodHandle dynamicSet = MethodHandles.lookup().findStatic(Array.class, "set",
+          MethodType.make(void.class, Object.class, int.class, Object.class));
+      dynamicSet = MethodHandles.convertArguments(dynamicSet, type);
+      
+      CallSite callSite = new CallSite(caller, "__array_set__", type);
+      callSite.setTarget(dynamicSet);
       return callSite;
     }
   }

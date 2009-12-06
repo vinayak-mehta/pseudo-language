@@ -1,0 +1,5 @@
+{
+  b = new int[3]
+  b[0] = 3
+  print b[0]
+}

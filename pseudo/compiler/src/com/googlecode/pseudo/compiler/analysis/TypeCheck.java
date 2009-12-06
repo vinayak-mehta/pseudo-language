@@ -63,7 +63,6 @@ import com.googlecode.pseudo.compiler.ast.FuncallId;
 import com.googlecode.pseudo.compiler.ast.FuncallPrimary;
 import com.googlecode.pseudo.compiler.ast.IdToken;
 import com.googlecode.pseudo.compiler.ast.Instr;
-import com.googlecode.pseudo.compiler.ast.InstrPrint;
 import com.googlecode.pseudo.compiler.ast.InstrReturn;
 import com.googlecode.pseudo.compiler.ast.InstrScan;
 import com.googlecode.pseudo.compiler.ast.Lhs;
@@ -109,6 +108,12 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
   
   public Set<LhsId> getAutoDeclarationSet() {
     return autoDeclarationSet;
+  }
+  
+  // --- dimension helper
+  
+  public int dimension(DimsOpt dimsOpt) {
+    return enterType.dimension(dimsOpt);
   }
   
   // ---
@@ -644,7 +649,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
       arrayIndexCheck(dimExpr.getExpr(), typeCheckEnv);
     }
     
-    int dimension = dimExprs.size() + enterType.dimension(dimsOpt);
+    int dimension = dimExprs.size() + dimension(dimsOpt);
     return enterType.arrayType(type, dimension);
   }
   

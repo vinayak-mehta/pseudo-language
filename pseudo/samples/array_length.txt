@@ -1,0 +1,19 @@
+record List {
+  int length
+} 
+
+{
+  print "enter a boolean"
+  scan b
+  
+  List l = new List()
+  l.length = 3
+  any o
+  if (b) {
+    o = l
+  } else {
+    o = ARGS
+  }
+
+  print o.length
+}
