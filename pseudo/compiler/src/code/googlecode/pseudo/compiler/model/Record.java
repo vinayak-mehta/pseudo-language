@@ -4,17 +4,20 @@ import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
 
 import com.googlecode.pseudo.compiler.Scopes.Table;
 import com.googlecode.pseudo.compiler.Types.ReferenceType;
+import com.googlecode.pseudo.compiler.ast.RecordDef;
 
 
 public class Record extends ReferenceType {
   private final String name;
+  private final RecordDef recordDef;
   private final Table<Field> fieldTable =
     new Table<Field>();
   
   private UserFunction initFunction; 
   
-  public Record(String name) {
+  public Record(String name, RecordDef recordDef) {
     this.name = name;
+    this.recordDef = recordDef;
   }
   
   @Override
@@ -35,11 +38,15 @@ public class Record extends ReferenceType {
     return name;
   }
   
+  public RecordDef getRecordDef() {
+    return recordDef;
+  }
+  
   public Table<Field> getFieldTable() {
     return fieldTable;
   }
   
-  public /*maybenull*/ UserFunction getInitFunction() {
+  public UserFunction getInitFunction() {
     return initFunction;
   }
   public void setInitFunction(UserFunction initFunction) {
