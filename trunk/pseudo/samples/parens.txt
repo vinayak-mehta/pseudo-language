@@ -1,0 +1,14 @@
+record Parens {
+  double p
+
+  init(u) {
+    p = u
+  }
+}
+
+{
+  a = ( 2+3 )
+  p = new Parens(2.0)
+  print (p)
+  print (p).p
+}

@@ -217,7 +217,9 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     typeCheck(init.getBlock(), new TypeCheckEnv(localVarScope, PrimitiveType.VOID));
     
     // type check fields
-    typeCheckAllSubNodes(record.getRecordDef(), null);
+    for(com.googlecode.pseudo.compiler.ast.Field field:record.getRecordDef().getFieldStar()) {
+      typeCheck(field, null);
+    }
   }
   
   private void typeCheck(UserFunction function) {
@@ -486,7 +488,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     
     @Override
     public Var visit(FieldAccessPrimary field_access_primary, TypeCheckEnv typeCheckEnv) {
-      Type primaryType = typeCheck(field_access_primary, typeCheckEnv);
+      Type primaryType = typeCheck(field_access_primary.getPrimary(), typeCheckEnv);
       if (primaryType == null) { // error recovery
         return null;
       }

@@ -94,6 +94,7 @@ import com.googlecode.pseudo.compiler.ast.PrimaryArrayAccess;
 import com.googlecode.pseudo.compiler.ast.PrimaryArrayCreation;
 import com.googlecode.pseudo.compiler.ast.PrimaryFieldAccess;
 import com.googlecode.pseudo.compiler.ast.PrimaryFuncall;
+import com.googlecode.pseudo.compiler.ast.PrimaryParens;
 import com.googlecode.pseudo.compiler.ast.PrimaryPrimaryNoArrayCreation;
 import com.googlecode.pseudo.compiler.ast.RecordDef;
 import com.googlecode.pseudo.compiler.ast.RecordInit;
@@ -452,17 +453,8 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     memberBuffer.append(main);
     memberBuffer.appendList(functionLiteralBuffer);
     
-    JCFieldAccess runtimesClass = maker(start).Select(qualifiedIdentifier(start, RUNTIME_CLASS), names._class);
-    JCStatement registerBootstrapInstr = maker(start).Exec(
-        maker(start).Apply(List.<JCExpression>nil(),
-            maker(start).Select(qualifiedIdentifier(start, "java.dyn.Linkage"),
-                nameFromString("registerBootstrapMethod")),
-                           List.<JCExpression>of(runtimesClass,
-                               maker(start).Literal(
-                               TypeTags.CLASS,
-                               "bootstrapMethod"))));
-    JCBlock staticBlock = maker(start).Block(Flags.STATIC, List.of(registerBootstrapInstr));
-    memberBuffer.append(staticBlock);
+    
+    memberBuffer.append(genStaticBlock(start));
     
     JCClassDecl topLevelClass = maker(start).ClassDef(modifiers(start, 0),
         nameFromString(script.getScriptName()),
@@ -474,7 +466,18 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     return maker(start).TopLevel(List.<JCAnnotation>nil(), null, List.<JCTree>of(topLevelClass));
   }
   
-  
+  private JCBlock genStaticBlock(Node node) {
+    JCFieldAccess runtimesClass = maker(node).Select(qualifiedIdentifier(node, RUNTIME_CLASS), names._class);
+    JCStatement registerBootstrapInstr = maker(node).Exec(
+        maker(node).Apply(List.<JCExpression>nil(),
+            maker(node).Select(qualifiedIdentifier(node, "java.dyn.Linkage"),
+                nameFromString("registerBootstrapMethod")),
+                           List.<JCExpression>of(runtimesClass,
+                               maker(node).Literal(
+                               TypeTags.CLASS,
+                               "bootstrapMethod"))));
+    return maker(node).Block(Flags.STATIC, List.of(registerBootstrapInstr));
+  }
   
   // ---
   
@@ -511,6 +514,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       initFunction = genUserFunction(recordDef, true, record.getInitFunction(), null, null, genEnv);
     } else {
       initFunction = genUserFunction(initOptional, true, record.getInitFunction(), initOptional.getParameters(), null, genEnv);
+      members = members.prepend(genStaticBlock(recordDef));
     }
     members = members.prepend(initFunction);
     
@@ -590,7 +594,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   }
   @Override
   public JCTree visit(InstrAssignation instrAssignation, GenEnv genEnv) {
-    return maker.Exec(gen(instrAssignation.getAssignation(), JCExpression.class, genEnv));
+    return gen(instrAssignation.getAssignation(), genEnv);
   }
   
   @Override
@@ -818,7 +822,8 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     }
     
     // lhs nodes will do the assignation
-    return genLhs(lhsNode, new LhsGenEnv(genEnv.getExpectedReturnType(), assignation, rhs));
+    return maker(assignation).Exec(
+        genLhs(lhsNode, new LhsGenEnv(genEnv.getExpectedReturnType(), assignation, rhs)));
   }
   
   
@@ -847,7 +852,8 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
         JCIdent ident = maker(lhsId).Ident(nameFromString(name));
         
         Node assignation = genEnv.assignation;
-        return maker(assignation).Assign(ident, retype(lhsId, assignation.nodeList().get(0), genEnv.rhs));
+        Node expr = assignation.nodeList().get(assignation.nodeList().size() - 1);
+        return maker(assignation).Assign(ident, retype(lhsId, expr, genEnv.rhs));
       }
     
       @Override
@@ -908,7 +914,8 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
         args = List.of(indexable, index);
         protocol = "__array_get__";
       } else {
-        args = List.of(indexable, index, retype(node, assignation.nodeList().get(0), rhs));
+        Node expr = assignation.nodeList().get(assignation.nodeList().size() - 1);
+        args = List.of(indexable, index, retype(node, expr, rhs));
         protocol = "__array_set__";
       }
       
@@ -961,7 +968,8 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
         args = List.of(select);
         protocol = "__field_get__:";
       } else {
-        args = List.of(select, retype(node, assignation.nodeList().get(0), rhs));
+        Node expr = assignation.nodeList().get(assignation.nodeList().size() - 1);
+        args = List.of(select, retype(node, expr, rhs));
         protocol = "__field_set__:";
       }
       
@@ -988,6 +996,11 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     Primary primary = fieldAccessPrimary.getPrimary();
     JCExpression select = gen(primary, JCExpression.class, genEnv);
     return genFieldAccess(fieldAccessPrimary, select, fieldAccessPrimary.getId().getValue(), null, null, genEnv);
+  }
+  
+  @Override
+  public JCTree visit(PrimaryParens primaryParens, GenEnv genEnv) {
+   return gen(primaryParens.getExpr(), genEnv);
   }
   
   
