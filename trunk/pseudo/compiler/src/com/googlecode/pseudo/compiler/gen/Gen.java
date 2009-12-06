@@ -49,6 +49,7 @@ import com.googlecode.pseudo.compiler.ast.ExprPrimary;
 import com.googlecode.pseudo.compiler.ast.ExprStringLiteral;
 import com.googlecode.pseudo.compiler.ast.ExprValueLiteral;
 import com.googlecode.pseudo.compiler.ast.Field;
+import com.googlecode.pseudo.compiler.ast.FieldAccess;
 import com.googlecode.pseudo.compiler.ast.FieldAccessId;
 import com.googlecode.pseudo.compiler.ast.FieldAccessPrimary;
 import com.googlecode.pseudo.compiler.ast.ForLoopIncr;
@@ -119,6 +120,7 @@ import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
@@ -292,7 +294,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   
   // -- dynamic cast
   
-  private JCExpression retype(Node lhsNode, Node rhsNode, JCExpression expr) {
+  JCExpression retype(Node lhsNode, Node rhsNode, JCExpression expr) {
     Type lhsType = typeCheck.getTypeMap().get(lhsNode);
     Type rhsType = typeCheck.getTypeMap().get(rhsNode);
     
@@ -333,7 +335,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     return node.accept(this, genEnv);
   }
   
-  private <T extends JCTree> T gen(Node node, Class<T> tClass, GenEnv genEnv) {
+  <T extends JCTree> T gen(Node node, Class<T> tClass, GenEnv genEnv) {
     return tClass.cast(gen(node, genEnv));
   }
   
@@ -793,8 +795,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(Assignation assignation, GenEnv genEnv) {
     Lhs lhsNode = assignation.getLhs();
-    JCExpression lhs = gen(lhsNode, JCExpression.class, genEnv);
-    Type lhsType = typeCheck.getTypeMap().get(lhs);
+    Type lhsType = typeCheck.getTypeMap().get(lhsNode);
     JCExpression rhs = gen(assignation.getExpr(), JCExpression.class, new GenEnv(lhsType));
     
     // declaration ?
@@ -806,52 +807,93 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
           rhs);
     }
     
-    // assignation (assignation is a statement, not a expression)
-    return maker(assignation).Exec(
-        maker(assignation).Assign(lhs, retype(lhsNode, assignation.getExpr(), rhs)));
+    JCExpression lhs = genLhs(lhsNode, new LhsGenEnv(genEnv.getExpectedReturnType(), assignation, rhs));
+    return maker(assignation).Exec(lhs);
   }
   
   
   // --- lhs
   
-  @Override
-  public JCTree visit(LhsId lhsId, GenEnv genEnv) {
-    String name = lhsId.getId().getValue();
-    return maker(lhsId).Ident(nameFromString(name));
+  JCExpression genLhs(Node node, LhsGenEnv genEnv) {
+    return (JCExpression)node.accept(lhsVisitor, genEnv);
   }
   
+  static class LhsGenEnv extends GenEnv {
+    final JCExpression rhs;
+    final Assignation assignation;
+    
+    public LhsGenEnv(Type expectedReturnType, Assignation assignation, JCExpression rhs) {
+      super(expectedReturnType);
+      this.assignation = assignation;
+      this.rhs = rhs;
+    }
+  }
+  
+  private final Visitor<JCTree, LhsGenEnv, RuntimeException> lhsVisitor =
+    new Visitor<JCTree, LhsGenEnv, RuntimeException>() {
+      @Override
+      public JCTree visit(LhsId lhsId, LhsGenEnv genEnv) {
+        String name = lhsId.getId().getValue();
+        JCIdent ident = maker(lhsId).Ident(nameFromString(name));
+        
+        Assignation assignation = genEnv.assignation;
+        return maker(assignation).Exec(
+            maker(assignation).Assign(ident, retype(lhsId, assignation.getExpr(), genEnv.rhs)));
+      }
+    
+      @Override
+      public JCTree visit(LhsFieldAccess lhs_field_access, LhsGenEnv genEnv) {
+         return genLhs(lhs_field_access.getFieldAccess(), genEnv);
+      }
+      
+      @Override
+      public JCTree visit(FieldAccessId fieldAccessId, LhsGenEnv genEnv) {
+        String name = fieldAccessId.getId().getValue();
+        JCIdent ident = maker(fieldAccessId.getId()).Ident(nameFromString(name));
+        return genFieldAccess(fieldAccessId, ident, fieldAccessId.getId2().getValue(), genEnv.assignation, genEnv.rhs, genEnv);
+      }
+      
+      @Override
+      public JCTree visit(FieldAccessPrimary fieldAccessPrimary, LhsGenEnv genEnv) {
+        JCExpression primary = gen(fieldAccessPrimary.getPrimary(), JCExpression.class, genEnv);
+        return genFieldAccess(fieldAccessPrimary, primary, fieldAccessPrimary.getId().getValue(), genEnv.assignation, genEnv.rhs, genEnv);
+      }
+    
+      @Override
+      public JCTree visit(LhsArrayAccess lhsArrayAccess, LhsGenEnv genEnv) {
+        throw new UnsupportedOperationException();
+      }
+      
+      //...
+  };
+  
+  
   @Override
-  public JCTree visit(LhsArrayAccess lhsArrayAccess, GenEnv genEnv) {
-    return gen(lhsArrayAccess.getArrayAccess(), genEnv);
+  public JCTree visit(PrimaryFieldAccess primaryFieldAccess, GenEnv genEnv) {
+    return gen(primaryFieldAccess.getFieldAccess(), genEnv);
   }
   @Override
   public JCTree visit(PrimaryArrayAccess primaryArrayAccess, GenEnv genEnv) {
     return gen(primaryArrayAccess.getArrayAccess(), genEnv);
   }
+  
   @Override
   public JCTree visit(ArrayAccessId arrayAccessId, GenEnv genEnv) {
+    //FIXME
     JCExpression array = gen(arrayAccessId.getId(), JCExpression.class, genEnv);
     JCExpression index = gen(arrayAccessId.getExpr(), JCExpression.class, new GenEnv(PrimitiveType.INT));
     return maker(arrayAccessId).Indexed(array, index);
   }
   @Override
   public JCTree visit(ArrayAccessPrimary arrayAccessPrimary, GenEnv genEnv) {
+    //FIXME
     JCExpression array = gen(arrayAccessPrimary.getPrimaryNoArrayCreation(), JCExpression.class, genEnv);
     JCExpression index = gen(arrayAccessPrimary.getExpr(), JCExpression.class, new GenEnv(PrimitiveType.INT));
     return maker(arrayAccessPrimary).Indexed(array, index);
   }
   
-  @Override
-  public JCTree visit(LhsFieldAccess lhsFieldAccess, GenEnv genEnv) {
-    return gen(lhsFieldAccess.getFieldAccess(), genEnv);
-  }
-  @Override
-  public JCTree visit(PrimaryFieldAccess primaryFieldAccess, GenEnv genEnv) {
-    return gen(primaryFieldAccess.getFieldAccess(), genEnv);
-  }
   
-  
-  private JCTree genFieldAccess(Node node, JCExpression select, String fieldName, GenEnv genEnv) {
+  JCTree genFieldAccess(Node node, JCExpression select, String fieldName, /*maybenull*/Assignation assignation, /*maybenull*/JCExpression rhs, GenEnv genEnv) {
     Type type = typeCheck.getTypeMap().get(node);
     if (type == PrimitiveType.ANY) {
       
@@ -863,26 +905,39 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
         typeCheck.getTypeMap().put(node, type);
       }
       
-      List<JCExpression> args = List.of(select);
+      String protocol;
+      List<JCExpression> args;
+      if (rhs == null) {
+        args = List.of(select);
+        protocol = "__field_get__:";
+      } else {
+        args = List.of(select, retype(node, assignation.getExpr(), rhs));
+        protocol = "__field_set__:";
+      }
       
-      JCFieldAccess method = maker(node).Select(qualifiedIdentifier(node, "java.dyn.InvokeDynamic"), nameFromString("__field_access__:"+fieldName));
+      JCFieldAccess method = maker(node).Select(qualifiedIdentifier(node, "java.dyn.InvokeDynamic"), nameFromString(protocol+fieldName));
       return maker(node).Apply(List.of(asType(node, type)), method, args); 
     }
-    return maker(node).Select(select, nameFromString(fieldName));
+    
+    JCExpression lhs = maker(node).Select(select, nameFromString(fieldName));
+    if (rhs == null)
+      return lhs;
+    
+    return maker(node).Assign(lhs, retype(node, assignation.getExpr(), rhs));
   }
   
   @Override
   public JCTree visit(FieldAccessId fieldAccessId, GenEnv genEnv) {
     IdToken id = fieldAccessId.getId();
     JCExpression select = identifier(id, id.getValue());
-    return genFieldAccess(fieldAccessId, select, fieldAccessId.getId2().getValue(), genEnv);
+    return genFieldAccess(fieldAccessId, select, fieldAccessId.getId2().getValue(), null, null, genEnv);
   }
   
   @Override
   public JCTree visit(FieldAccessPrimary fieldAccessPrimary, GenEnv genEnv) {
     Primary primary = fieldAccessPrimary.getPrimary();
     JCExpression select = gen(primary, JCExpression.class, genEnv);
-    return genFieldAccess(fieldAccessPrimary, select, fieldAccessPrimary.getId().getValue(), genEnv);
+    return genFieldAccess(fieldAccessPrimary, select, fieldAccessPrimary.getId().getValue(), null, null, genEnv);
   }
   
   
