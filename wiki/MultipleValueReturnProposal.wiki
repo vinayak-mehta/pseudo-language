@@ -31,9 +31,8 @@ multiple values.
   a, b = 2, 3
 }}}
 
-= Multiple assignations with some variables omitted = 
+=== Multiple assignations with some variables omitted ===
 
 {{{
    _,b = f(3)
 }}}
-
