@@ -17,7 +17,7 @@ public class Invocation {
   public FunType getFunType() {
     return funType;
   }
-  public UserFunction getFunction() {
+  public /*maybenull*/UserFunction getFunction() {
     return function;
   }
 }

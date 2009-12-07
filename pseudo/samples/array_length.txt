@@ -3,11 +3,11 @@ record List {
 } 
 
 {
-  print "enter a boolean"
+  print "enter a boolean (true or false)"
   scan b
   
   List l = new List()
-  l.length = 3
+  l.length = 3 + 2
   any o
   if (b) {
     o = l

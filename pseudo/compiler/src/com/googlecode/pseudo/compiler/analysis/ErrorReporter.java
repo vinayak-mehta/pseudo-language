@@ -22,8 +22,8 @@ public interface ErrorReporter {
     typecheck_call_arguments ("incompatible argument types (infered type %s, expected type %s)"), 
     typecheck_call_not_function ("can't use the function syntax on an expression that isn't a function type (infered type %s)"),
     typecheck_var_not_record_or_array ("can't use dot syntax on an expression that is neither a record nor an array (infered type %s)"),
-    type_cherck_array_index ("incompatible expression type with an array index (infered type %s, expected type int)"),
-    type_cherck_condition ("incompatible expression type with a condition (infered type %s, expected type boolean)"),
+    type_check_array_index ("incompatible expression type with an array index (infered type %s, expected type int)"),
+    type_check_condition ("incompatible expression type with a condition (infered type %s, expected type boolean)"),
     type_check_operator ("no operator %s exist with the given signature %s"),
     type_check_not_testable ("type of the left operand %s is not testable with type of the right operand %s"),
     ;
