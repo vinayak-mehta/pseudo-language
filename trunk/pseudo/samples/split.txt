@@ -1,0 +1,84 @@
+record Link {
+  any element
+  Link next
+
+  init(any e, Link n) {
+    element = e
+    next = n
+  }
+}
+
+def add(Link l, any element):Link {
+  return new Link(element, l)
+}
+
+def display(Link link):void {
+  for(Link l=link; l!= null; l=l.next) {
+    print l.element
+  } 
+}
+
+record MinMax {
+  Link min
+  Link max
+
+  init(Link mn, Link mx) {
+    min = mn
+    max = mx
+  }
+}
+
+def split(Link link, any pivot):MinMax {
+  Link min = null
+  Link max = null
+  Link first_min = null
+  Link first_max = null
+  
+  for(Link l=link; l!= null; l=l.next) {
+    if (l.element < pivot) {
+      if (min == null) {
+        first_min = l
+      } else {
+        min.next = l
+      }
+      min = l
+    } else {
+      if (max == null) {
+        first_max = l
+      } else {
+        max.next = l
+      }
+      max = l
+    }  
+  }
+  if (min != null) {
+    min.next = null
+  }
+  if (max != null) {
+    max.next = null
+  }
+
+  return new MinMax(first_min, first_max)
+}
+
+{
+  print "enter ten integers"
+  
+  Link l = null
+  for(int i=0; i<10; i=i+1) {
+    int value
+    scan value
+    l = add(l, value)
+  }
+
+  print "enter the pivot"
+  int privot
+  scan pivot
+
+  MinMax min_max = split(l, pivot)
+
+  print "min"
+  display(min_max.min)
+  print "max"
+  display(min_max.max)
+}

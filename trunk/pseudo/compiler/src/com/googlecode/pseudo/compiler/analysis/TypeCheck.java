@@ -147,8 +147,9 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
       }
     }
     
-    if (type != null)
+    if (type != null) {
       return type;
+    }
     throw new IllegalStateException();
   }
   
@@ -157,7 +158,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
   void arrayIndexCheck(Expr expr, TypeCheckEnv typeCheckEnv) {
     Type exprType = typeCheck(expr, typeCheckEnv);
     if (!(Types.isAssignableFrom(Types.PrimitiveType.INT, exprType))) {
-      errorReporter.error(ErrorKind.type_cherck_array_index, expr, exprType);
+      errorReporter.error(ErrorKind.type_check_array_index, expr, exprType);
       // error recovery
     }
   }
@@ -165,7 +166,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
   void conditionCheck(Expr expr, TypeCheckEnv typeCheckEnv) {
     Type exprType = typeCheck(expr, typeCheckEnv);
     if (!(Types.isAssignableFrom(Types.PrimitiveType.BOOLEAN, exprType))) {
-      errorReporter.error(ErrorKind.type_cherck_condition, expr, exprType);
+      errorReporter.error(ErrorKind.type_check_condition, expr, exprType);
       // error recovery
     }
   }
@@ -357,6 +358,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
       typeCheck(incrOptional, typeCheckEnv);
     }
     
+    typeCheck(loopFor.getBlock(), typeCheckEnv);
     return null;
   }
   
