@@ -1,0 +1,32 @@
+record Foo {
+}
+
+{
+  anyBoolean = true
+  anyChar = 'A'
+  anyInt = 3
+  anyDouble = 7.0
+  anyObject = new Foo()
+
+  boolean vBoolean
+  char vChar
+  int vInt
+  double vDouble
+  Foo vObject
+
+  vBoolean = anyBoolean
+
+  vChar = anyChar
+  vInt = anyChar
+  vDouble = anyChar
+
+  vChar = anyInt
+  vInt = anyInt
+  vDouble = anyInt
+
+  vChar = anyDouble
+  vInt = anyDouble
+  vDouble = anyDouble
+
+  vObject = anyObject
+}

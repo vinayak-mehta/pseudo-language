@@ -77,19 +77,80 @@ public class Runtimes {
 
 
   public static class Cast {
-    public static Object dynamicCastSlowPath(Object value) {
+    public static boolean castToBoolean(Object value) {
+      return (Boolean)value;
+    }
+    public static char castToChar(Object value) {
+      Class<?> clazz = value.getClass();
+      if (clazz == Character.class)
+        return (Character)value;
+      if (clazz == Integer.class)
+        return (char)(int)(Integer)value;
+      if (clazz == Double.class)
+        return (char)(double)(Double)value;
+      throw new ClassCastException(clazz.getName()+" can't be cast to char");
+    }
+    public static int castToInt(Object value) {
+      Class<?> clazz = value.getClass();
+      if (clazz == Integer.class)
+        return (Integer)value;
+      if (clazz == Double.class)
+        return (int)(double)(Double)value;
+      if (clazz == Character.class)
+        return (Character)value;
+      throw new ClassCastException(clazz.getName()+" can't be cast to int");
+    }
+    public static double castToDouble(Object value) {
+      Class<?> clazz = value.getClass();
+      if (clazz == Double.class)
+        return (Double)value;
+      if (clazz == Integer.class)
+        return (Integer)value;
+      if (clazz == Character.class)
+        return (Character)value;
+      throw new ClassCastException(clazz.getName()+" can't be cast to double");
+    }
+    public static Object castToObject(Object value) {
       return value;
     }
 
-    private static final MethodHandle dynamicCastSlowPath;
+    private static final MethodHandle castToBoolean;
+    private static final MethodHandle castToChar;
+    private static final MethodHandle castToInt;
+    private static final MethodHandle castToDouble;
+    private static final MethodHandle castToObject;
     static {
-      dynamicCastSlowPath = MethodHandles.lookup().findStatic(Cast.class, "dynamicCastSlowPath",
+      castToBoolean = MethodHandles.lookup().findStatic(Cast.class, "castToBoolean",
+          MethodType.make(boolean.class, Object.class));
+      castToChar = MethodHandles.lookup().findStatic(Cast.class, "castToChar",
+          MethodType.make(char.class, Object.class));
+      castToInt = MethodHandles.lookup().findStatic(Cast.class, "castToInt",
+          MethodType.make(int.class, Object.class));
+      castToDouble = MethodHandles.lookup().findStatic(Cast.class, "castToDouble",
+          MethodType.make(double.class, Object.class));
+      castToObject = MethodHandles.lookup().findStatic(Cast.class, "castToObject",
           MethodType.make(Object.class, Object.class));
     }
 
+    private static MethodHandle getMethodHandle(Class<?> returnType) {
+      if (returnType == boolean.class)
+        return castToBoolean;
+      if (returnType == int.class)
+        return castToInt;
+      if (returnType == double.class)
+        return castToDouble;
+      if (returnType == char.class)
+        return castToChar;
+      return castToObject;
+    }
+    
     static CallSite bootstrapDynamicCast(Class<?> caller, MethodType type) {
+      MethodHandle target = getMethodHandle(type.returnType());
+      if (type != target.type()) {
+        target = MethodHandles.convertArguments(target, type);
+      }
       CallSite callSite = new CallSite(caller, "__cast__", type);
-      callSite.setTarget(MethodHandles.convertArguments(dynamicCastSlowPath, type));
+      callSite.setTarget(target);
       return callSite;
     }
 

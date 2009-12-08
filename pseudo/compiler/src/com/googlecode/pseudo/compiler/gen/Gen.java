@@ -1182,14 +1182,14 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   public JCTree visit(ExprBooleanLiteral exprBooleanLiteral, GenEnv unused) {
     return maker(exprBooleanLiteral).Literal(
         TypeTags.BOOLEAN,
-        exprBooleanLiteral.getBooleanLiteral().getValue());
+        exprBooleanLiteral.getBooleanLiteral().getValue()?1:0);
   }
   
   @Override
   public JCTree visit(ExprCharLiteral exprCharLiteral, GenEnv unused) {
     return maker(exprCharLiteral).Literal(
         TypeTags.CHAR,
-        exprCharLiteral.getCharLiteral().getValue());
+        (int)exprCharLiteral.getCharLiteral().getValue());
   }
   
   @Override
