@@ -19,6 +19,7 @@ import com.googlecode.pseudo.compiler.ast.Funtype;
 import com.googlecode.pseudo.compiler.ast.Node;
 import com.googlecode.pseudo.compiler.ast.PrimitiveTypeAny;
 import com.googlecode.pseudo.compiler.ast.PrimitiveTypeBoolean;
+import com.googlecode.pseudo.compiler.ast.PrimitiveTypeChar;
 import com.googlecode.pseudo.compiler.ast.PrimitiveTypeDouble;
 import com.googlecode.pseudo.compiler.ast.PrimitiveTypeInt;
 import com.googlecode.pseudo.compiler.ast.PrimitiveTypeString;
@@ -73,6 +74,10 @@ public class EnterType extends Visitor<Type, Table<Type>, RuntimeException> {
   @Override
   public Type visit(PrimitiveTypeBoolean primitiveTypeBoolean, Table<Type> typeTable) {
     return PrimitiveType.BOOLEAN;
+  }
+  @Override
+  public Type visit(PrimitiveTypeChar primitiveTypeChar, Table<Type> typeTable) {
+    return PrimitiveType.CHAR;
   }
   @Override
   public Type visit(PrimitiveTypeInt primitive_type_int, Table<Type> typeTable) {
