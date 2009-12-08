@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import code.googlecode.pseudo.compiler.model.Constant;
 import code.googlecode.pseudo.compiler.model.Field;
 import code.googlecode.pseudo.compiler.model.Operators;
 import code.googlecode.pseudo.compiler.model.Record;
@@ -19,6 +20,7 @@ import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
 import code.googlecode.pseudo.compiler.model.Vars.AnyVar;
 import code.googlecode.pseudo.compiler.model.Vars.ArrayVar;
 import code.googlecode.pseudo.compiler.model.Vars.LocalVar;
+import code.googlecode.pseudo.compiler.model.Vars.MemberVar;
 import code.googlecode.pseudo.compiler.model.Vars.ParameterVar;
 
 import com.googlecode.pseudo.compiler.Type;
@@ -82,7 +84,7 @@ import com.googlecode.pseudo.compiler.parser.PseudoProductionEnum;
 
 public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
   private final Script script;
-  private final HashMap<Node, Type> typeMap =
+  final HashMap<Node, Type> typeMap =
     new HashMap<Node, Type>();
   final HashSet<LhsId> autoDeclarationSet =
     new HashSet<LhsId>();
@@ -178,9 +180,13 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
   Var varId(IdToken token, boolean allowNull, TypeCheckEnv typeCheckEnv) {
     String name = token.getValue();
     Var var = typeCheckEnv.getVarScope().lookup(name);
-    if (var == null && !allowNull) {
-      errorReporter.error(ErrorKind.unknown_var, token, name);
-      // error recovery
+    if (var == null) {
+      if (!allowNull) {
+        errorReporter.error(ErrorKind.unknown_var, token, name);
+        // error recovery
+      }
+    } else {
+      typeMap.put(token, var.getType());
     }
     return var;
   }
@@ -197,22 +203,33 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
   
   public void typeCheck() {
     for(Record record:script.getRecordTable().items()) {
-      typeCheck(record);
+      typeCheckMember(record);
     }
     
-    for(UserFunction function:script.getFunctionScope().getTable().items()) {
-      typeCheck(function);
+    // typecheck constants
+    // only above constants are available for a given constant
+    Scope<? extends MemberVar, ?> functionScope = script.getGlobalScope().getParent();
+    Scope<MemberVar, Constant> constantScope = new Scope<MemberVar, Constant>(
+        new Table<Constant>(), functionScope);
+    for(Constant constant:script.getConstantTable().items()) {
+      typeCheckMember(constant, constantScope);
+      constantScope.register(constant);
     }
     
-    typeCheck(script.getMainBlock());
+    // typecheck functions
+    for(UserFunction function:script.getFunctionTable().items()) {
+      typeCheckMember(function);
+    }
+    
+    typeCheckMember(script.getMainBlock());
   }
   
-  private void typeCheck(Record record) {
+  private void typeCheckMember(Record record) {
     // typecheck init block
     UserFunction init = record.getInitFunction();
     
-    // scope: localVar -> parameter -> field -> function -> builtin 
-    Scope<Var,Field> fieldScope = new Scope<Var,Field>(record.getFieldTable(), script.getFunctionScope());
+    // scope: localVar -> parameter -> field -> constant -> function 
+    Scope<Var,Field> fieldScope = new Scope<Var,Field>(record.getFieldTable(), script.getGlobalScope());
     Scope<Var,ParameterVar> parameterVarScope = new Scope<Var,ParameterVar>(init.getParameterTable(), fieldScope);
     Scope<Var,LocalVar> localVarScope = new Scope<Var,LocalVar>(new Table<LocalVar>(), parameterVarScope);
     typeCheck(init.getBlock(), new TypeCheckEnv(localVarScope, PrimitiveType.VOID));
@@ -223,23 +240,32 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     }
   }
   
-  private void typeCheck(UserFunction function) {
-    // scope: localVar -> parameter -> function -> builtin
-    Scope<Var,ParameterVar> parameterVarScope = new Scope<Var,ParameterVar>(function.getParameterTable(), script.getFunctionScope());
+  private void typeCheckMember(Constant constant, Scope<MemberVar, Constant> constantVarScope) {
+    // scope: localVar -> function
+    Scope<Var,LocalVar> localVarScope = new Scope<Var,LocalVar>(new Table<LocalVar>(), constantVarScope);
+    Type type = typeCheck(constant.getConstDef().getExpr(), new TypeCheckEnv(localVarScope, null));
+    constant.setType(type);
+  }
+  
+  private void typeCheckMember(UserFunction function) {
+    // scope: localVar -> parameter -> constant -> function
+    Scope<Var,ParameterVar> parameterVarScope = new Scope<Var,ParameterVar>(function.getParameterTable(), script.getGlobalScope());
     Scope<Var,LocalVar> localVarScope = new Scope<Var,LocalVar>(new Table<LocalVar>(), parameterVarScope);
     
     typeCheck(function.getBlock(), new TypeCheckEnv(localVarScope, function.getType().getReturnType()));
   }
   
-  private void typeCheck(Block mainBlock) {
-    // scope: localVar -> function -> builtin
-    Scope<Var,LocalVar> localVarScope = new Scope<Var,LocalVar>(new Table<LocalVar>(), script.getFunctionScope());
+  private void typeCheckMember(Block mainBlock) {
+    // scope: localVar -> member
+    Scope<Var,LocalVar> localVarScope = new Scope<Var,LocalVar>(new Table<LocalVar>(), script.getGlobalScope());
     
     // register a fake parameter ARGS
     localVarScope.register(new ParameterVar(new ArrayType(PrimitiveType.STRING), "ARGS"));
     
     typeCheck(mainBlock, new TypeCheckEnv(localVarScope, PrimitiveType.VOID));
   }
+  
+  
   
   @Override
   public Type visit(com.googlecode.pseudo.compiler.ast.Field fieldNode, TypeCheckEnv shouldBeNull) {
@@ -433,6 +459,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
         // unknown var --> create a new one with type any
         LocalVar newVar = new LocalVar(PrimitiveType.ANY, lhs_id.getId().getValue());
         typeCheckEnv.getVarScope().register(newVar);
+        typeMap.put(lhs_id.getId(), PrimitiveType.ANY);
         var = newVar;
         
         // mark it as auto-declaration for gen pass
@@ -716,7 +743,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     Table<ParameterVar> parameterVarTable = Enter.getParameterVarTable(exprLambda.getParameters(), enterType, script.getTypeTable());
     
     // scope: localVar -> parameter -> function -> builtin
-    Scope<Var,ParameterVar> parameterScope = new Scope<Var, ParameterVar>(parameterVarTable, script.getFunctionScope());
+    Scope<Var,ParameterVar> parameterScope = new Scope<Var, ParameterVar>(parameterVarTable, script.getGlobalScope());
     Scope<Var,LocalVar> lambdaScope = new Scope<Var, LocalVar>(new Table<LocalVar>(), parameterScope);
     
     Expr expr = exprLambda.getExpr();

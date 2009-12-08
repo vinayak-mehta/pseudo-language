@@ -2,8 +2,8 @@ package code.googlecode.pseudo.compiler.model;
 
 import java.util.ArrayList;
 
-import code.googlecode.pseudo.compiler.model.Functions.NamedFunction;
 import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
+import code.googlecode.pseudo.compiler.model.Vars.MemberVar;
 
 import com.googlecode.pseudo.compiler.Type;
 import com.googlecode.pseudo.compiler.Scopes.Scope;
@@ -17,9 +17,12 @@ public class Script {
     new Table<Type>();
   private final Table<Record> recordScope =
     new Table<Record>();
-  private final Scope<NamedFunction, UserFunction> functionScope =
-    new Scope<NamedFunction, UserFunction>(
-      new Table<UserFunction>(), null);
+  private final Table<UserFunction> functionTable =
+    new Table<UserFunction>();
+  private final Table<Constant> constantTable =
+    new Table<Constant>();
+  
+  Scope<MemberVar, ? extends MemberVar> globalScope;
   
   private final Block mainBlock =
     new Block(new ArrayList<Instr>());
@@ -38,8 +41,18 @@ public class Script {
   public Table<Record> getRecordTable() {
     return recordScope;
   }
-  public Scope<NamedFunction, UserFunction> getFunctionScope() {
-    return functionScope;
+  public Table<UserFunction> getFunctionTable() {
+    return functionTable;
+  }
+  public Table<Constant> getConstantTable() {
+    return constantTable;
+  }
+  
+  public Scope<MemberVar, ? extends MemberVar> getGlobalScope() {
+    return globalScope;
+  }
+  public void setGlobalScope(Scope<MemberVar, ? extends MemberVar> memberVarScope) {
+    this.globalScope = memberVarScope;
   }
   
   public Block getMainBlock() {

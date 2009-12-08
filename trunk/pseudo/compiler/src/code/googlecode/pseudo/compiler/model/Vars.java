@@ -4,6 +4,10 @@ import com.googlecode.pseudo.compiler.Type;
 import com.googlecode.pseudo.compiler.Types.PrimitiveType;
 
 public class Vars {
+  public interface MemberVar extends Var {
+    // common supper type of Constant and UserFunction
+  }
+  
   static abstract class AbstractVar implements Var {
     private final String name;
     

@@ -1,4 +1,4 @@
-record List {
+record Toto {
   int length
 } 
 
@@ -6,7 +6,7 @@ record List {
   print "enter a boolean (true or false)"
   scan b
   
-  List l = new List()
+  Toto l = new Toto()
   l.length = 3 + 2
   any o
   if (b) {

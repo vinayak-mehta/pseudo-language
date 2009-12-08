@@ -13,6 +13,7 @@ public interface ErrorReporter {
     duplicate_field ("duplicate field %s"),
     dupricate_record ("duplicate record %s"),
     duplicate_function("duplicate function %s"),
+    duplicate_member_variable("duplicate member variable %s"),
     duplicate_parameter("duplicate parameter %s"),
     duplicate_local_var("duplicate local variable %s"),
     

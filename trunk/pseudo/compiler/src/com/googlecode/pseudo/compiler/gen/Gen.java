@@ -15,6 +15,7 @@ import javax.tools.JavaFileManager;
 import javax.tools.SimpleJavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 
+import code.googlecode.pseudo.compiler.model.Constant;
 import code.googlecode.pseudo.compiler.model.Record;
 import code.googlecode.pseudo.compiler.model.Script;
 import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
@@ -38,6 +39,7 @@ import com.googlecode.pseudo.compiler.ast.Assignation;
 import com.googlecode.pseudo.compiler.ast.Block;
 import com.googlecode.pseudo.compiler.ast.ConditionalIf;
 import com.googlecode.pseudo.compiler.ast.ConditionalIfElse;
+import com.googlecode.pseudo.compiler.ast.ConstDef;
 import com.googlecode.pseudo.compiler.ast.DeclarationId;
 import com.googlecode.pseudo.compiler.ast.DeclarationIdInit;
 import com.googlecode.pseudo.compiler.ast.DimExpr;
@@ -101,6 +103,7 @@ import com.googlecode.pseudo.compiler.ast.RecordDef;
 import com.googlecode.pseudo.compiler.ast.RecordInit;
 import com.googlecode.pseudo.compiler.ast.ScriptMember;
 import com.googlecode.pseudo.compiler.ast.ScriptMemberBlock;
+import com.googlecode.pseudo.compiler.ast.ScriptMemberConstDef;
 import com.googlecode.pseudo.compiler.ast.ScriptMemberFunctionDef;
 import com.googlecode.pseudo.compiler.ast.ScriptMemberRecordDef;
 import com.googlecode.pseudo.compiler.ast.Start;
@@ -118,6 +121,7 @@ import com.sun.tools.javac.tree.Pretty;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
+import com.sun.tools.javac.tree.JCTree.JCCatch;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -130,6 +134,7 @@ import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCModifiers;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTry;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -454,8 +459,17 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     memberBuffer.append(main);
     memberBuffer.appendList(functionLiteralBuffer);
     
+    ListBuffer<JCStatement> constBuffer = ListBuffer.lb();
+    for(Constant constant:script.getConstantTable().items()) {
+      ConstDef constDef = constant.getConstDef();
+      
+      JCExpression expression = gen(constDef.getExpr(), JCExpression.class, new GenEnv(constant.getType()));
+      constBuffer.append(
+          maker(constDef).Exec(
+              maker(constDef).Assign(identifier(constDef, constant.getName()), expression)));
+    }
     
-    memberBuffer.append(genStaticBlock(start));
+    memberBuffer.append(genStaticBlock(start, constBuffer.toList()));
     
     JCClassDecl topLevelClass = maker(start).ClassDef(modifiers(start, 0),
         nameFromString(script.getScriptName()),
@@ -467,7 +481,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     return maker(start).TopLevel(List.<JCAnnotation>nil(), null, List.<JCTree>of(topLevelClass));
   }
   
-  private JCBlock genStaticBlock(Node node) {
+  private JCBlock genStaticBlock(Node node, List<JCStatement> instrList) {
     JCFieldAccess runtimesClass = maker(node).Select(qualifiedIdentifier(node, RUNTIME_CLASS), names._class);
     JCStatement registerBootstrapInstr = maker(node).Exec(
         maker(node).Apply(List.<JCExpression>nil(),
@@ -477,10 +491,35 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
                                maker(node).Literal(
                                TypeTags.CLASS,
                                "bootstrapMethod"))));
-    return maker(node).Block(Flags.STATIC, List.of(registerBootstrapInstr));
+    
+    List<JCStatement> instrs;
+    if (!instrList.isEmpty()) {
+      JCStatement stat = maker(node).Throw(
+          maker(node).Apply(List.<JCExpression>nil(),
+              maker(node).Select(qualifiedIdentifier(node, RUNTIME_CLASS),
+                  nameFromString("escapeThrow")),
+                  List.<JCExpression>of(identifier(node, "t"))));
+
+      JCCatch _catch = maker(node).Catch(
+          maker(node).VarDef(modifiers(node, 0),
+              nameFromString("t"),
+              qualifiedIdentifier(node, "java.lang.Throwable"),
+              null),
+              maker(node).Block(0, List.of(stat))
+      );
+
+      JCTry _try = maker(node).Try(
+          maker(node).Block(0, instrList),
+          List.of(_catch),
+          null);
+      
+      instrs = List.of(registerBootstrapInstr, _try);
+    } else {
+      instrs = List.of(registerBootstrapInstr);
+    }
+    
+    return maker(node).Block(Flags.STATIC, instrs);
   }
-  
-  // ---
   
   
   // --- top level members
@@ -492,6 +531,10 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(ScriptMemberFunctionDef scriptMemberFunctionDef, GenEnv genEnv) {
     return gen(scriptMemberFunctionDef.getFunctionDef(), genEnv);
+  }
+  @Override
+  public JCTree visit(ScriptMemberConstDef scriptMemberConstDef, GenEnv genEnv) {
+    return gen(scriptMemberConstDef.getConstDef(), genEnv);
   }
   @Override
   public JCTree visit(ScriptMemberBlock scriptMemberBlock, GenEnv param) {
@@ -515,7 +558,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       initFunction = genUserFunction(recordDef, true, record.getInitFunction(), null, null, genEnv);
     } else {
       initFunction = genUserFunction(initOptional, true, record.getInitFunction(), initOptional.getParameters(), null, genEnv);
-      members = members.prepend(genStaticBlock(recordDef));
+      members = members.prepend(genStaticBlock(recordDef, List.<JCStatement>nil()));
     }
     members = members.prepend(initFunction);
     
@@ -562,10 +605,23 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(FunctionDef functionDef, GenEnv genEnv) {
     String functionName = functionDef.getId().getValue();
-    UserFunction function = script.getFunctionScope().getTable().lookup(functionName);
+    UserFunction function = script.getFunctionTable().lookup(functionName);
     FunctionRtype functionRtypeOptional = functionDef.getFunctionRtypeOptional();
     Node returnTypeNode = (functionRtypeOptional==null)?functionDef:functionRtypeOptional;
     return genUserFunction(functionDef, false, function, functionDef.getParameters(), returnTypeNode, genEnv);
+  }
+  
+  @Override
+  public JCTree visit(ConstDef constDef, GenEnv genEnv) {
+    String name = constDef.getId().getValue();
+    Constant constant = script.getConstantTable().lookup(name);
+    
+    // Initialization of constant fields is done when generating the static block
+    // during generation of compilation unit
+    return maker(constDef).VarDef(modifiers(constDef, Flags.PRIVATE|Flags.STATIC|Flags.FINAL),
+        nameFromString(name),
+        asType(constDef, constant.getType()),
+        null);
   }
   
   @Override

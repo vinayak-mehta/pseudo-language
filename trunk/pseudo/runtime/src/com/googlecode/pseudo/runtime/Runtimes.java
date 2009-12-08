@@ -19,6 +19,21 @@ public class Runtimes {
   }
   
   
+  static class ThrowEscaper<T extends Throwable> {
+    @SuppressWarnings("unchecked")
+    void rethrow(Throwable t) throws T {
+      throw (T)t;
+    }
+    
+    @SuppressWarnings("unchecked")
+    static final ThrowEscaper<RuntimeException> INSTANCE = new ThrowEscaper();
+  }
+  
+  public static RuntimeException escapeThrow(Throwable t) {
+    ThrowEscaper.INSTANCE.rethrow(t);
+    return null;
+  }
+  
   public static CallSite bootstrapMethod(Class<?> caller, String name, MethodType type) {
     if ("__cast__".equals(name)) {
       return Cast.bootstrapDynamicCast(caller, type);
