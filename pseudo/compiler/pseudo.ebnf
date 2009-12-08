@@ -53,6 +53,7 @@ tokens:
   record="record"
   init="init"
   def="def"
+  _const="const"
   lambda="lambda"
   fun="fun"
   print="print"
@@ -121,6 +122,7 @@ productions:
         
   script_member = record_def       { script_member_record_def }
                 | function_def     { script_member_function_def }
+                | const_def        { script_member_const_def }
                 | block            { script_member_block }
                 ;
                 
@@ -148,6 +150,9 @@ productions:
             
   arguments = expr/'comma'*    { arguments }
             ;        
+        
+  const_def = 'const' 'id' '=' expr  'eoln' { const_def }
+            ;      
         
   block = '{' instr* '}'      { block }
         ;

@@ -2,6 +2,7 @@ package code.googlecode.pseudo.compiler.model;
 
 import java.util.ArrayList;
 
+import code.googlecode.pseudo.compiler.model.Vars.MemberVar;
 import code.googlecode.pseudo.compiler.model.Vars.ParameterVar;
 
 import com.googlecode.pseudo.compiler.Type;
@@ -61,7 +62,7 @@ public class Functions {
     return new FunType(returnType, parameterTypes);
   }
   
-  public static class UserFunction extends NamedFunction {
+  public static class UserFunction extends NamedFunction implements MemberVar {
     private final Table<ParameterVar> parameterTable;
     private final Block block;
     

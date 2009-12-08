@@ -3,20 +3,23 @@ package com.googlecode.pseudo.compiler.analysis;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import code.googlecode.pseudo.compiler.model.Constant;
 import code.googlecode.pseudo.compiler.model.Field;
 import code.googlecode.pseudo.compiler.model.Record;
 import code.googlecode.pseudo.compiler.model.Script;
-import code.googlecode.pseudo.compiler.model.Functions.NamedFunction;
 import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
+import code.googlecode.pseudo.compiler.model.Vars.MemberVar;
 import code.googlecode.pseudo.compiler.model.Vars.ParameterVar;
 
 import com.googlecode.pseudo.compiler.LocationMap;
 import com.googlecode.pseudo.compiler.Type;
 import com.googlecode.pseudo.compiler.LocationMap.Location;
+import com.googlecode.pseudo.compiler.Scopes.Scope;
 import com.googlecode.pseudo.compiler.Scopes.Table;
 import com.googlecode.pseudo.compiler.Types.PrimitiveType;
 import com.googlecode.pseudo.compiler.analysis.ErrorReporter.ErrorKind;
 import com.googlecode.pseudo.compiler.ast.Block;
+import com.googlecode.pseudo.compiler.ast.ConstDef;
 import com.googlecode.pseudo.compiler.ast.FunctionDef;
 import com.googlecode.pseudo.compiler.ast.FunctionRtype;
 import com.googlecode.pseudo.compiler.ast.Instr;
@@ -36,6 +39,8 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
     new ArrayList<RecordDef>();
   private final ArrayList<FunctionDef> pendingFunctionDefs =
     new ArrayList<FunctionDef>();
+  private final ArrayList<ConstDef> pendingConstDefs =
+    new ArrayList<ConstDef>();
   
   private final Script script;
    
@@ -55,15 +60,26 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
   public void enter(Start start) {
     enter(start, null);
     
-    // enter pending record defs
+    // enter pending records
     for(RecordDef recordDef:pendingRecordDefs) {
       enterPendingRecordDef(recordDef);
     }
     
     // enter pending functions
+    Scope<MemberVar,UserFunction> functionScope =
+      new Scope<MemberVar, UserFunction>(script.getFunctionTable(), null);
     for(FunctionDef functionDef:pendingFunctionDefs) {
-      enterPendingFunctionDef(functionDef);
+      enterPendingFunctionDef(functionDef, functionScope);
     }
+    
+    // enter pending constants
+    Scope<MemberVar,Constant> constantScope =
+      new Scope<MemberVar, Constant>(script.getConstantTable(), functionScope);
+    for(ConstDef constDef:pendingConstDefs) {
+      enterPendingConstDef(constDef, constantScope);
+    }
+    
+    script.setGlobalScope(constantScope);
   }
   
   void enter(Node node, Void unused) {
@@ -110,6 +126,12 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
   @Override
   public Void visit(FunctionDef functionDef, Void unused) {
     pendingFunctionDefs.add(functionDef);
+    return null;
+  }
+  
+  @Override
+  public Void visit(ConstDef constDef, Void unused) {
+    pendingConstDefs.add(constDef);
     return null;
   }
   
@@ -167,7 +189,7 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
     record.setInitFunction(initFunction);
   }
   
-  private void enterPendingFunctionDef(FunctionDef functionDef) {
+  void enterPendingFunctionDef(FunctionDef functionDef, Scope<MemberVar,UserFunction> functionScope) {
     String name = functionDef.getId().getValue();
     Table<Type> typeTable = script.getTypeTable();
     Table<ParameterVar> parameterVarTable = getParameterVarTable(functionDef.getParameters(), enterType, typeTable);
@@ -182,9 +204,21 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
     
     UserFunction function = new UserFunction(name, parameterVarTable, returnType, functionDef.getBlock());
     
-    NamedFunction oldfunction = script.getFunctionScope().register(function);
-    if (oldfunction != null) {
+    UserFunction oldFunction = functionScope.register(function);
+    if (oldFunction != null) {
       errorReporter.error(ErrorKind.duplicate_function, functionDef, name);
+      // error recovery
+      return;
+    }
+  }
+  
+  void enterPendingConstDef(ConstDef constDef, Scope<MemberVar,Constant> constantScope) {
+    String name = constDef.getId().getValue();
+    
+    Constant constant = new Constant(name, constDef);
+    Constant oldConstant = constantScope.register(constant);
+    if (oldConstant != null) {
+      errorReporter.error(ErrorKind.duplicate_member_variable, constDef, name);
       // error recovery
       return;
     }

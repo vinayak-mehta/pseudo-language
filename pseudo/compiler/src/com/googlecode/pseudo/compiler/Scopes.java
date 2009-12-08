@@ -46,6 +46,10 @@ public class Scopes {
       this.table = table;
     }
     
+    public Scope<? extends I, ?> getParent() {
+      return parent;
+    }
+    
     public Table<T> getTable() {
       return table;
     }

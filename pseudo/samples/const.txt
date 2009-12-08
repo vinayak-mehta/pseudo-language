@@ -1,0 +1,11 @@
+const CONST_THREE = 3
+const CONST_SEVEN = f(CONST_THREE)
+
+def f(v) {
+  return 4 + v
+}
+
+{
+  print CONST_THREE
+  print CONST_SEVEN
+}
