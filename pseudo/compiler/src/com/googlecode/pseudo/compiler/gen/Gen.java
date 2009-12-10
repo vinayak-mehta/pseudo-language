@@ -16,8 +16,10 @@ import javax.tools.SimpleJavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 
 import code.googlecode.pseudo.compiler.model.Constant;
+import code.googlecode.pseudo.compiler.model.Invocation;
 import code.googlecode.pseudo.compiler.model.Record;
 import code.googlecode.pseudo.compiler.model.Script;
+import code.googlecode.pseudo.compiler.model.Symbol;
 import code.googlecode.pseudo.compiler.model.Functions.NamedFunction;
 import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
 import code.googlecode.pseudo.compiler.model.Vars.ParameterVar;
@@ -29,7 +31,6 @@ import com.googlecode.pseudo.compiler.Types.ArrayType;
 import com.googlecode.pseudo.compiler.Types.FunType;
 import com.googlecode.pseudo.compiler.Types.PrimitiveType;
 import com.googlecode.pseudo.compiler.analysis.ErrorReporter;
-import com.googlecode.pseudo.compiler.analysis.Invocation;
 import com.googlecode.pseudo.compiler.analysis.TypeCheck;
 import com.googlecode.pseudo.compiler.ast.Arguments;
 import com.googlecode.pseudo.compiler.ast.ArrayAccessId;
@@ -111,7 +112,6 @@ import com.googlecode.pseudo.compiler.ast.Start;
 import com.googlecode.pseudo.compiler.ast.Visitor;
 import com.googlecode.pseudo.compiler.parser.PseudoProductionEnum;
 import com.googlecode.pseudo.runtime.Runtimes;
-import com.googlecode.pseudo.runtime.lib.Builtins;
 import com.googlecode.pseudo.runtime.lib.IO;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -799,10 +799,10 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   
   @Override
   public JCTree visit(LoopFor loopFor, GenEnv genEnv) {
-    JCStatement init = null;
+    List<JCStatement> init = List.nil();
     ForLoopInit initOptional = loopFor.getForLoopInitOptional();
     if (initOptional != null) {
-      init = gen(initOptional, JCStatement.class, new GenEnv(PrimitiveType.VOID));
+      init = List.of(gen(initOptional, JCStatement.class, new GenEnv(PrimitiveType.VOID)));
     }
     
     JCExpression condition = null;
@@ -812,15 +812,15 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       condition = retype(PrimitiveType.BOOLEAN, loopFor.getExprOptional(), condition);
     }
     
-    JCExpressionStatement incr = null;
+    List<JCExpressionStatement> incr = List.nil();
     ForLoopIncr incrOptional = loopFor.getForLoopIncrOptional();
     if (incrOptional != null) {
-      incr = gen(incrOptional, JCExpressionStatement.class, new GenEnv(PrimitiveType.VOID));
+      incr = List.of(gen(incrOptional, JCExpressionStatement.class, new GenEnv(PrimitiveType.VOID)));
     }
      
     JCBlock block = gen(loopFor.getBlock(), JCBlock.class, genEnv); 
     
-    return maker(loopFor).ForLoop(List.of(init), condition, List.of(incr), block);
+    return maker(loopFor).ForLoop(init, condition, incr, block);
   }
   
   @Override
@@ -1084,7 +1084,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   
   
   private JCTree genInvocation(Node invocationNode, boolean constructor, JCExpression funExpr, Arguments arguments, GenEnv genEnv) {
-    Invocation invocation = typeCheck.getInvocationMap().get(invocationNode);
+    Invocation invocation = (Invocation)typeCheck.getSymbolMap().get(invocationNode);
     FunType funType = invocation.getFunType();
     
     // try to adjust the return type to the expected return type
@@ -1232,7 +1232,11 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   public JCTree visit(ExprId exprId, GenEnv genEnv) {
     String name = exprId.getId().getValue();
     Type type = typeCheck.getTypeMap().get(exprId);
-    if (type instanceof FunType && !functionLiteralSet.contains(name)) {
+    Symbol symbol = typeCheck.getSymbolMap().get(exprId);
+    
+    if (type instanceof FunType &&
+        symbol instanceof NamedFunction &&
+        !functionLiteralSet.contains(name)) {
       FunType funType = (FunType)type;
       
       JCFieldAccess lookup = maker(exprId).Select(
@@ -1256,7 +1260,14 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
           lookupApply,
           nameFromString("findStatic"));
       
-      JCFieldAccess currentClass = maker(exprId).Select(identifier(exprId, script.getScriptName()), names._class);
+      
+      NamedFunction function = (NamedFunction)symbol;
+      String ownerName = function.getOwnerClassName();
+      if (ownerName == null) {
+        ownerName = script.getScriptName();
+      }
+      
+      JCFieldAccess currentClass = maker(exprId).Select(identifier(exprId, ownerName), names._class);
       JCLiteral nameLit = maker(exprId).Literal(TypeTags.CLASS,name);
       JCExpression init = maker(exprId).Apply(List.<JCExpression>nil(), findStatic, List.of(currentClass, nameLit, methodTypeMakeApply));
       
@@ -1296,8 +1307,8 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     
     // unary
     map.put(PseudoProductionEnum.expr_neg, new Operator(JCTree.NOT, "!"));
-    map.put(PseudoProductionEnum.expr_unary_minus, new Operator(JCTree.MINUS, "-"));
-    map.put(PseudoProductionEnum.expr_unary_plus, new Operator(JCTree.PLUS, "+"));
+    map.put(PseudoProductionEnum.expr_unary_minus, new Operator(JCTree.NEG, "-"));
+    map.put(PseudoProductionEnum.expr_unary_plus, new Operator(JCTree.POS, "+"));
     
     // binary
     map.put(PseudoProductionEnum.expr_eq, new Operator(JCTree.EQ, "=="));
@@ -1329,7 +1340,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       case expr_neg:
       case expr_unary_minus:
       case expr_unary_plus:
-        return treeMaker.Unary(opcode, right);
+        return treeMaker.Unary(opcode, left);
       default:
     }
     
@@ -1397,7 +1408,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       return staticExpression(expr, operator, left, right);
     }
     
-    Invocation invocation = typeCheck.getInvocationMap().get(expr);
+    Invocation invocation = (Invocation)typeCheck.getSymbolMap().get(expr);
     FunType funType = invocation.getFunType();
     
     // try to adjust the return type to the expected return type
