@@ -16,6 +16,7 @@ import code.googlecode.pseudo.compiler.model.Record;
 import code.googlecode.pseudo.compiler.model.Script;
 import code.googlecode.pseudo.compiler.model.Var;
 import code.googlecode.pseudo.compiler.model.Functions.Lambda;
+import code.googlecode.pseudo.compiler.model.Functions.NamedFunction;
 import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
 import code.googlecode.pseudo.compiler.model.Vars.AnyVar;
 import code.googlecode.pseudo.compiler.model.Vars.ArrayVar;
@@ -571,7 +572,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     return Arrays.asList(argumentTypes);
   }
   
-  private Type funcall(Node node, Node caller, UserFunction function, Type callerType, Arguments arguments, TypeCheckEnv typeCheckEnv) {
+  private Type funcall(Node node, Node caller, NamedFunction function, Type callerType, Arguments arguments, TypeCheckEnv typeCheckEnv) {
     List<Type> argumentTypes = typeCheckArguments(arguments, typeCheckEnv);
     
     FunType funType = Types.getFunTypeForCall(callerType, argumentTypes);
@@ -598,7 +599,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     IdToken tokenId = funcallId.getId();
     String name = tokenId.getValue();
     Var var = typeCheckEnv.getVarScope().lookup(name);
-    UserFunction function = null;
+    NamedFunction function = null;
     Type varType;
     if (var == null) {
       errorReporter.error(ErrorKind.unknown_function, tokenId, name);
@@ -606,8 +607,8 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
       varType = PrimitiveType.ANY;
     } else {
       varType = var.getType();
-      if (var instanceof UserFunction) {
-        function = (UserFunction)var;
+      if (var instanceof NamedFunction) {
+        function = (NamedFunction)var;
       }
     }
     

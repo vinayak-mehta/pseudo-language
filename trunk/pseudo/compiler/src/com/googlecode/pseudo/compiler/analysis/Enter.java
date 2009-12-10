@@ -7,6 +7,7 @@ import code.googlecode.pseudo.compiler.model.Constant;
 import code.googlecode.pseudo.compiler.model.Field;
 import code.googlecode.pseudo.compiler.model.Record;
 import code.googlecode.pseudo.compiler.model.Script;
+import code.googlecode.pseudo.compiler.model.Functions.Builtin;
 import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
 import code.googlecode.pseudo.compiler.model.Vars.MemberVar;
 import code.googlecode.pseudo.compiler.model.Vars.ParameterVar;
@@ -32,7 +33,12 @@ import com.googlecode.pseudo.compiler.ast.Parameters;
 import com.googlecode.pseudo.compiler.ast.RecordDef;
 import com.googlecode.pseudo.compiler.ast.RecordInit;
 import com.googlecode.pseudo.compiler.ast.Start;
+import com.googlecode.pseudo.compiler.ast.UsingDef;
 import com.googlecode.pseudo.compiler.ast.Visitor;
+import com.googlecode.pseudo.runtime.lib.Bits;
+import com.googlecode.pseudo.runtime.lib.Builtins;
+import com.googlecode.pseudo.runtime.lib.IO;
+import com.googlecode.pseudo.runtime.lib.MathExtra;
 
 public class Enter extends Visitor<Void, Void, RuntimeException> {
   private final ArrayList<RecordDef> pendingRecordDefs =
@@ -58,6 +64,10 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
   // --- main entry
   
   public void enter(Start start) {
+    // enter default builtins
+    ClassImporter.importClass(start, Builtins.class, script.getUsingTable(), errorReporter);
+    
+    // enter usings and types
     enter(start, null);
     
     // enter pending records
@@ -67,7 +77,8 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
     
     // enter pending functions
     Scope<MemberVar,UserFunction> functionScope =
-      new Scope<MemberVar, UserFunction>(script.getFunctionTable(), null);
+      new Scope<MemberVar, UserFunction>(script.getFunctionTable(),
+          new Scope<MemberVar, Builtin>(script.getUsingTable(), null));
     for(FunctionDef functionDef:pendingFunctionDefs) {
       enterPendingFunctionDef(functionDef, functionScope);
     }
@@ -105,6 +116,26 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
   
   
   // --- visit script top level member
+  
+  @Override
+  public Void visit(UsingDef usingDef, Void unused) {
+    String name = usingDef.getId().getValue();
+    if ("math".equals(name)) {
+      ClassImporter.importClass(usingDef, Math.class, script.getUsingTable(), errorReporter);
+      ClassImporter.importClass(usingDef, MathExtra.class, script.getUsingTable(), errorReporter);
+    } else
+    if ("bits".equals(name)) {
+      ClassImporter.importClass(usingDef, Bits.class, script.getUsingTable(), errorReporter);
+    } else
+    if ("io".equals(name)) {
+      ClassImporter.importClass(usingDef, IO.class, script.getUsingTable(), errorReporter);
+    }
+    else {
+      errorReporter.error(ErrorKind.unknown_using, usingDef, name);
+      // error recovery
+    }
+    return null;
+  }
   
   @Override
   public Void visit(RecordDef recordDef, Void unused) {

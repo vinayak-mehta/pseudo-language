@@ -1,0 +1,4 @@
+{
+  txt = "hello"
+  print char_at(txt, 1)
+}
