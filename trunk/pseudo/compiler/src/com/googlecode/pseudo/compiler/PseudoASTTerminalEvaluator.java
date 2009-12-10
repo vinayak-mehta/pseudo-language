@@ -40,7 +40,8 @@ public class PseudoASTTerminalEvaluator implements PseudoTerminalEvaluator<CharS
 
   @Override
   public CharLiteralToken char_literal(CharSequence data) {
-    return locate(new CharLiteralToken(data.charAt(0)));
+    // data at index 1 because 0 and 2 are quotes
+    return locate(new CharLiteralToken(data.charAt(1)));
   }
 
   @Override
