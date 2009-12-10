@@ -2,6 +2,7 @@ package code.googlecode.pseudo.compiler.model;
 
 import java.util.ArrayList;
 
+import code.googlecode.pseudo.compiler.model.Functions.Builtin;
 import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
 import code.googlecode.pseudo.compiler.model.Vars.MemberVar;
 
@@ -13,8 +14,10 @@ import com.googlecode.pseudo.compiler.ast.Instr;
 
 public class Script {
   private final String scriptName;
-  private final Table<Type> typeScope =
+  private final Table<Type> typeTable =
     new Table<Type>();
+  private final Table<Builtin> usingTable =
+    new Table<Builtin>();
   private final Table<Record> recordScope =
     new Table<Record>();
   private final Table<UserFunction> functionTable =
@@ -36,7 +39,10 @@ public class Script {
   }
   
   public Table<Type> getTypeTable() {
-    return typeScope;
+    return typeTable;
+  }
+  public Table<Builtin> getUsingTable() {
+    return usingTable;
   }
   public Table<Record> getRecordTable() {
     return recordScope;

@@ -18,6 +18,7 @@ import javax.tools.JavaFileObject.Kind;
 import code.googlecode.pseudo.compiler.model.Constant;
 import code.googlecode.pseudo.compiler.model.Record;
 import code.googlecode.pseudo.compiler.model.Script;
+import code.googlecode.pseudo.compiler.model.Functions.NamedFunction;
 import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
 import code.googlecode.pseudo.compiler.model.Vars.ParameterVar;
 
@@ -109,6 +110,9 @@ import com.googlecode.pseudo.compiler.ast.ScriptMemberRecordDef;
 import com.googlecode.pseudo.compiler.ast.Start;
 import com.googlecode.pseudo.compiler.ast.Visitor;
 import com.googlecode.pseudo.compiler.parser.PseudoProductionEnum;
+import com.googlecode.pseudo.runtime.Runtimes;
+import com.googlecode.pseudo.runtime.lib.Builtins;
+import com.googlecode.pseudo.runtime.lib.IO;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.comp.AttrContext;
@@ -161,7 +165,8 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   private final ListBuffer<JCTree> functionLiteralBuffer =
     ListBuffer.lb();
   
-  private static final String RUNTIME_CLASS = "com.googlecode.pseudo.runtime.Runtimes";
+  private static final String RUNTIME_CLASS = Runtimes.class.getName();
+  private static final String IO_CLASS = IO.class.getName();
   
   public Gen(final Script script, ErrorReporter errorReporter, LocationMap locationMap, TypeCheck typeCheck) {
     this.script = script;
@@ -704,7 +709,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     Type lhsType = typeCheck.getTypeMap().get(lhsNode);
     String scannerFunction = "next"+lhsType.getName();
     
-    JCFieldAccess scanner = maker(instrScan).Select(qualifiedIdentifier(instrScan, RUNTIME_CLASS), nameFromString("scanner"));
+    JCFieldAccess scanner = maker(instrScan).Select(qualifiedIdentifier(instrScan, IO_CLASS), nameFromString("scanner"));
     JCMethodInvocation scannerExpr = maker(instrScan).Apply(List.<JCExpression>nil(), scanner, List.<JCExpression>nil());
     JCFieldAccess next = maker(lhsNode).Select(scannerExpr, nameFromString(scannerFunction));
     JCMethodInvocation nextExpr = maker(lhsNode).Apply(List.<JCExpression>nil(), next, List.<JCExpression>nil());
@@ -1095,7 +1100,8 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     List<JCExpression> args = genAllSubNodes(exprStar, JCExpression.class, funType.getParameterTypes());
     args = retypeAll(exprStar, funType.getParameterTypes(), args);
     
-    if (invocation.getFunction() == null) {
+    NamedFunction function = invocation.getFunction();
+    if (function == null) {
       assert (!constructor);
       //funExpr = maker(funcallId).TypeCast(qualifiedIdentifier(funcallId, "java.dyn.MethodHandle"), funExpr);
       args = args.prepend(funExpr);
@@ -1106,6 +1112,12 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       if (constructor)
         return maker(invocationNode).NewClass(null, List.<JCExpression>nil(), funExpr, args, null);
       
+      // prepend the owner class name for builtin
+      String ownerClassName = function.getOwnerClassName();
+      if (ownerClassName != null) {
+         funExpr = maker(invocationNode).Select(qualifiedIdentifier(invocationNode, ownerClassName),
+             ((JCIdent)funExpr).getName());
+      }
       return maker(invocationNode).Apply(List.<JCExpression>nil(), funExpr, args);
     }
   }

@@ -50,6 +50,7 @@ tokens:
   _new="new"
   _throw="throw"
   
+  using="using"
   record="record"
   init="init"
   def="def"
@@ -117,8 +118,11 @@ productions:
               | 'void'     { return_type_void }
               ;
 
-  start = script_member*          { start }
+  start = using_def* script_member*    { start }
          ;
+         
+  using_def = 'using' 'id' 'eoln'      { using_def }
+            ;
         
   script_member = record_def       { script_member_record_def }
                 | function_def     { script_member_function_def }

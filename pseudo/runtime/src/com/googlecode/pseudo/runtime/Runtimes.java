@@ -10,15 +10,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Runtimes {
-  public static Scanner scanner() {
-    return ScannerCache.SCANNER;
-  }
-  
-  static class ScannerCache {
-    static final Scanner SCANNER = new Scanner();
-  }
-  
-  
   static class ThrowEscaper<T extends Throwable> {
     @SuppressWarnings("unchecked")
     void rethrow(Throwable t) throws T {

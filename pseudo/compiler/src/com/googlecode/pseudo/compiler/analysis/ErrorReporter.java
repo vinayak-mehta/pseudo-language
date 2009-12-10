@@ -4,6 +4,7 @@ import com.googlecode.pseudo.compiler.ast.Node;
 
 public interface ErrorReporter {
   enum ErrorKind {
+    unknown_using ("unknown using %s"),
     unknown_type ("unknown type %s"), 
     unknown_function ("unknown function %s"),
     unknown_var ("unknown variable %s"),
@@ -27,6 +28,8 @@ public interface ErrorReporter {
     type_check_condition ("incompatible expression type with a condition (infered type %s, expected type boolean)"),
     type_check_operator ("no operator %s exist with the given signature %s"),
     type_check_not_testable ("type of the left operand %s is not testable with type of the right operand %s"),
+    
+    
     ;
     
     private final String message;

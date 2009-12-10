@@ -25,7 +25,7 @@ public class Functions {
     }
   }
   
-  public static abstract class NamedFunction extends AbstractFunction implements Var {
+  public static abstract class NamedFunction extends AbstractFunction implements MemberVar {
     private final String name;
     
     public NamedFunction(String name, FunType type) {
@@ -36,6 +36,8 @@ public class Functions {
     public String getName() {
       return name;
     }
+    
+    public abstract /*maybenull*/String getOwnerClassName();
     
     @Override
     public boolean isReadOnly() {
@@ -49,10 +51,18 @@ public class Functions {
   }
   
   public static class Builtin extends NamedFunction {
-    public Builtin(String name, FunType funType) {
-       super(name, funType);
-     }
-   }
+    private final String ownerClassName;
+
+    public Builtin(String name, FunType funType, String ownerClassName) {
+      super(name, funType);
+      this.ownerClassName = ownerClassName;
+    }
+
+    @Override
+    public String getOwnerClassName() {
+      return ownerClassName;
+    }
+  }
   
   static FunType extractFunctionType(Table<ParameterVar> parameterTable, Type returnType) {
     ArrayList<Type> parameterTypes = new ArrayList<Type>();
@@ -62,7 +72,7 @@ public class Functions {
     return new FunType(returnType, parameterTypes);
   }
   
-  public static class UserFunction extends NamedFunction implements MemberVar {
+  public static class UserFunction extends NamedFunction {
     private final Table<ParameterVar> parameterTable;
     private final Block block;
     
@@ -77,6 +87,11 @@ public class Functions {
     }
     public Block getBlock() {
       return block;
+    }
+    
+    @Override
+    public String getOwnerClassName() {
+      return null;
     }
   }
   

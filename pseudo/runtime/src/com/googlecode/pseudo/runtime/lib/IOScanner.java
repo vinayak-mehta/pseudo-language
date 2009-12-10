@@ -1,12 +1,26 @@
-package com.googlecode.pseudo.runtime;
+package com.googlecode.pseudo.runtime.lib;
 
+import java.io.InputStream;
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
-public class Scanner {
-  private final java.util.Scanner scanner;
+public class IOScanner {
+  private Scanner scanner;
+  private InputStream in;
   
-  public Scanner() {
-    scanner = new java.util.Scanner(System.in);
+  public IOScanner(InputStream in) {
+    scanner = new java.util.Scanner(in);
+  }
+
+  public void reset(InputStream in) {
+    if (this.in != System.in)
+      scanner.close();
+    else 
+      if (in == System.in)
+        return;
+    
+    scanner = new java.util.Scanner(in);
+    this.in = in;
   }
   
   public boolean nextBOOLEAN() {
@@ -56,6 +70,18 @@ public class Scanner {
       return text.charAt(0);
     
     return text;
+  }
+
+  public boolean hasNextLine() {
+    return scanner.hasNextLine();
+  }
+
+  public String nextLine() {
+    return scanner.nextLine();
+  }
+
+  public void useDelimiter(String delimiters) {
+    scanner.useDelimiter(delimiters);
   }
   
   /*
