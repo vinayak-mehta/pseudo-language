@@ -1,10 +1,11 @@
-package com.googlecode.pseudo.compiler.analysis;
+package code.googlecode.pseudo.compiler.model;
+
 
 import code.googlecode.pseudo.compiler.model.Functions.NamedFunction;
 
 import com.googlecode.pseudo.compiler.Types.FunType;
 
-public class Invocation {
+public class Invocation implements Symbol {
   private final FunType funType;
   private final NamedFunction function;
   

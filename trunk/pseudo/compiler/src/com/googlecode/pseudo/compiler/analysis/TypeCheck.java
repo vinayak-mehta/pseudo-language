@@ -11,6 +11,7 @@ import java.util.Set;
 
 import code.googlecode.pseudo.compiler.model.Constant;
 import code.googlecode.pseudo.compiler.model.Field;
+import code.googlecode.pseudo.compiler.model.Invocation;
 import code.googlecode.pseudo.compiler.model.Operators;
 import code.googlecode.pseudo.compiler.model.Record;
 import code.googlecode.pseudo.compiler.model.Script;
@@ -89,8 +90,8 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     new HashMap<Node, Type>();
   final HashSet<LhsId> autoDeclarationSet =
     new HashSet<LhsId>();
-  final HashMap<Node, Invocation> invocationMap =
-    new HashMap<Node, Invocation>();
+  final SymbolMap symbolMap =
+    new SymbolMap();
   
   final ErrorReporter errorReporter;
   private final EnterType enterType;
@@ -105,8 +106,8 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     return typeMap;
   }
   
-  public Map<Node, Invocation> getInvocationMap() {
-    return invocationMap;
+  public SymbolMap getSymbolMap() {
+    return symbolMap;
   }
   
   public Set<LhsId> getAutoDeclarationSet() {
@@ -590,7 +591,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
       }
     }
     
-    invocationMap.put(node, new Invocation(funType, function));
+    symbolMap.register(node, new Invocation(funType, function));
     return funType.getReturnType();
   }
   
@@ -649,7 +650,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     UserFunction initFunction = record.getInitFunction();
     FunType funType = Types.getFunTypeForCall(initFunction.getType(), argumentTypes);
     if (funType != null) {
-      invocationMap.put(primaryAllocation, new Invocation(funType, initFunction));
+      symbolMap.register(primaryAllocation, new Invocation(funType, initFunction));
     } else {
       errorReporter.error(ErrorKind.typecheck_call_arguments, primaryAllocation.getArguments(),
           argumentTypes, initFunction.getType());
@@ -731,6 +732,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     if (var == null) { // error recovery
       return PrimitiveType.ANY;
     }
+    symbolMap.register(exprId, var);
     return var.getType();
   }
   
@@ -819,7 +821,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
       return PrimitiveType.ANY;
     }
     
-    invocationMap.put(expr, new Invocation(operatorType, null));
+    symbolMap.register(expr, new Invocation(operatorType, null));
     return operatorType.getReturnType();
   }
   
@@ -837,7 +839,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
       // error recovery
     } else {
       FunType operatorType = new FunType(PrimitiveType.BOOLEAN, Arrays.asList(leftType, rightType));
-      invocationMap.put(expr, new Invocation(operatorType, null));
+      symbolMap.register(expr, new Invocation(operatorType, null));
     }
     return PrimitiveType.BOOLEAN;
   }

@@ -12,9 +12,18 @@ public class Builtins {
   public static char char_at(String text, int index) {
     return text.charAt(index);
   }
-  
-  public static String to_string(Object any) {
+  public static int str_len(String text) {
+    return text.length();  
+  }
+  public static String to_str(Object any) {
     return any.toString(); // should throw a NPE
+  }
+  
+  public static String sub_str_from(String text, int start) {
+    return text.substring(start);
+  }
+  public static String sub_str(String text, int start, int end) {
+    return text.substring(start, end);
   }
   
   public static boolean is_boolean(String text) {
