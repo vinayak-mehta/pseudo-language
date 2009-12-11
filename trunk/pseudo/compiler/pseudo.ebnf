@@ -72,7 +72,7 @@ tokens:
   boolean_literal="true|false"
   char_literal="'[^']'"
   string_literal='\u0022([^\u0022])*\u0022'
-  value_literal= "[0-9]+(\.([0-9])+)?"
+  value_literal= "([0-9]+(\.([0-9])+)?)|(0[xX][0-9a-fA-F]+)"
   id= "([a-z]|[A-Z]|_)([a-z]|[A-Z]|[0-9]|_)*"
   
   eoln= "(\r)?\n"

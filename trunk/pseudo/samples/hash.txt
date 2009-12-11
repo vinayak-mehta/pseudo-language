@@ -1,0 +1,137 @@
+using io
+using bits
+
+record HashTable {
+  HashEntry[] array
+  fun any:int hash_fun
+  fun any,any:boolean key_equals_fun
+
+  init(int size, fun any:int hash, fun any,any:boolean eq) {
+    array = new HashEntry[size]
+    hash_fun = hash
+    key_equals_fun = eq
+  }
+}
+
+record HashEntry {
+  any key
+  any value
+  HashEntry next
+
+  init(any k, HashEntry n) {
+    key = k
+    next = n
+  }
+}
+
+def hash_get_entry(HashTable table, any key):HashEntry {
+  int index = table.hash_fun(key) % table.array.length
+
+  for(HashEntry entry = table.array[index]; entry != null; entry = entry.next) {
+    if (table.key_equals_fun(entry.key, key)) {
+      return entry
+    } 
+  }
+  
+  HashEntry e = new HashEntry(key, table.array[index]) 
+  table.array[index] = e
+  return e
+}
+
+record Occurence {
+  int position
+  Occurence next
+  
+  init(int p, Occurence n) {
+    position = p
+    next = n
+  }
+}
+
+record Index {
+  HashTable table
+  
+  init() {
+    table = new HashTable(65517, word_hash, word_equals)
+  }
+}
+
+def word_hash(string word):int {
+  int h = 0
+  for(int i=0; i<str_len(word); i=i+1) {
+    h = bits_shift_left(h, 4) + char_at(word, i)
+    int g = bits_and(h, 0xF0000000)
+    if (g != 0)  {
+        h = bits_xor(h, bits_shift_right(g, 24))
+        h = bits_xor(h, g)
+    }
+  }
+  return h
+}
+  
+def word_equals(string s1, string s2):boolean {
+  return s1 == s2
+}
+
+def index_insert_word(Index index, string word, int position):void {
+  HashEntry entry = hash_get_entry(index.table, word)
+  Occurence occurence = entry.value
+  if (occurence != null && occurence.position == position) {
+    return
+  }
+  entry.value = new Occurence(position, occurence)
+}
+
+def index_display(Index index):void {
+  for(int i=0; i<index.table.array.length; i=i+1) {
+    HashEntry entry = index.table.array[i]
+    if (entry == null) {
+      continue
+    }
+    
+    for(HashEntry e=entry; e!=null; e=e.next) {
+      print e.key
+      Occurence occurence = e.value
+      for(Occurence occ = occurence; occ!=null; occ=occ.next) {
+        print occ.position
+      }
+    }
+  }
+}
+
+{
+  Index index = new Index()
+
+  int sentence_count = 0
+  while(has_next_line()) {
+    string line = next_line()
+    
+    int last_index = -1
+    int i = 0
+    for(; i<str_len(line); i=i+1) {
+      char c = char_at(line, i)
+      boolean eos = c == '.' || c == '!' || c == '?'
+      
+      if (eos || c == ' ') {
+        if (i-1 != last_index) {
+          string word = sub_str(line, last_index+1, i)
+          index_insert_word(index, word, sentence_count)
+        }
+        
+        last_index = i
+      }
+      
+      if (eos) {
+        sentence_count = sentence_count + 1
+      }
+    }
+
+    if (last_index != i - 1) {
+      string word = sub_str_from(line, last_index+1)
+      index_insert_word(index, word, sentence_count)
+    }
+  } 
+  
+  index_display(index)
+}
+

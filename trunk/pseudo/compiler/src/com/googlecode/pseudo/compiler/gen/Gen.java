@@ -1103,8 +1103,9 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     NamedFunction function = invocation.getFunction();
     if (function == null) {
       assert (!constructor);
-      //funExpr = maker(funcallId).TypeCast(qualifiedIdentifier(funcallId, "java.dyn.MethodHandle"), funExpr);
-      args = args.prepend(funExpr);
+      // cast is needed because backport doesn't support java.dyn classes in indy signature
+      args = args.prepend(
+          maker(invocationNode).TypeCast(qualifiedIdentifier(invocationNode, "java.lang.Object"), funExpr));
       
       JCFieldAccess method = maker(invocationNode).Select(qualifiedIdentifier(invocationNode, "java.dyn.InvokeDynamic"), nameFromString("__call__"));
       return maker(invocationNode).Apply(List.of(asType(invocationNode, returnType)), method, args);

@@ -48,10 +48,17 @@ public class PseudoASTTerminalEvaluator implements PseudoTerminalEvaluator<CharS
   public ValueLiteralToken value_literal(CharSequence data) {
     String text = data.toString();
     Object value;
-    try {
-      value = Integer.parseInt(text);
-    } catch(NumberFormatException e) {
-      value = Double.parseDouble(text);
+    
+    // heaxdecimal
+    if (text.startsWith("0x") || text.startsWith("0X")) {
+      long longValue = Long.parseLong(text.substring(2), 16);
+      value = (int)longValue;
+    } else {
+      try {
+        value = Integer.parseInt(text);
+      } catch(NumberFormatException e) {
+        value = Double.parseDouble(text);
+      }
     }
     return locate(new ValueLiteralToken(value));
   }
