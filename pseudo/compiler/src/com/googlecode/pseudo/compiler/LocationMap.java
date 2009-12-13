@@ -54,10 +54,6 @@ public class LocationMap {
   private final HashMap<Node, Location> locationMap =
     new HashMap<Node, Location>();
   
-  public void setLocation(Node node, int line, int column) {
-    setLocation(node, new Location(line, column));
-  }
-  
   public void setLocation(Node node, Location location) {
     locationMap.put(node, location);
   }

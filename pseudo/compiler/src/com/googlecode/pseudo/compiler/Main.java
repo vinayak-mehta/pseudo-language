@@ -9,12 +9,9 @@ import code.googlecode.pseudo.compiler.model.Script;
 
 import com.googlecode.pseudo.compiler.analysis.Enter;
 import com.googlecode.pseudo.compiler.analysis.TypeCheck;
-import com.googlecode.pseudo.compiler.ast.ASTGrammarEvaluator;
-import com.googlecode.pseudo.compiler.ast.Node;
 import com.googlecode.pseudo.compiler.ast.Start;
 import com.googlecode.pseudo.compiler.gen.Gen;
 import com.googlecode.pseudo.compiler.tools.PseudoAnalyzers;
-import com.googlecode.pseudo.compiler.tools.PseudoTerminalEvaluator;
 
 import fr.umlv.tatoo.runtime.buffer.impl.LocationTracker;
 import fr.umlv.tatoo.runtime.buffer.impl.ReaderWrapper;
@@ -42,19 +39,12 @@ public class Main {
     final LocationTracker tracker = new LocationTracker();
     ReaderWrapper buffer = new ReaderWrapper(reader, tracker);
     
-    PseudoTerminalEvaluator<CharSequence> terminalEvaluator = new PseudoASTTerminalEvaluator(locationMap, tracker);
-    
-    ASTGrammarEvaluator grammarEvaluator = new ASTGrammarEvaluator() {
-      @Override
-      protected void computeAnnotation(Node node) {
-        locationMap.setLocation(node, tracker.getDiscardedLineNumber(), tracker.getDiscardedColumnNumber());
-      }
-    };
+    PseudoEvaluator evaluator = new PseudoEvaluator(locationMap, tracker);
     
     // lexer + parser
-    PseudoAnalyzers.run(buffer, terminalEvaluator, grammarEvaluator, null, null);
+    PseudoAnalyzers.run(buffer, evaluator, evaluator, null, null);
     
-    Start start = grammarEvaluator.getStart();
+    Start start = evaluator.getStart();
     //System.out.println(start);
     
     // compiler
