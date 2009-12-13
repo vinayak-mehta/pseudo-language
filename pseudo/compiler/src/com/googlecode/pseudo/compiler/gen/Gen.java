@@ -335,13 +335,13 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     return expr;
   }
   
-  private List<JCExpression> retypeAll(java.util.List<Expr> exprStar, java.util.List<Type> parameterTypes, List<JCExpression> exprs) {
-    Iterator<Expr> nodeIterator = exprStar.iterator();
-    Iterator<Type> typeIterator = parameterTypes.iterator();
+  private List<JCExpression> retypeAll(java.util.List<? extends Node> exprStar, java.util.List<? extends Type> parameterTypes, List<JCExpression> exprs) {
+    Iterator<? extends Node> nodeIterator = exprStar.iterator();
+    Iterator<? extends Type> typeIterator = parameterTypes.iterator();
     Iterator<JCExpression> expressionIterator = exprs.iterator();
     ListBuffer<JCExpression> buffer=ListBuffer.lb();
     while(nodeIterator.hasNext()) {
-      Expr node = nodeIterator.next();
+      Node node = nodeIterator.next();
       Type nodeType = typeCheck.getTypeMap().get(node);
       Type type = typeIterator.next();
       JCExpression expression = expressionIterator.next();
@@ -1171,20 +1171,26 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(ArrayCreationPrimitive arrayCreationPrimitive, GenEnv genEnv) {
     Type type = typeCheck.getTypeMap().get(arrayCreationPrimitive);
-    type = componentType(type, arrayCreationPrimitive.getDimExprPlus().size());
-    JCExpression elemtype = asType(arrayCreationPrimitive,type);
+    java.util.List<DimExpr> dimExprPlus = arrayCreationPrimitive.getDimExprPlus();
+    int dimExprPlusSize = dimExprPlus.size();
+    type = componentType(type, dimExprPlusSize);
+    JCExpression elemtype = asType(arrayCreationPrimitive, type);
     
-    List<JCExpression> dims = genAllSubNodes(arrayCreationPrimitive.getDimExprPlus(), JCExpression.class, PrimitiveType.INT);
+    List<JCExpression> dims = genAllSubNodes(dimExprPlus, JCExpression.class, PrimitiveType.INT);
+    dims = retypeAll(dimExprPlus, Collections.nCopies(dimExprPlusSize, PrimitiveType.INT), dims);
     return maker(arrayCreationPrimitive).NewArray(elemtype, dims, null);
   }
   
   @Override
   public JCTree visit(ArrayCreationRecord arrayCreationRecord, GenEnv genEnv) {
     Type type = typeCheck.getTypeMap().get(arrayCreationRecord);
-    type = componentType(type, arrayCreationRecord.getDimExprPlus().size());
-    JCExpression elemtype = asType(arrayCreationRecord,type);
+    java.util.List<DimExpr> dimExprPlus = arrayCreationRecord.getDimExprPlus();
+    int dimExprPlusSize = dimExprPlus.size();
+    type = componentType(type, dimExprPlusSize);
+    JCExpression elemtype = asType(arrayCreationRecord, type);
     
-    List<JCExpression> dims = genAllSubNodes(arrayCreationRecord.getDimExprPlus(), JCExpression.class, PrimitiveType.INT);
+    List<JCExpression> dims = genAllSubNodes(dimExprPlus, JCExpression.class, PrimitiveType.INT);
+    dims = retypeAll(dimExprPlus, Collections.nCopies(dimExprPlusSize, PrimitiveType.INT), dims);
     return maker(arrayCreationRecord).NewArray(elemtype, dims, null);
   }
   
