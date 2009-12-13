@@ -159,7 +159,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
   
   // --- helpers
   
-  void arrayIndexCheck(Expr expr, TypeCheckEnv typeCheckEnv) {
+  void arrayIndexCheck(Node expr, TypeCheckEnv typeCheckEnv) {
     Type exprType = typeCheck(expr, typeCheckEnv);
     if (!(Types.isAssignableFrom(Types.PrimitiveType.INT, exprType))) {
       errorReporter.error(ErrorKind.type_check_array_index, expr, exprType);
@@ -679,11 +679,16 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
   
   private Type arrayCreation(Type type, List<DimExpr> dimExprs, DimsOpt dimsOpt, TypeCheckEnv typeCheckEnv) {
     for(DimExpr dimExpr: dimExprs) {
-      arrayIndexCheck(dimExpr.getExpr(), typeCheckEnv);
+      arrayIndexCheck(dimExpr, typeCheckEnv);
     }
     
     int dimension = dimExprs.size() + dimension(dimsOpt);
     return enterType.arrayType(type, dimension);
+  }
+  
+  @Override
+  public Type visit(DimExpr dimExpr, TypeCheckEnv typeCheckEnv) {
+    return typeCheck(dimExpr.getExpr(), typeCheckEnv);
   }
   
   @Override
