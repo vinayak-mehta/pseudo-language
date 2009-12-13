@@ -6,6 +6,6 @@
 	<classpathentry kind="lib" path="runtime/build-lib/jsr292-mock.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="compiler/lib/javac.jar" sourcepath="compiler/lib/javac-src.zip"/>
-	<classpathentry kind="lib" path="compiler/lib/tatoo-runtime.jar"/>
+	<classpathentry kind="lib" path="compiler/lib/tatoo-runtime.jar" sourcepath="compiler/lib/tatoo-src.zip"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
