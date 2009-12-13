@@ -177,7 +177,10 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     this.context=new Context();
     
     // gen generate indy bytecode
-    Options.instance(context).put("invokedynamic",  "invokedynamic");
+    Options option = Options.instance(context);
+    option.put("invokedynamic",  "invokedynamic");
+    //option.put("-g", "true");
+    //option.put("-g:lines", "true");
     
     // fake source object, needed by enter pass
     sourceFile = new SimpleJavaFileObject(URI.create(""), Kind.OTHER) {
@@ -192,7 +195,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       
       @Override
       public String toString() {
-        return script.getScriptName();
+        return script.getScriptFileName();
       }
     };
     
@@ -395,6 +398,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     
     JCCompilationUnit compilationUnit=genCompilationUnit(start);
     compilationUnit.sourcefile=sourceFile;
+    compilationUnit.lineMap = new LocationLineMap();
     
     Queue<Env<AttrContext>> queue;
     try {

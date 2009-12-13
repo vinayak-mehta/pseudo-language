@@ -22,15 +22,19 @@ import fr.umlv.tatoo.runtime.buffer.impl.ReaderWrapper;
 public class Main {
   public static void main(String[] args) throws IOException {
     Reader reader;
+    
+    String scriptFileName;
     String scriptName;
     if (args.length == 1) {
-      scriptName = args[0];
-      reader = new FileReader(scriptName);
-      int index = scriptName.lastIndexOf('.');
+      scriptFileName = args[0];
+      reader = new FileReader(scriptFileName);
+      int index = scriptFileName.lastIndexOf('.');
       if (index != -1)
-        scriptName = scriptName.substring(0, index);
+        scriptName = scriptFileName.substring(0, index);
+      else
+        scriptName = scriptFileName;
     } else {
-      scriptName = "script";
+      scriptFileName = scriptName = "script";
       reader = new InputStreamReader(System.in);
     }
     
@@ -43,7 +47,7 @@ public class Main {
     ASTGrammarEvaluator grammarEvaluator = new ASTGrammarEvaluator() {
       @Override
       protected void computeAnnotation(Node node) {
-        locationMap.setLocation(node, tracker.getLineNumber(), tracker.getColumnNumber());
+        locationMap.setLocation(node, tracker.getDiscardedLineNumber(), tracker.getDiscardedColumnNumber());
       }
     };
     
@@ -54,7 +58,7 @@ public class Main {
     //System.out.println(start);
     
     // compiler
-    Script script = new Script(scriptName);
+    Script script = new Script(scriptName, scriptFileName);
     CompilerErrorReporter errorReporter = new CompilerErrorReporter(locationMap);
     Enter enter = new Enter(script, errorReporter, locationMap);
     enter.enter(start);

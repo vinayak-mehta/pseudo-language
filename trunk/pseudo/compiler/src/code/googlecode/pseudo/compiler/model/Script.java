@@ -14,6 +14,8 @@ import com.googlecode.pseudo.compiler.ast.Instr;
 
 public class Script {
   private final String scriptName;
+  private final String scriptFileName;
+  
   private final Table<Type> typeTable =
     new Table<Type>();
   private final Table<Builtin> usingTable =
@@ -30,13 +32,18 @@ public class Script {
   private final Block mainBlock =
     new Block(new ArrayList<Instr>());
   
-  public Script(String scriptName) {
+  public Script(String scriptName, String scriptFileName) {
     this.scriptName = scriptName;
+    this.scriptFileName = scriptFileName;
   }
   
   public String getScriptName() {
     return scriptName;
   }
+  public String getScriptFileName() {
+    return scriptFileName;
+  }
+  
   
   public Table<Type> getTypeTable() {
     return typeTable;
