@@ -81,7 +81,8 @@ blanks:
   space = "( |\t|\r|\n)"
  
 comments:
-  comment = "#([^\r\n])*(\r)?\n"  
+  line_comment = "(#|\/\/)([^\r\n])*(\r)?\n" 
+  multiline_comment = "\/\*([^*]|[(\r)?\n]|(\*+([^*/]|((\r)?\n))))*\*+\/" 
 
 types:
   'boolean_literal': boolean

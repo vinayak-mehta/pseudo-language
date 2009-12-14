@@ -1,0 +1,7 @@
+
+#Python comment
+
+/* C comment
+ */
+
+// C++ comment
