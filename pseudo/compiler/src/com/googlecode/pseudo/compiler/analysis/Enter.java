@@ -91,6 +91,12 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
     }
     
     script.setGlobalScope(constantScope);
+    
+    // if main block location is not defined, i.e if there is no block
+    Block mainBlock = script.getMainBlock();
+    if (locationMap.getLocation(mainBlock) == null) {
+      locationMap.setLocation(mainBlock, locationMap.getLocation(start));
+    }
   }
   
   void enter(Node node, Void unused) {

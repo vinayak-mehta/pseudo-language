@@ -28,7 +28,11 @@ class PseudoEvaluator extends ASTGrammarEvaluator implements PseudoTerminalEvalu
   }
 
   @Override
-  public void comment(CharSequence data) {
+  public void line_comment(CharSequence data) {
+    // do nothing
+  }
+  @Override
+  public void multiline_comment(CharSequence data) {
     // do nothing
   }
 
