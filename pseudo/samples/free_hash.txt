@@ -1,0 +1,55 @@
+
+record HashTable {
+  HashEntry[] array
+  any key_hash_fun
+  any key_equals_fun
+
+  init(size, key_hash, key_eq) {
+    array = new HashEntry[size]
+    key_hash_fun = key_hash
+    key_equals_fun = key_eq
+  }
+}
+
+record HashEntry {
+  any key
+  any value
+  HashEntry next
+
+  init(k, n) {
+    key = k
+    next = n
+  }
+}
+
+def hash_get_entry(table, key) {
+  index = table.key_hash_fun(key) % table.array.length
+
+  for(entry = table.array[index]; entry != null; entry = entry.next) {
+    if (table.key_equals_fun(entry.key, key)) {
+      return entry
+    } 
+  }
+  
+  e = new HashEntry(key, table.array[index]) 
+  table.array[index] = e
+  return e
+}
+
+def int_hash(i) {
+  return i 
+}
+  
+def any_equals(v1, v2) {
+  return v1 == v2
+}
+
+{
+  table = new HashTable(65517, int_hash, any_equals)
+
+  hash_get_entry(table, 23).value = 37
+
+  print hash_get_entry(table, 12).value
+  print hash_get_entry(table, 23).value  
+}
+

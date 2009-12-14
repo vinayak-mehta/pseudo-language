@@ -888,7 +888,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     
     // lhs nodes will do the assignation
     return maker(assignation).Exec(
-        genLhs(lhsNode, new LhsGenEnv(genEnv.getExpectedReturnType(), assignation, rhs)));
+        genLhs(lhsNode, new LhsGenEnv(PrimitiveType.ANY, assignation, rhs)));
   }
   
   
@@ -1010,7 +1010,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(ArrayAccessPrimary arrayAccessPrimary, GenEnv genEnv) {
     PrimaryNoArrayCreation indexableNode = arrayAccessPrimary.getPrimaryNoArrayCreation();
-    JCExpression indexable = gen(indexableNode, JCExpression.class, genEnv);
+    JCExpression indexable = gen(indexableNode, JCExpression.class, new GenEnv(PrimitiveType.ANY));
     JCExpression index = gen(arrayAccessPrimary.getExpr(), JCExpression.class, new GenEnv(PrimitiveType.INT));
     return genArrayAccess(arrayAccessPrimary, indexable, indexableNode, index, null, null, genEnv);
   }
@@ -1065,7 +1065,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(FieldAccessPrimary fieldAccessPrimary, GenEnv genEnv) {
     Primary selectNode = fieldAccessPrimary.getPrimary();
-    JCExpression select = gen(selectNode, JCExpression.class, genEnv);
+    JCExpression select = gen(selectNode, JCExpression.class, new GenEnv(PrimitiveType.ANY));
     return genFieldAccess(fieldAccessPrimary, select, selectNode, fieldAccessPrimary.getId().getValue(), null, null, genEnv);
   }
   
@@ -1130,14 +1130,14 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(FuncallId funcallId, GenEnv genEnv) {
     String name = funcallId.getId().getValue();
-    JCExpression funExpr = identifier(funcallId.getId(), name);
-    return genInvocation(funcallId, false, funExpr, funcallId.getArguments(), genEnv);
+    JCExpression idExpr = identifier(funcallId.getId(), name);
+    return genInvocation(funcallId, false, idExpr, funcallId.getArguments(), genEnv);
   }
 
   @Override
   public JCTree visit(FuncallPrimary funcallPrimary, GenEnv genEnv) {
-    JCExpression funExpr = gen(funcallPrimary.getPrimary(), JCExpression.class, genEnv);
-    return genInvocation(funcallPrimary, false, funExpr, funcallPrimary.getArguments(), genEnv);
+    JCExpression primaryExpr = gen(funcallPrimary.getPrimary(), JCExpression.class, new GenEnv(PrimitiveType.ANY));
+    return genInvocation(funcallPrimary, false, primaryExpr, funcallPrimary.getArguments(), genEnv);
   }
   
   
@@ -1395,6 +1395,11 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       rightType = typeCheck.getTypeMap().get(rightNode);
       isDynamic = isDynamic || rightType == PrimitiveType.ANY;
       right = gen(rightNode, JCExpression.class, new GenEnv(rightType));
+    }
+    
+    // if one argument is null
+    if (leftType == PrimitiveType.NULL || rightType == PrimitiveType.NULL) {
+      isDynamic = false;
     }
     
     PseudoProductionEnum kind = expr.getKind();
