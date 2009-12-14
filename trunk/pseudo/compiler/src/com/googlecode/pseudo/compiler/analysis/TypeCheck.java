@@ -774,8 +774,8 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     map.put(PseudoProductionEnum.expr_unary_minus, "-");
     
     // binary test
-    map.put(PseudoProductionEnum.expr_eq, "==");
-    map.put(PseudoProductionEnum.expr_ne, "!=");
+    //map.put(PseudoProductionEnum.expr_eq, "==");
+    //map.put(PseudoProductionEnum.expr_ne, "!=");
     map.put(PseudoProductionEnum.expr_lt, "<");
     map.put(PseudoProductionEnum.expr_le, "<=");
     map.put(PseudoProductionEnum.expr_gt, ">");
