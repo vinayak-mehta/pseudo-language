@@ -70,8 +70,7 @@ Use Java or Scala instead.
 
 Because you don't needed it.
 There are in my opinions two use cases:
- * You need call by reference in C because you allocation something
-   on the stack and want to send it by its address.
+ * You allocate something on the stack and want to send it by its address.
    Pseudo is a managed language, the runtime provide a GC
    so this kind of problems don't exist. 
  * You need to write swap.
