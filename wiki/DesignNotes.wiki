@@ -69,7 +69,7 @@ Use Java or Scala instead.
 == Why is there no call by reference like in C ? ==
 
 Because you don't needed it.
-There are in my opinions two use case:
+There are in my opinions two use cases:
  * You need call by reference in C because you allocation something
    on the stack and want to send it by its address.
    Pseudo is a managed language, the runtime provide a GC
