@@ -88,5 +88,5 @@ There are in my opinions two use case:
 == Why is there no bits twiddling operators ? ==
 
 The aim is to reduce the weight of the grammar of the language
-but the library named bits provide function for doing shifts, mask,
+but the library named *bits* provide function for doing shifts, mask,
 rotation, etc.
