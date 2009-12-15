@@ -85,8 +85,8 @@ There are in my opinions two use case:
    }
    }}}
 
-== Why is there no bits twiddling functions/operators ? ==
+== Why is there no bits twiddling operators ? ==
 
-Because the aim of the language to teach algorithmics not how to save bits
-by encoding things using a ingenious code.
-If you want to have fun with bits, use C, Python or Java.
+The aim is to reduce the weight of the grammar of the language
+but the library named bits provide function for doing shifts, mask,
+rotation, etc.
