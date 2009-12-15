@@ -1,0 +1,20 @@
+def pow(double value, int exponent):double {
+  if (exponent == 0) {
+    return 1
+  } else {
+    if (exponent % 2 == 1) {
+      return value * pow(value, exponent - 1)
+    } else {
+      double tmp = pow(value, exponent / 2)
+      return tmp * tmp
+    }      
+  }
+}
+
+{
+  start_timer()
+  print pow(2.0, 8)
+  int elapsed = end_timer()
+  print elapsed
+}
+
