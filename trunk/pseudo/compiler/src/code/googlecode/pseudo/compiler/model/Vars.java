@@ -15,6 +15,7 @@ public class Vars {
       this.name = name;
     }
     
+    @Override
     public String getName() {
       return name;
     }
@@ -38,6 +39,7 @@ public class Vars {
       return type;
     }
     
+    @Override
     public boolean isReadOnly() {
       return false;
     }

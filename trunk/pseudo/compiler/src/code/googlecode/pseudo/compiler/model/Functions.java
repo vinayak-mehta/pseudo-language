@@ -33,6 +33,7 @@ public class Functions {
       this.name = name;
     }
 
+    @Override
     public String getName() {
       return name;
     }

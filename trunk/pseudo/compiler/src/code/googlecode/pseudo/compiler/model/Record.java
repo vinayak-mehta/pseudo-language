@@ -34,6 +34,7 @@ public class Record extends ReferenceType {
     return name.hashCode();
   }
   
+  @Override
   public String getName() {
     return name;
   }

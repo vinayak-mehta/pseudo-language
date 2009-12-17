@@ -44,7 +44,6 @@ public class Script {
     return scriptFileName;
   }
   
-  
   public Table<Type> getTypeTable() {
     return typeTable;
   }

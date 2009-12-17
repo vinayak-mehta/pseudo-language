@@ -330,7 +330,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     if (lhsType != PrimitiveType.ANY && rhsType == PrimitiveType.ANY) {
       // dynamic cast
       JCFieldAccess method = maker(rhsNode).Select(qualifiedIdentifier(rhsNode, "java.dyn.InvokeDynamic"), nameFromString("__cast__"));
-      return maker(rhsNode).Apply(List.of(asType(rhsNode, lhsType)), method, List.of(expr));
+      return maker(rhsNode).Apply(List.of(asType(rhsNode, lhsType)), false, method, List.of(expr));
     }
     return expr;
   }
@@ -494,6 +494,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     JCFieldAccess runtimesClass = maker(node).Select(qualifiedIdentifier(node, RUNTIME_CLASS), names._class);
     JCStatement registerBootstrapInstr = maker(node).Exec(
         maker(node).Apply(List.<JCExpression>nil(),
+            false,
             maker(node).Select(qualifiedIdentifier(node, "java.dyn.Linkage"),
                 nameFromString("registerBootstrapMethod")),
                            List.<JCExpression>of(runtimesClass,
@@ -505,6 +506,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     if (!instrList.isEmpty()) {
       JCStatement stat = maker(node).Throw(
           maker(node).Apply(List.<JCExpression>nil(),
+              false,
               maker(node).Select(qualifiedIdentifier(node, RUNTIME_CLASS),
                   nameFromString("escapeThrow")),
                   List.<JCExpression>of(identifier(node, "t"))));
@@ -704,7 +706,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     JCFieldAccess println = maker(instrPrint).Select(qualifiedIdentifier(instrPrint, "System.out"),
         nameFromString("println"));
     return maker(instrPrint).Exec(
-        maker(instrPrint).Apply(List.<JCExpression>nil(), println, List.of(expr)));
+        maker(instrPrint).Apply(List.<JCExpression>nil(), false, println, List.of(expr)));
   }
   
   @Override
@@ -714,9 +716,9 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     String scannerFunction = "next"+lhsType.getName();
     
     JCFieldAccess scanner = maker(instrScan).Select(qualifiedIdentifier(instrScan, IO_CLASS), nameFromString("scanner"));
-    JCMethodInvocation scannerExpr = maker(instrScan).Apply(List.<JCExpression>nil(), scanner, List.<JCExpression>nil());
+    JCMethodInvocation scannerExpr = maker(instrScan).Apply(List.<JCExpression>nil(), false, scanner, List.<JCExpression>nil());
     JCFieldAccess next = maker(lhsNode).Select(scannerExpr, nameFromString(scannerFunction));
-    JCMethodInvocation nextExpr = maker(lhsNode).Apply(List.<JCExpression>nil(), next, List.<JCExpression>nil());
+    JCMethodInvocation nextExpr = maker(lhsNode).Apply(List.<JCExpression>nil(), false, next, List.<JCExpression>nil());
     
     // declaration or assignation
     if (typeCheck.getAutoDeclarationSet().contains(lhsNode)) {
@@ -989,7 +991,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       }
       
       JCFieldAccess method = maker(node).Select(qualifiedIdentifier(node, "java.dyn.InvokeDynamic"), nameFromString(protocol));
-      return maker(node).Apply(List.of(asType(node, type)), method, args); 
+      return maker(node).Apply(List.of(asType(node, type)), false, method, args); 
     }
     
     JCExpression lhs = maker(node).Indexed(indexable, index);
@@ -1045,7 +1047,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       }
       
       JCFieldAccess method = maker(node).Select(qualifiedIdentifier(node, "java.dyn.InvokeDynamic"), nameFromString(protocol+fieldName));
-      return maker(node).Apply(List.of(asType(node, type)), method, args); 
+      return maker(node).Apply(List.of(asType(node, type)), false, method, args); 
     }
     
     JCExpression lhs = maker(node).Select(select, nameFromString(fieldName));
@@ -1112,7 +1114,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
           maker(invocationNode).TypeCast(qualifiedIdentifier(invocationNode, "java.lang.Object"), funExpr));
       
       JCFieldAccess method = maker(invocationNode).Select(qualifiedIdentifier(invocationNode, "java.dyn.InvokeDynamic"), nameFromString("__call__"));
-      return maker(invocationNode).Apply(List.of(asType(invocationNode, returnType)), method, args);
+      return maker(invocationNode).Apply(List.of(asType(invocationNode, returnType)), false, method, args);
     } else {
       if (constructor)
         return maker(invocationNode).NewClass(null, List.<JCExpression>nil(), funExpr, args, null);
@@ -1123,7 +1125,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
          funExpr = maker(invocationNode).Select(qualifiedIdentifier(invocationNode, ownerClassName),
              ((JCIdent)funExpr).getName());
       }
-      return maker(invocationNode).Apply(List.<JCExpression>nil(), funExpr, args);
+      return maker(invocationNode).Apply(List.<JCExpression>nil(), invocation.isTailCall(), funExpr, args);
     }
   }
   
@@ -1253,7 +1255,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       JCFieldAccess lookup = maker(exprId).Select(
           qualifiedIdentifier(exprId, "java.dyn.MethodHandles"),
           nameFromString("lookup"));
-      JCExpression lookupApply = maker(exprId).Apply(List.<JCExpression>nil(), lookup, List.<JCExpression>nil());
+      JCExpression lookupApply = maker(exprId).Apply(List.<JCExpression>nil(), false, lookup, List.<JCExpression>nil());
       
       
       ListBuffer<JCExpression> argsBuffer = ListBuffer.lb();
@@ -1265,7 +1267,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       JCFieldAccess methodTypeMake = maker(exprId).Select(
           qualifiedIdentifier(exprId, "java.dyn.MethodType"),
           nameFromString("make"));
-      JCExpression methodTypeMakeApply = maker(exprId).Apply(List.<JCExpression>nil(), methodTypeMake, argsBuffer.toList());
+      JCExpression methodTypeMakeApply = maker(exprId).Apply(List.<JCExpression>nil(), false, methodTypeMake, argsBuffer.toList());
       
       JCFieldAccess findStatic = maker(exprId).Select(
           lookupApply,
@@ -1280,7 +1282,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
       
       JCFieldAccess currentClass = maker(exprId).Select(identifier(exprId, ownerName), names._class);
       JCLiteral nameLit = maker(exprId).Literal(TypeTags.CLASS,name);
-      JCExpression init = maker(exprId).Apply(List.<JCExpression>nil(), findStatic, List.of(currentClass, nameLit, methodTypeMakeApply));
+      JCExpression init = maker(exprId).Apply(List.<JCExpression>nil(), false, findStatic, List.of(currentClass, nameLit, methodTypeMakeApply));
       
       JCTree functionLiteral = maker(exprId).VarDef(
           modifiers(exprId, Flags.PRIVATE|Flags.STATIC|Flags.FINAL),
@@ -1416,6 +1418,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
            kind == PseudoProductionEnum.expr_eq ||
            kind == PseudoProductionEnum.expr_ne)) {
         left = maker(expr).Apply(List.<JCExpression>nil(),
+            false,
             maker(expr).Select(left, nameFromString("compareTo")),
             List.of(right));
         right = maker(expr).Literal(TypeTags.INT, 0);
@@ -1452,7 +1455,7 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
     List<JCExpression> exprs = (size == 1)?List.of(left):List.of(left, right);
     JCFieldAccess method = maker(expr).Select(qualifiedIdentifier(expr, "java.dyn.InvokeDynamic"),
         nameFromString("__operator__:"+operator.name));
-    JCExpression result = maker(expr).Apply(List.of(asType(expr, returnType)), method, exprs);
+    JCExpression result = maker(expr).Apply(List.of(asType(expr, returnType)), false, method, exprs);
     
     // evaluation of a!=b is translated to !(a==b) [step 2]
     if (kind == PseudoProductionEnum.expr_ne) {

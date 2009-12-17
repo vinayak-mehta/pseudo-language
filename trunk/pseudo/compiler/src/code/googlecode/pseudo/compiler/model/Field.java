@@ -18,6 +18,7 @@ public class Field extends AbstractVar {
     return type;
   }
   
+  @Override
   public boolean isReadOnly() {
     return false;
   }
