@@ -8,6 +8,7 @@ import com.googlecode.pseudo.compiler.Types.FunType;
 public class Invocation implements Symbol {
   private final FunType funType;
   private final NamedFunction function;
+  private boolean tailCall;
   
   public Invocation(FunType funType, /*maybenull*/NamedFunction function) {
     this.funType = funType;
@@ -19,5 +20,12 @@ public class Invocation implements Symbol {
   }
   public /*maybenull*/NamedFunction getFunction() {
     return function;
+  }
+  
+  public boolean isTailCall() {
+    return tailCall;
+  }
+  public void setTailCall() {
+    this.tailCall = true;
   }
 }

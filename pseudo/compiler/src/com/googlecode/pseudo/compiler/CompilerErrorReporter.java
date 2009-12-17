@@ -11,6 +11,7 @@ public class CompilerErrorReporter implements ErrorReporter {
     this.locationMap = locationMap;
   }
 
+  @Override
   public boolean isOnError() {
     return onError;
   }

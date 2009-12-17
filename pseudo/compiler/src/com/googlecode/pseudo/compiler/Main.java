@@ -4,10 +4,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.ListIterator;
+import java.util.Set;
 
 import code.googlecode.pseudo.compiler.model.Script;
 
 import com.googlecode.pseudo.compiler.analysis.Enter;
+import com.googlecode.pseudo.compiler.analysis.TailCall;
 import com.googlecode.pseudo.compiler.analysis.TypeCheck;
 import com.googlecode.pseudo.compiler.ast.Start;
 import com.googlecode.pseudo.compiler.gen.Gen;
@@ -17,13 +22,31 @@ import fr.umlv.tatoo.runtime.buffer.impl.LocationTracker;
 import fr.umlv.tatoo.runtime.buffer.impl.ReaderWrapper;
 
 public class Main {
+  private static Set<Option> parse(ListIterator<String> it) {
+    EnumSet<Option> optionSet = EnumSet.noneOf(Option.class);
+    while (it.hasNext()) {
+      String word = it.next();  
+      
+      if (word.startsWith("-")) {
+        Option option = Option.parse(word.substring(1));
+        optionSet.add(option);
+      } else {
+        it.previous();
+        return optionSet;
+      }
+    }
+    return optionSet;
+  }
+  
   public static void main(String[] args) throws IOException {
-    Reader reader;
+    ListIterator<String> it = Arrays.asList(args).listIterator();
+    Set<Option> optionSet = parse(it);
     
+    Reader reader;
     String scriptFileName;
     String scriptName;
-    if (args.length == 1) {
-      scriptFileName = args[0];
+    if (it.hasNext()) {
+      scriptFileName = it.next();
       reader = new FileReader(scriptFileName);
       int index = scriptFileName.lastIndexOf('.');
       if (index != -1)
@@ -58,6 +81,11 @@ public class Main {
     
     if (errorReporter.isOnError()) {
       return;
+    }
+    
+    if (optionSet.contains(Option.tailcall)) {
+      TailCall tailCall = new TailCall(script, typeCheck);
+      tailCall.tailCall();
     }
     
     Gen genVisitor = new Gen(script, errorReporter, locationMap, typeCheck);

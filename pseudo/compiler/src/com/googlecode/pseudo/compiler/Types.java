@@ -258,6 +258,8 @@ public class Types {
   }
   
   /**
+   * @param type type of the primary
+   * @param argumentTypes type of the arguments
    * @return the fun type otherwise null.
    */
   public static FunType getFunTypeForCall(Type type, List<Type> argumentTypes) {

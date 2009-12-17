@@ -1,0 +1,30 @@
+
+record Link {
+  any element
+  Link next
+
+  init(e, Link n) {
+    element = e
+    next = n
+  }
+}
+
+def cons(element, Link next):Link {
+  return new Link(element, next)
+}
+
+def get(Link l, int index) {
+  if (index == 0) {
+    return l.element
+  }
+  return get(l.next, index - 1)
+}
+
+{
+  Link l = null
+  for(int i = 0; i < 1000000; i = i + 1) {
+    l = cons(i, l)
+  }
+
+  print get(l, 1000000 - 1)
+}
