@@ -5,7 +5,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import code.googlecode.pseudo.compiler.model.Functions.Builtin;
 
 import com.googlecode.pseudo.compiler.Type;
 import com.googlecode.pseudo.compiler.Scopes.Table;
@@ -13,6 +12,7 @@ import com.googlecode.pseudo.compiler.Types.FunType;
 import com.googlecode.pseudo.compiler.Types.PrimitiveType;
 import com.googlecode.pseudo.compiler.analysis.ErrorReporter.ErrorKind;
 import com.googlecode.pseudo.compiler.ast.Node;
+import com.googlecode.pseudo.compiler.model.Functions.Builtin;
 
 public class ClassImporter {
   private static Type getType(Class<?> type) {

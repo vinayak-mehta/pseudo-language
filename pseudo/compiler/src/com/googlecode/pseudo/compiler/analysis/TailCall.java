@@ -2,9 +2,6 @@ package com.googlecode.pseudo.compiler.analysis;
 
 import java.util.HashSet;
 
-import code.googlecode.pseudo.compiler.model.Invocation;
-import code.googlecode.pseudo.compiler.model.Script;
-import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
 
 import com.googlecode.pseudo.compiler.ast.Block;
 import com.googlecode.pseudo.compiler.ast.ConditionalIf;
@@ -22,6 +19,9 @@ import com.googlecode.pseudo.compiler.ast.Node;
 import com.googlecode.pseudo.compiler.ast.PrimaryFuncall;
 import com.googlecode.pseudo.compiler.ast.PrimaryPrimaryNoArrayCreation;
 import com.googlecode.pseudo.compiler.ast.Visitor;
+import com.googlecode.pseudo.compiler.model.Invocation;
+import com.googlecode.pseudo.compiler.model.Script;
+import com.googlecode.pseudo.compiler.model.Functions.UserFunction;
 
 public class TailCall extends Visitor<Void, TailCallEnv, RuntimeException> {
   private final Script script;

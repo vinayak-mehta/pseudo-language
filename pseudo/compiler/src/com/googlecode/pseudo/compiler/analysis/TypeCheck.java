@@ -9,21 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import code.googlecode.pseudo.compiler.model.Constant;
-import code.googlecode.pseudo.compiler.model.Field;
-import code.googlecode.pseudo.compiler.model.Invocation;
-import code.googlecode.pseudo.compiler.model.Operators;
-import code.googlecode.pseudo.compiler.model.Record;
-import code.googlecode.pseudo.compiler.model.Script;
-import code.googlecode.pseudo.compiler.model.Var;
-import code.googlecode.pseudo.compiler.model.Functions.Lambda;
-import code.googlecode.pseudo.compiler.model.Functions.NamedFunction;
-import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
-import code.googlecode.pseudo.compiler.model.Vars.AnyVar;
-import code.googlecode.pseudo.compiler.model.Vars.ArrayVar;
-import code.googlecode.pseudo.compiler.model.Vars.LocalVar;
-import code.googlecode.pseudo.compiler.model.Vars.MemberVar;
-import code.googlecode.pseudo.compiler.model.Vars.ParameterVar;
 
 import com.googlecode.pseudo.compiler.Type;
 import com.googlecode.pseudo.compiler.Types;
@@ -82,6 +67,21 @@ import com.googlecode.pseudo.compiler.ast.PrimaryAllocation;
 import com.googlecode.pseudo.compiler.ast.PrimaryNoArrayCreation;
 import com.googlecode.pseudo.compiler.ast.RecordDef;
 import com.googlecode.pseudo.compiler.ast.Visitor;
+import com.googlecode.pseudo.compiler.model.Constant;
+import com.googlecode.pseudo.compiler.model.Field;
+import com.googlecode.pseudo.compiler.model.Invocation;
+import com.googlecode.pseudo.compiler.model.Operators;
+import com.googlecode.pseudo.compiler.model.Record;
+import com.googlecode.pseudo.compiler.model.Script;
+import com.googlecode.pseudo.compiler.model.Var;
+import com.googlecode.pseudo.compiler.model.Functions.Lambda;
+import com.googlecode.pseudo.compiler.model.Functions.NamedFunction;
+import com.googlecode.pseudo.compiler.model.Functions.UserFunction;
+import com.googlecode.pseudo.compiler.model.Vars.AnyVar;
+import com.googlecode.pseudo.compiler.model.Vars.ArrayVar;
+import com.googlecode.pseudo.compiler.model.Vars.LocalVar;
+import com.googlecode.pseudo.compiler.model.Vars.MemberVar;
+import com.googlecode.pseudo.compiler.model.Vars.ParameterVar;
 import com.googlecode.pseudo.compiler.parser.PseudoProductionEnum;
 
 public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{

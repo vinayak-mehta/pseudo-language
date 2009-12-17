@@ -1,4 +1,4 @@
-package code.googlecode.pseudo.compiler.model;
+package com.googlecode.pseudo.compiler.model;
 
 import static com.googlecode.pseudo.compiler.Types.PrimitiveType.*;
 

@@ -1,8 +1,8 @@
-package code.googlecode.pseudo.compiler.model;
+package com.googlecode.pseudo.compiler.model;
 
-import code.googlecode.pseudo.compiler.model.Vars.AbstractVar;
 
 import com.googlecode.pseudo.compiler.Type;
+import com.googlecode.pseudo.compiler.model.Vars.AbstractVar;
 
 
 public class Field extends AbstractVar {

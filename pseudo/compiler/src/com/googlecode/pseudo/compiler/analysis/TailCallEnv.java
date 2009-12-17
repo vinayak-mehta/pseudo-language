@@ -3,8 +3,9 @@ package com.googlecode.pseudo.compiler.analysis;
 import java.util.HashSet;
 import java.util.Set;
 
-import code.googlecode.pseudo.compiler.model.Invocation;
-import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
+import com.googlecode.pseudo.compiler.model.Invocation;
+import com.googlecode.pseudo.compiler.model.Functions.UserFunction;
+
 
 public class TailCallEnv {
   private final UserFunction declaringFunction;
