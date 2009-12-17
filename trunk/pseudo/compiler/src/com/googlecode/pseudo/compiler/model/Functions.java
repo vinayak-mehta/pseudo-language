@@ -1,15 +1,15 @@
-package code.googlecode.pseudo.compiler.model;
+package com.googlecode.pseudo.compiler.model;
 
 import java.util.ArrayList;
 
-import code.googlecode.pseudo.compiler.model.Vars.MemberVar;
-import code.googlecode.pseudo.compiler.model.Vars.ParameterVar;
 
 import com.googlecode.pseudo.compiler.Type;
 import com.googlecode.pseudo.compiler.Scopes.Table;
 import com.googlecode.pseudo.compiler.Types.FunType;
 import com.googlecode.pseudo.compiler.ast.Block;
 import com.googlecode.pseudo.compiler.ast.Expr;
+import com.googlecode.pseudo.compiler.model.Vars.MemberVar;
+import com.googlecode.pseudo.compiler.model.Vars.ParameterVar;
 
 public class Functions {
   public static abstract class AbstractFunction implements Function {

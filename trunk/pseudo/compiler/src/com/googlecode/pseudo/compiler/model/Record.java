@@ -1,10 +1,10 @@
-package code.googlecode.pseudo.compiler.model;
+package com.googlecode.pseudo.compiler.model;
 
-import code.googlecode.pseudo.compiler.model.Functions.UserFunction;
 
 import com.googlecode.pseudo.compiler.Scopes.Table;
 import com.googlecode.pseudo.compiler.Types.ReferenceType;
 import com.googlecode.pseudo.compiler.ast.RecordDef;
+import com.googlecode.pseudo.compiler.model.Functions.UserFunction;
 
 
 public class Record extends ReferenceType {

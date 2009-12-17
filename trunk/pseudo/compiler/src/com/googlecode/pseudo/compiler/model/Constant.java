@@ -1,10 +1,10 @@
-package code.googlecode.pseudo.compiler.model;
+package com.googlecode.pseudo.compiler.model;
 
-import code.googlecode.pseudo.compiler.model.Vars.AbstractVar;
-import code.googlecode.pseudo.compiler.model.Vars.MemberVar;
 
 import com.googlecode.pseudo.compiler.Type;
 import com.googlecode.pseudo.compiler.ast.ConstDef;
+import com.googlecode.pseudo.compiler.model.Vars.AbstractVar;
+import com.googlecode.pseudo.compiler.model.Vars.MemberVar;
 
 public class Constant extends AbstractVar implements MemberVar {
   private final ConstDef constDef;

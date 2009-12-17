@@ -1,4 +1,4 @@
-package code.googlecode.pseudo.compiler.model;
+package com.googlecode.pseudo.compiler.model;
 
 /** A symbol is an attribute computed by the typecheking pass
  *  and used by gen pass.

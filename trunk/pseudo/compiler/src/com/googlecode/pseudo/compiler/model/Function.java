@@ -1,4 +1,4 @@
-package code.googlecode.pseudo.compiler.model;
+package com.googlecode.pseudo.compiler.model;
 
 import com.googlecode.pseudo.compiler.Types.FunType;
 

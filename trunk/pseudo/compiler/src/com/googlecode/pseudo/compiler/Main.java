@@ -9,13 +9,13 @@ import java.util.EnumSet;
 import java.util.ListIterator;
 import java.util.Set;
 
-import code.googlecode.pseudo.compiler.model.Script;
 
 import com.googlecode.pseudo.compiler.analysis.Enter;
 import com.googlecode.pseudo.compiler.analysis.TailCall;
 import com.googlecode.pseudo.compiler.analysis.TypeCheck;
 import com.googlecode.pseudo.compiler.ast.Start;
 import com.googlecode.pseudo.compiler.gen.Gen;
+import com.googlecode.pseudo.compiler.model.Script;
 import com.googlecode.pseudo.compiler.tools.PseudoAnalyzers;
 
 import fr.umlv.tatoo.runtime.buffer.impl.LocationTracker;

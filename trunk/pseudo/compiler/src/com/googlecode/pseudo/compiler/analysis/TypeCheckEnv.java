@@ -1,10 +1,10 @@
 package com.googlecode.pseudo.compiler.analysis;
 
-import code.googlecode.pseudo.compiler.model.Var;
-import code.googlecode.pseudo.compiler.model.Vars.LocalVar;
 
 import com.googlecode.pseudo.compiler.Type;
 import com.googlecode.pseudo.compiler.Scopes.Scope;
+import com.googlecode.pseudo.compiler.model.Var;
+import com.googlecode.pseudo.compiler.model.Vars.LocalVar;
 
 
 public class TypeCheckEnv {

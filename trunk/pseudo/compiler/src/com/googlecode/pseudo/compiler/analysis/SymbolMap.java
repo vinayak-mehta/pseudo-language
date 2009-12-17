@@ -2,9 +2,9 @@ package com.googlecode.pseudo.compiler.analysis;
 
 import java.util.HashMap;
 
-import code.googlecode.pseudo.compiler.model.Symbol;
 
 import com.googlecode.pseudo.compiler.ast.Node;
+import com.googlecode.pseudo.compiler.model.Symbol;
 
 public class SymbolMap {
   private final HashMap<Node, Symbol> symbolMap =
