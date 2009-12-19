@@ -1,13 +1,10 @@
 package com.googlecode.pseudo.compiler.analysis;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
-import java.util.Map.Entry;
-
 
 import com.googlecode.pseudo.compiler.LocationMap;
+import com.googlecode.pseudo.compiler.Pair;
 import com.googlecode.pseudo.compiler.Type;
 import com.googlecode.pseudo.compiler.LocationMap.Location;
 import com.googlecode.pseudo.compiler.Scopes.Scope;
@@ -235,9 +232,9 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
     Table<Type> typeTable = script.getTypeTable();
     Table<ParameterVar> parameterVarTable = getParameterVarTable(functionDef.getParameters(), enterType, typeTable);
     
-    Entry<String, Type> entry = getFunctionNameAndReturnType(functionDef.getFunctionId(), enterType, typeTable);
-    String name = entry.getKey();
-    Type returnType = entry.getValue();
+    Pair<String, Type> entry = getFunctionNameAndReturnType(functionDef.getFunctionId(), enterType, typeTable);
+    String name = entry.getFirst();
+    Type returnType = entry.getSecond();
     
     UserFunction function = new UserFunction(name, parameterVarTable, returnType, functionDef.getBlock());
     
@@ -264,20 +261,20 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
   
   // ---
   
-  static Entry<String, Type> getFunctionNameAndReturnType(FunctionId functionId, final EnterType enterType, Table<Type> typeTable) {
-    Visitor<Entry<String, Type>, Table<Type>, RuntimeException> functionIdVisitor =
-      new Visitor<Entry<String,Type>, Table<Type>, RuntimeException>() {
+  static Pair<String, Type> getFunctionNameAndReturnType(FunctionId functionId, final EnterType enterType, Table<Type> typeTable) {
+    Visitor<Pair<String, Type>, Table<Type>, RuntimeException> functionIdVisitor =
+      new Visitor<Pair<String,Type>, Table<Type>, RuntimeException>() {
     
       @Override
-      public Entry<String, Type> visit(FunctionIdId function_id_id, Table<Type> typeTable) {
+      public Pair<String, Type> visit(FunctionIdId function_id_id, Table<Type> typeTable) {
         String name = function_id_id.getId().getValue();
-        return new AbstractMap.SimpleImmutableEntry<String, Type>(name, PrimitiveType.ANY);
+        return new Pair<String, Type>(name, PrimitiveType.ANY);
       }
       @Override
-        public Entry<String, Type> visit(FunctionIdReturn function_id_return, Table<Type> typeTable) {
+        public Pair<String, Type> visit(FunctionIdReturn function_id_return, Table<Type> typeTable) {
         String name = function_id_return.getId().getValue();
         Type type = enterType.enterType(function_id_return.getReturnType(), typeTable);
-        return new AbstractMap.SimpleImmutableEntry<String, Type>(name, type);
+        return new Pair<String, Type>(name, type);
       }
     };
     

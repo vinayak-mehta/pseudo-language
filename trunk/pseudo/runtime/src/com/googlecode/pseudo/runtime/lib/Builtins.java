@@ -45,4 +45,21 @@ public class Builtins {
   public static double parse_double(String text) {
     return Double.parseDouble(text);
   }
+  
+  // --- timers
+  
+  private static long startTime;
+  
+  public static void start_timer() {
+    startTime = System.nanoTime();
+  }
+  
+  public static int end_timer() {
+    long endTime = System.nanoTime(); 
+    try {
+      return (int)(endTime - startTime);
+    } finally {
+      startTime = endTime;
+    }
+  }
 }
