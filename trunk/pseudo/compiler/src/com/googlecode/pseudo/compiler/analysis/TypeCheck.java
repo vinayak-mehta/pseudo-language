@@ -50,6 +50,7 @@ import com.googlecode.pseudo.compiler.ast.ForLoopIncr;
 import com.googlecode.pseudo.compiler.ast.ForLoopInit;
 import com.googlecode.pseudo.compiler.ast.FuncallId;
 import com.googlecode.pseudo.compiler.ast.FuncallPrimary;
+import com.googlecode.pseudo.compiler.ast.FunctionId;
 import com.googlecode.pseudo.compiler.ast.IdToken;
 import com.googlecode.pseudo.compiler.ast.Instr;
 import com.googlecode.pseudo.compiler.ast.InstrReturn;
@@ -114,11 +115,17 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
     return autoDeclarationSet;
   }
   
-  // --- dimension helper
+  
+  // --- enter type helper
   
   public int dimension(DimsOpt dimsOpt) {
     return enterType.dimension(dimsOpt);
   }
+  
+  public String getFunctionName(FunctionId functionId) {
+    return Enter.getFunctionNameAndReturnType(functionId, enterType, script.getTypeTable()).getKey();
+  }
+  
   
   // ---
   

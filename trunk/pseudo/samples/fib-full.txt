@@ -1,4 +1,4 @@
-def fib(int n):int {
+def int fib(int n) {
   if (n < 2) {
     return n
   }

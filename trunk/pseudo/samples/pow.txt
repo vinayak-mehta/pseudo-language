@@ -1,4 +1,4 @@
-def pow(double value, int exponent):double {
+def double pow(double value, int exponent) {
   if (exponent == 0) {
     return 1
   } else {

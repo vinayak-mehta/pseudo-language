@@ -28,7 +28,11 @@ class PseudoEvaluator extends ASTGrammarEvaluator implements PseudoTerminalEvalu
   }
 
   @Override
-  public void line_comment(CharSequence data) {
+  public void python_comment(CharSequence data) {
+    // do nothing
+  }
+  @Override
+  public void cplusplus_comment(CharSequence data) {
     // do nothing
   }
   @Override

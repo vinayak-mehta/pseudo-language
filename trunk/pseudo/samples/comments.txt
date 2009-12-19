@@ -1,7 +1,11 @@
 
-#Python comment
-
 /* C comment
  */
 
 // C++ comment
+
+# Python-like comment
+
+// Note that #hello is not a valid Python-like comment
+// because # must be followed by a space
+
