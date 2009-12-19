@@ -123,7 +123,7 @@ public class TypeCheck extends Visitor<Type, TypeCheckEnv, RuntimeException>{
   }
   
   public String getFunctionName(FunctionId functionId) {
-    return Enter.getFunctionNameAndReturnType(functionId, enterType, script.getTypeTable()).getKey();
+    return Enter.getFunctionNameAndReturnType(functionId, enterType, script.getTypeTable()).getFirst();
   }
   
   

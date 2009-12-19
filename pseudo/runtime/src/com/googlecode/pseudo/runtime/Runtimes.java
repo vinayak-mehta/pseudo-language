@@ -16,7 +16,7 @@ public class Runtimes {
       throw (T)t;
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     static final ThrowEscaper<RuntimeException> INSTANCE = new ThrowEscaper();
   }
   
