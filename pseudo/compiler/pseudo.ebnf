@@ -39,6 +39,7 @@ tokens:
   colon=':'
   semicolon=';'
   comma=','
+  sharp='#'
   _if="if"
   _else="else"
   _for="for"
@@ -56,7 +57,6 @@ tokens:
   def="def"
   _const="const"
   lambda="lambda"
-  fun="fun"
   print="print"
   scan="scan"
   
@@ -81,7 +81,8 @@ blanks:
   space = "( |\t|\r|\n)"
  
 comments:
-  line_comment = "(#|\/\/)([^\r\n])*(\r)?\n" 
+  python_comment = "#\u0020([^\r\n])*(\r)?\n" 
+  cplusplus_comment = "\/\/([^\r\n])*(\r)?\n" 
   multiline_comment = "\/\*([^*]|[(\r)?\n]|(\*+([^*/]|((\r)?\n))))*\*+\/" 
 
 types:
@@ -109,10 +110,10 @@ productions:
        | primitive_type         { type_primitive }
        | primitive_type dims    { type_primitive_dims }
        | funtype                { type_funtype }
-       | '(' funtype ')' dims   { type_funtype_dims }
+       | funtype dims           { type_funtype_dims }
        ;
        
-  funtype = 'fun' type/'comma'* ':' return_type     { funtype }
+  funtype = '#' return_type '(' type/'comma'* ')'      { funtype }
           ;
           
   return_type = type       { return_type_type }
@@ -140,11 +141,12 @@ productions:
   field = type 'id' 'eoln'   { field }
         ;
         
-  function_def = 'def' 'id' '(' parameters ')' function_rtype? block   { function_def }
+  function_def = 'def' function_id '(' parameters ')' block   { function_def }
                ;
                
-  function_rtype = ':' return_type     { function_rtype }
-            ;
+  function_id  = 'id'                  { function_id_id }
+               | return_type 'id'      { function_id_return }
+               ;
           
   parameters = parameter/'comma'*   { parameters }
              ;

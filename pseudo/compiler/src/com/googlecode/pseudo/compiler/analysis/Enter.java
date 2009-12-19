@@ -1,7 +1,10 @@
 package com.googlecode.pseudo.compiler.analysis;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
+import java.util.Map.Entry;
 
 
 import com.googlecode.pseudo.compiler.LocationMap;
@@ -14,7 +17,9 @@ import com.googlecode.pseudo.compiler.analysis.ErrorReporter.ErrorKind;
 import com.googlecode.pseudo.compiler.ast.Block;
 import com.googlecode.pseudo.compiler.ast.ConstDef;
 import com.googlecode.pseudo.compiler.ast.FunctionDef;
-import com.googlecode.pseudo.compiler.ast.FunctionRtype;
+import com.googlecode.pseudo.compiler.ast.FunctionId;
+import com.googlecode.pseudo.compiler.ast.FunctionIdId;
+import com.googlecode.pseudo.compiler.ast.FunctionIdReturn;
 import com.googlecode.pseudo.compiler.ast.Instr;
 import com.googlecode.pseudo.compiler.ast.InstrBlock;
 import com.googlecode.pseudo.compiler.ast.Node;
@@ -187,7 +192,7 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
     return null;
   }
   
-  // --- enter pending records and functions
+  // --- enter pending records, functions and constants
   
   public void enterPendingRecordDef(RecordDef recordDef) {
     String name = recordDef.getId().getValue();
@@ -227,17 +232,12 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
   }
   
   void enterPendingFunctionDef(FunctionDef functionDef, Scope<MemberVar,UserFunction> functionScope) {
-    String name = functionDef.getId().getValue();
     Table<Type> typeTable = script.getTypeTable();
     Table<ParameterVar> parameterVarTable = getParameterVarTable(functionDef.getParameters(), enterType, typeTable);
     
-    Type returnType;
-    FunctionRtype functionRtypeOptional = functionDef.getFunctionRtypeOptional();
-    if (functionRtypeOptional != null) {
-      returnType = enterType.enterType(functionRtypeOptional.getReturnType(), typeTable);
-    } else {
-      returnType = PrimitiveType.ANY;
-    }
+    Entry<String, Type> entry = getFunctionNameAndReturnType(functionDef.getFunctionId(), enterType, typeTable);
+    String name = entry.getKey();
+    Type returnType = entry.getValue();
     
     UserFunction function = new UserFunction(name, parameterVarTable, returnType, functionDef.getBlock());
     
@@ -261,9 +261,30 @@ public class Enter extends Visitor<Void, Void, RuntimeException> {
     }
   }
   
+  
   // ---
   
-  public static Table<ParameterVar> getParameterVarTable(Parameters parameters, final EnterType enterType, Table<Type> typeTable) {
+  static Entry<String, Type> getFunctionNameAndReturnType(FunctionId functionId, final EnterType enterType, Table<Type> typeTable) {
+    Visitor<Entry<String, Type>, Table<Type>, RuntimeException> functionIdVisitor =
+      new Visitor<Entry<String,Type>, Table<Type>, RuntimeException>() {
+    
+      @Override
+      public Entry<String, Type> visit(FunctionIdId function_id_id, Table<Type> typeTable) {
+        String name = function_id_id.getId().getValue();
+        return new AbstractMap.SimpleImmutableEntry<String, Type>(name, PrimitiveType.ANY);
+      }
+      @Override
+        public Entry<String, Type> visit(FunctionIdReturn function_id_return, Table<Type> typeTable) {
+        String name = function_id_return.getId().getValue();
+        Type type = enterType.enterType(function_id_return.getReturnType(), typeTable);
+        return new AbstractMap.SimpleImmutableEntry<String, Type>(name, type);
+      }
+    };
+    
+    return functionId.accept(functionIdVisitor, typeTable);
+  }
+  
+  static Table<ParameterVar> getParameterVarTable(Parameters parameters, final EnterType enterType, Table<Type> typeTable) {
     Visitor<ParameterVar, Table<Type>, RuntimeException> visitorParameterVar =
       new Visitor<ParameterVar, Table<Type>, RuntimeException>() {
       

@@ -9,7 +9,7 @@ record Link {
   }
 }
 
-def cons(element, Link next):Link {
+def Link cons(element, Link next) {
   return new Link(element, next)
 }
 

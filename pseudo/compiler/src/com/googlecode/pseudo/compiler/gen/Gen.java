@@ -15,7 +15,6 @@ import javax.tools.JavaFileManager;
 import javax.tools.SimpleJavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 
-
 import com.googlecode.pseudo.compiler.LocationMap;
 import com.googlecode.pseudo.compiler.Type;
 import com.googlecode.pseudo.compiler.LocationMap.Location;
@@ -41,6 +40,7 @@ import com.googlecode.pseudo.compiler.ast.Expr;
 import com.googlecode.pseudo.compiler.ast.ExprBooleanLiteral;
 import com.googlecode.pseudo.compiler.ast.ExprCharLiteral;
 import com.googlecode.pseudo.compiler.ast.ExprId;
+import com.googlecode.pseudo.compiler.ast.ExprLambda;
 import com.googlecode.pseudo.compiler.ast.ExprNullLiteral;
 import com.googlecode.pseudo.compiler.ast.ExprPrimary;
 import com.googlecode.pseudo.compiler.ast.ExprStringLiteral;
@@ -58,7 +58,6 @@ import com.googlecode.pseudo.compiler.ast.ForLoopInitFuncall;
 import com.googlecode.pseudo.compiler.ast.FuncallId;
 import com.googlecode.pseudo.compiler.ast.FuncallPrimary;
 import com.googlecode.pseudo.compiler.ast.FunctionDef;
-import com.googlecode.pseudo.compiler.ast.FunctionRtype;
 import com.googlecode.pseudo.compiler.ast.IdToken;
 import com.googlecode.pseudo.compiler.ast.InstrAssignation;
 import com.googlecode.pseudo.compiler.ast.InstrBlock;
@@ -615,11 +614,9 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   
   @Override
   public JCTree visit(FunctionDef functionDef, GenEnv genEnv) {
-    String functionName = functionDef.getId().getValue();
+    String functionName = typeCheck.getFunctionName(functionDef.getFunctionId()); 
     UserFunction function = script.getFunctionTable().lookup(functionName);
-    FunctionRtype functionRtypeOptional = functionDef.getFunctionRtypeOptional();
-    Node returnTypeNode = (functionRtypeOptional==null)?functionDef:functionRtypeOptional;
-    return genUserFunction(functionDef, false, function, functionDef.getParameters(), returnTypeNode, genEnv);
+    return genUserFunction(functionDef, false, function, functionDef.getParameters(), functionDef.getFunctionId(), genEnv);
   }
   
   @Override
@@ -1299,6 +1296,11 @@ public class Gen extends Visitor<JCTree, GenEnv, RuntimeException> {
   @Override
   public JCTree visit(ExprPrimary exprPrimary, GenEnv genEnv) {
     return gen(exprPrimary.getPrimary(), genEnv);
+  }
+  
+  @Override
+  public JCTree visit(ExprLambda expr_lambda, GenEnv genEnv) {
+    throw new UnsupportedOperationException("lambda not implemented");
   }
   
   

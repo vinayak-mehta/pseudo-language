@@ -8,11 +8,11 @@ record Link {
   }
 }
 
-def add(Link l, any element):Link {
+def Link add(Link l, any element) {
   return new Link(element, l)
 }
 
-def display(Link link):void {
+def void display(Link link) {
   for(Link l=link; l!= null; l=l.next) {
     print l.element
   } 
@@ -28,7 +28,7 @@ record MinMax {
   }
 }
 
-def split(Link link, any pivot):MinMax {
+def MinMax split(Link link, any pivot) {
   Link min = null
   Link max = null
   Link first_min = null

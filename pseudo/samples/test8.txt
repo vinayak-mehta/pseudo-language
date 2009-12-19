@@ -1,4 +1,4 @@
-def f(int x):int {
+def int f(int x) {
   return x;
 }
 

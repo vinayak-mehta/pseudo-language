@@ -1,4 +1,4 @@
-def f(int i):void {
+def void f(int i) {
   print i
 }
 

@@ -3,25 +3,28 @@ record Link {
   Link next
 }
 
-def cons(any value, Link next):Link {
-  return new Link(value, next)
+def Link cons(any value, Link next) {
+  Link l = new Link()
+  l.value = value
+  l.next = next
+  return l
 }
 
-def toString(Link link):string {
+def string toString(Link link) {
   if (link.next == null) {
     return link.value
   }
   return link.value + toString(link.next)
 }
 
-def size_recursive(Link link):int {
+def int size_recursive(Link link) {
   if (link.next == null) {
     return 0
   }
   return 1 + size(link.next)
 }
 
-def size(Link link):int {
+def int size(Link link) {
   int size = 0
   for(Link l=link; l != null; l=l.next) {
     size = size + 1
@@ -29,7 +32,7 @@ def size(Link link):int {
   return size
 }
 
-def each(Link link, fun any,any:any function, any val):any {
+def any each(Link link, #any(any,any) function, any val) {
   any result = val
   for(Link l = link; l != null; l = l.next) {
     result = function(link.value, result)
@@ -64,12 +67,12 @@ record Stack {
   }
 }
 
-def push(Stack stack, any value):void {
+def void push(Stack stack, any value) {
   stack.array[stack.top] = value
   stack.top = stack.top + 1
 }
 
-def pop(Stack stack):any {
+def pop(Stack stack) {
   stack.top = stack.top - 1
   value = stack.array[stack.top]
   stack.array[stack.top] = null

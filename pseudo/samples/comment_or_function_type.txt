@@ -1,0 +1,7 @@
+def void z() {
+  // The line below is a declaration of a variable typed as a function type
+  #int(int) f  
+  
+  // The line below is a comment
+  # int(int) f
+}

@@ -3,10 +3,10 @@ using bits
 
 record HashTable {
   HashEntry[] array
-  fun any:int hash_fun
-  fun any,any:boolean key_equals_fun
+  #any(int) hash_fun
+  #boolean(any,any) key_equals_fun
 
-  init(int size, fun any:int hash, fun any,any:boolean eq) {
+  init(int size, #int(any) hash, #boolean(any,any) eq) {
     array = new HashEntry[size]
     hash_fun = hash
     key_equals_fun = eq
@@ -24,7 +24,7 @@ record HashEntry {
   }
 }
 
-def hash_get_entry(HashTable table, any key):HashEntry {
+def HashEntry hash_get_entry(HashTable table, any key) {
   int index = table.hash_fun(key) % table.array.length
 
   for(HashEntry entry = table.array[index]; entry != null; entry = entry.next) {
@@ -56,7 +56,7 @@ record Index {
   }
 }
 
-def word_hash(string word):int {
+def int word_hash(string word) {
   int h = 0
   for(int i=0; i<str_len(word); i=i+1) {
     h = bits_shift_left(h, 4) + char_at(word, i)
@@ -69,11 +69,11 @@ def word_hash(string word):int {
   return h
 }
   
-def word_equals(string s1, string s2):boolean {
+def boolean word_equals(string s1, string s2) {
   return s1 == s2
 }
 
-def index_insert_word(Index index, string word, int position):void {
+def void index_insert_word(Index index, string word, int position) {
   HashEntry entry = hash_get_entry(index.table, word)
   Occurence occurence = entry.value
   if (occurence != null && occurence.position == position) {
@@ -82,7 +82,7 @@ def index_insert_word(Index index, string word, int position):void {
   entry.value = new Occurence(position, occurence)
 }
 
-def index_display(Index index):void {
+def void index_display(Index index) {
   for(int i=0; i<index.table.array.length; i=i+1) {
     HashEntry entry = index.table.array[i]
     if (entry == null) {
